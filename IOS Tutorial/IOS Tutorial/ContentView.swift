@@ -8,12 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var number = 1
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            // instantiate
+            Text ("\(number)")
+            
+            //change text with button
+            
+            Button("Touch Me") {
+                number += 1
+            }
+
         }
         .padding()
     }
