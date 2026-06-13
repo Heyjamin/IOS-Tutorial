@@ -13,10 +13,15 @@ struct ContentView: View {
     @State private var comboMultiplier = 1
     @State private var lastTapTime = Date()
     @State private var comboText = ""
+    @State private var isComboActive = false
     
     //Challenge 02 States
     @State private var buttonColor: Color = .orange
     @State private var colorTimer: Timer?
+    
+    //Challenge 04 States
+    @State private var btnSize = CGFloat(220)
+    @State private var btnTextSize = CGFloat(80)
     
     // States
     @State private var score = 0
@@ -72,6 +77,12 @@ struct ContentView: View {
         Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { timer in
             if timeRemaining > 0 {
                 timeRemaining -= 10
+                
+                // Challenge 04 (Srinking Button)
+                btnSize = CGFloat(btnSize-20/100)
+                btnTextSize = CGFloat(btnTextSize-10/100)
+                
+                
             } else {
                 // Game over validation
                 timer.invalidate()
@@ -104,6 +115,7 @@ struct ContentView: View {
     
     // Reset game function
     func resetGame() {
+        //UserDefaults.standard.set(0, forKey: "HighestScore")
         score = 0
         timeRemaining = 10_000
         gameOver = false
@@ -115,7 +127,13 @@ struct ContentView: View {
         isNewRecord = false
         
         buttonColor = .orange
+        
+        isComboActive = false
+        btnSize = CGFloat(220)
+        btnTextSize = CGFloat(80)
     }
+    
+    
     
     func handleTap(){
         let now = Date()
@@ -125,7 +143,7 @@ struct ContentView: View {
         //Combo System
         if timeDifference <= 0.5{
             comboMultiplier = min(comboMultiplier + 1,10)
-            
+            isComboActive = true
         }else{
             comboMultiplier = 1
         }
@@ -193,7 +211,7 @@ struct ContentView: View {
                 VStack(spacing: 40) {
                     
                     //Title
-                    Text("Tap Game")
+                    Text("Tap Frenzy")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                     Text("Highest Score: \(highestScore)")
@@ -205,10 +223,10 @@ struct ContentView: View {
                     
                     Text(
                         buttonColor == .green ? "BONUS":
-                            buttonColor == .gray ? "PENALTY": "NORMAL"
+                        buttonColor == .gray ? "PENALTY": "NORMAL"
                     ).font(.title3)
                         .fontWeight(.bold)
-                        
+                    
                     //TAP Buton
                     Button{
                         handleTap()
@@ -218,9 +236,9 @@ struct ContentView: View {
                         }
                     } label: {
                         Text("TAP")
-                            .font(.system(size: 40, weight: .bold))
+                            .font(.system(size: btnTextSize, weight: .bold))
                             .foregroundColor(.white)
-                            .frame(width: 220, height: 220)
+                            .frame(width: btnSize, height: btnSize)
                             .background(buttonColor)
                             .clipShape(Circle())
                             .shadow(radius: 8)
@@ -234,11 +252,14 @@ struct ContentView: View {
                 .padding()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color.blue.opacity(0.15))
-             
+                
                 .onDisappear {
                     colorTimer?.invalidate()
                 }
                 
+                if isComboActive{
+                    
+                    
                     VStack{
                         Text("Combo \(comboMultiplier)")
                             .font(.largeTitle)
@@ -247,8 +268,9 @@ struct ContentView: View {
                     }
                     .padding()
                 }
+            }
                 Spacer()
-           
+            
                 
             
         }
