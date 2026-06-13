@@ -115,8 +115,6 @@ struct ContentView: View {
         isNewRecord = false
         
         buttonColor = .orange
-        
-        startColorCycle()
     }
     
     func handleTap(){
