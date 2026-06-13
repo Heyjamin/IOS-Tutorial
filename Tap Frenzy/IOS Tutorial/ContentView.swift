@@ -13,6 +13,11 @@ struct ContentView: View {
     @State private var comboMultiplier = 1
     @State private var lastTapTime = Date()
     @State private var comboText = ""
+    
+    //Challenge 02 States
+    @State private var buttonColor: Color = .orange
+    @State private var colorTimer: Timer?
+    
     // States
     @State private var score = 0
     
@@ -46,6 +51,18 @@ struct ContentView: View {
         
     }
     
+    //Color Change function
+    func startColorCycle() {
+        colorTimer?.invalidate()
+        
+        colorTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { _ in
+            
+            let colors: [Color] = [.orange, .green, .gray]
+            
+            buttonColor = colors.randomElement() ?? .orange
+        }
+    }
+    
     // Timer function
     func startTimer() {
         guard !timerStarted else { return }
@@ -58,6 +75,10 @@ struct ContentView: View {
             } else {
                 // Game over validation
                 timer.invalidate()
+                
+                //Stop Color Changeing
+                colorTimer?.invalidate()
+                
                 gameOver = true
                 
                 //High score record keeping
@@ -92,6 +113,10 @@ struct ContentView: View {
         lastTapTime = Date()
         
         isNewRecord = false
+        
+        buttonColor = .orange
+        
+        startColorCycle()
     }
     
     func handleTap(){
@@ -108,12 +133,27 @@ struct ContentView: View {
         }
         
         lastTapTime = now
-        score += comboMultiplier
+        
+        var points = comboMultiplier
+        
+        if buttonColor == .green{
+            points += 2 // Bonus Point 2
+            toastMessage = "BONUS! +\(points)"
+        }else if buttonColor == .gray{
+            points = -comboMultiplier // penalty rediuse points
+            toastMessage = "PENALTY! +\(points)"
+        }
+        score += points
+        
+        if score < 0 {
+            score = 0
+        }
     }
     
     var body: some View {
  
             if gameOver{
+
                 // Game over screen
                 VStack (spacing:20){
                     
@@ -165,19 +205,25 @@ struct ContentView: View {
                     Text ("Score : \(score)")
                         .font(.system(size: 40, weight: .bold))
                     
-                    
+                    Text(
+                        buttonColor == .green ? "BONUS":
+                            buttonColor == .gray ? "PENALTY": "NORMAL"
+                    ).font(.title3)
+                        .fontWeight(.bold)
+                        
                     //TAP Buton
                     Button{
                         handleTap()
                         if !timerStarted{
                             startTimer()
+                            startColorCycle()  //Button Color Change Start
                         }
                     } label: {
                         Text("TAP")
                             .font(.system(size: 40, weight: .bold))
                             .foregroundColor(.white)
                             .frame(width: 220, height: 220)
-                            .background(Color.orange)
+                            .background(buttonColor)
                             .clipShape(Circle())
                             .shadow(radius: 8)
                     }
@@ -190,7 +236,11 @@ struct ContentView: View {
                 .padding()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color.blue.opacity(0.15))
-        
+             
+                .onDisappear {
+                    colorTimer?.invalidate()
+                }
+                
                     VStack{
                         Text("Combo \(comboMultiplier)")
                             .font(.largeTitle)
@@ -200,8 +250,11 @@ struct ContentView: View {
                     .padding()
                 }
                 Spacer()
-            }
-     
+           
+                
+            
+        }
+       
 }
 #Preview {
     ContentView()
