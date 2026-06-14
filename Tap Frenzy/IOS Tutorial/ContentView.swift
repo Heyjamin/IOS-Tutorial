@@ -19,6 +19,11 @@ struct ContentView: View {
     @State private var buttonColor: Color = .orange
     @State private var colorTimer: Timer?
     
+    //Challenge 03 States
+    @State private var buttonOffsetX: CGFloat = 0
+    @State private var buttonOffsetY: CGFloat = 0
+    @State private var moveTimer: Timer?
+    
     //Challenge 04 States
     @State private var btnSize = CGFloat(220)
     @State private var btnTextSize = CGFloat(80)
@@ -68,6 +73,19 @@ struct ContentView: View {
         }
     }
     
+    // Moving Button
+    func startMoving(){
+        moveTimer?.invalidate()
+        
+        moveTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
+            withAnimation(.easeInOut(duration:0.2)){
+                buttonOffsetX = CGFloat.random(in: -100...100)
+                buttonOffsetY = CGFloat.random(in: -150...150)
+                
+            }
+        }
+    }
+    
     // Timer function
     func startTimer() {
         guard !timerStarted else { return }
@@ -89,6 +107,9 @@ struct ContentView: View {
                 
                 //Stop Color Changeing
                 colorTimer?.invalidate()
+                
+                // Stop Moving
+                moveTimer?.invalidate()
                 
                 gameOver = true
                 
@@ -131,6 +152,10 @@ struct ContentView: View {
         isComboActive = false
         btnSize = CGFloat(220)
         btnTextSize = CGFloat(80)
+        
+        buttonOffsetX = 0
+        buttonOffsetY = 0
+        
     }
     
     
@@ -233,6 +258,7 @@ struct ContentView: View {
                         if !timerStarted{
                             startTimer()
                             startColorCycle()  //Button Color Change Start
+                            startMoving() //Button Moving Started
                         }
                     } label: {
                         Text("TAP")
@@ -243,7 +269,7 @@ struct ContentView: View {
                             .clipShape(Circle())
                             .shadow(radius: 8)
                     }
-                    
+                    .offset(x: buttonOffsetX, y: buttonOffsetY)
                     //Timer
                     Text("Timer : \(formattedTime)")
                         .font(.system(size: 35, weight: .bold))
