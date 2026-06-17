@@ -10,8 +10,17 @@ import SwiftUI
 @main
 struct IOS_TutorialApp: App {
     var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+       
+            @AppStorage("currentPlayer")
+            var playerName = ""
+            
+            WindowGroup {
+                if playerName.isEmpty {
+                    PlayerRegistrationView()
+                }else{
+                    ArenaView()
+                }
+            }
+        
     }
 }

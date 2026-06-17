@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct TapFrenzyView: View {
     
     //Challenge 01 States
     @State private var comboMultiplier = 1
@@ -31,6 +31,10 @@ struct ContentView: View {
     // States
     @State private var score = 0
     
+    
+  
+    
+    
     @State private var highestScore = UserDefaults.standard.integer(forKey: "HighestScore")
     
     @State private var isNewRecord = false
@@ -45,6 +49,8 @@ struct ContentView: View {
     
     @State private var toastMessage = ""
     
+    @AppStorage ("currentPlayer")
+    var playerName = ""
     
     // Timer Format
     var formattedTime: String {
@@ -112,6 +118,12 @@ struct ContentView: View {
                 moveTimer?.invalidate()
                 
                 gameOver = true
+                
+                
+                if score > 0 {
+                    
+                    LeaderboardManager.shared.addScore(playerName: playerName, score: score, gameName: "Tap Frenzy")
+                }
                 
                 //High score record keeping
                 if score > highestScore {
@@ -405,5 +417,5 @@ struct ContentView: View {
     
 }
 #Preview {
-    ContentView()
+    TapFrenzyView()
 }
