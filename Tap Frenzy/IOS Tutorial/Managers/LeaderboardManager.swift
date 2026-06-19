@@ -14,6 +14,29 @@ class LeaderboardManager {
     
     private init(){}
     
+    struct PlayerStatus{
+        let playerName: String
+        let totalScore: Int
+    }
+    
+    func arcadeChampion() -> PlayerStatus? {
+        let scores = loadScores()
+        
+        let grouped = Dictionary(grouping: scores, by: {$0.playerName})
+        
+        let totals = grouped.map{
+            PlayerStatus(
+                playerName: $0.key,
+                totalScore: $0.value.reduce(0){
+                    $0 + $1.score
+                }
+                
+            )
+        }
+        return totals.max{
+            $0.totalScore < $1.totalScore
+        }
+    }
     
     func loadScores() -> [ScoreRecord]{
         guard let data = UserDefaults.standard.data(

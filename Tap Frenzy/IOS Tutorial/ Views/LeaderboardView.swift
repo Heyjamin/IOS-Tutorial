@@ -7,9 +7,17 @@
 
 import SwiftUI
 
+
+
 struct LeaderboardView: View {
+    
     let gameName: String
     private let manager = LeaderboardManager.shared
+    
+    private var champion: LeaderboardManager.PlayerStatus?{
+        manager.arcadeChampion()
+    }
+    
     private var scores :[ScoreRecord]{
         manager.topScores(for:gameName)
     }
@@ -59,6 +67,27 @@ struct LeaderboardView: View {
                                     
                                 )
                             )
+                        
+                        
+                        if let champion = champion {
+                            VStack(spacing: 8){
+                                Label("ARCADE CHAMPION",
+                                systemImage: "crown.fill"
+                                )
+                                .foregroundColor(.yellow)
+                                .fontWeight(.bold)
+                                
+                                Text(champion.playerName)
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                
+                                Text("\(champion.totalScore) Points")
+                                    .foregroundColor(.neonBlue)
+                                    .font(.caption)
+                            }
+                            .glassCard()
+                        }
                         
                         
                         ForEach (

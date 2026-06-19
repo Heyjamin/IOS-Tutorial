@@ -32,9 +32,6 @@ struct TapFrenzyView: View {
     @State private var score = 0
     
     
-  
-    
-    
     @State private var highestScore = UserDefaults.standard.integer(forKey: "HighestScore")
     
     @State private var isNewRecord = false
@@ -302,19 +299,19 @@ struct TapFrenzyView: View {
                     )
                     
                     HStack{
-                        StatView(
+                        StatCard(
                             title: "SCORE",
                             value: "\(score)",
                             color: .cyan,
-                            icon: "star.fill")
+                            icon: "bolt.fill")
                         
-                        StatView(
-                            title: "BEST",
+                        StatCard(
+                            title: "HIGHEST SCORE",
                             value: "\(highestScore)",
                             color: .yellow,
                             icon: "trophy.fill")
                         
-                        StatView(
+                        StatCard(
                             title: "TIME",
                             value: formattedTime,
                             color: .green,

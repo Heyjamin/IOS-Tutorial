@@ -10,7 +10,7 @@ import SwiftUI
 struct GameInfo: Identifiable {
     let id = UUID()
     
-    let name: String
+    let title: String
     
     let icon: String
     

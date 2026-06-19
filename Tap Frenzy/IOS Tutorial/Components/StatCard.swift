@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct StatView: View {
+struct StatCard: View {
     let title: String
     let value: String
     let color : Color
