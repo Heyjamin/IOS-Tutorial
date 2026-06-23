@@ -14,7 +14,7 @@ struct LightItUpView: View {
     
     @State private var score = 0
     
-    @State private var highestScore = UserDefaults.standard.integer(forKey: "HighestScore")
+    @State private var highestScore = UserDefaults.standard.integer(forKey: "LightItUpHighestScore")
     
     @State private var timeRemaining = 60
     
@@ -25,6 +25,10 @@ struct LightItUpView: View {
     @State private var gameOver = false
     
     @State private var activeCell: Int? = nil
+    
+    @State private var activeColor: Color = .neonBlue
+    
+    @State private var pulse = false
     
     @State private var level = 1
     @State private var lightSpeed = 1.0
@@ -42,6 +46,12 @@ struct LightItUpView: View {
     }
     
     private func resetGame() {
+        
+        gameTimer?.invalidate()
+        cellTimer?.invalidate()
+        
+        gameOver = false
+        
         score = 0
         timeRemaining = 60
         
@@ -52,6 +62,7 @@ struct LightItUpView: View {
         startCellTimer()
         
         showRandomCell()
+        
     }
     
     private func startGameTimer()
@@ -95,7 +106,15 @@ struct LightItUpView: View {
     }
     
     private func showRandomCell() {
-            activeCell = Int.random(in: 0..<9)
+        activeCell = Int.random(in: 0..<9)
+        
+        activeColor = neonColors.randomElement() ?? .neonBlue
+        
+        DispatchQueue.main.asyncAfter(
+            deadline: .now() + max(lightSpeed * 0.8,0.5)
+        ) {
+            activeCell = nil
+        }
     }
     
     private func startCellTimer()
@@ -111,109 +130,205 @@ struct LightItUpView: View {
         }
     }
     
+    private let neonColors: [Color] = [
+        .neonBlue,
+        .neonGreen,
+        .neonPink,
+        .neonPurple,
+        .yellow,
+        .orange
+    ]
+    
     var body: some View {
-        ZStack {
-            
-            LinearGradient(
-                colors: [.bgTop, .black, .bgBottom],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
-            
-            VStack(spacing: 20) {
+        if gameOver {
+            ZStack {
+                LinearGradient(
+                    colors:[.bgTop, .black, .bgBottom],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
                 
-                Text("💡 LIGHT IT UP")
-                    .font(.system(size:32,weight: .black))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.neonBlue, .neonPurple],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                
-                HStack {
-                    StatCard(
-                        title: "SCORE",
-                        value: "\(score)",
-                        color: .cyan,
-                        icon: "bolt.fill")
+                VStack{
                     
-                    StatCard(
-                        title: "HIGHEST SCORE",
-                        value: "\(highestScore)",
-                        color: .yellow,
-                        icon: "trophy.fill")
-                    
-                    StatCard(
-                        title: "TIME",
-                        value: "\(timeRemaining)",
-                        color: .green,
-                        icon: "timer")
-                }
-                
-                VStack(spacing: 10) {
-                    StatCard(
-                        title: "LEVEL",
-                        value: "\(level)",
-                        color: .neonPink,
-                        icon: "star.fill")
-                }
-                
-                
-                LazyVGrid(columns: columns, spacing: 15) {
-                    ForEach(0..<9, id: \.self) {index in
+                    Spacer()
+                    VStack(spacing:25){
                         
-                        RoundedRectangle(cornerRadius:16)
-                            .fill(
-                                activeCell == index ?
-                                Color.neonBlue
-                                : Color.white.opacity(0.1)
-                            )
-                            .frame(height: 90)
-                            .onTapGesture {
-                                if activeCell == index {
-                                    score += 1
-                                    
-                                    if score > highestScore {
-                                        highestScore = score
-                                        
-                                        UserDefaults.standard.set(
-                                            highestScore,
-                                            forKey: "HighestScore"
-                                        )
-                                    }
-                                    
-                                    showRandomCell()
-                                }
-                            }
+                        
+                        Image(systemName:"lightbulb.max.fill")
+                            .font(.system(size:90))
+                            .foregroundColor(.yellow)
+                        
+                        Text("GAME OVER")
+                            .font(.system(size:34,weight: .black))
+                            .foregroundColor(.white)
+                        
+                        VStack(spacing:10){
+                            Text("FINAL SCORE")
+                                .foregroundColor(.gray)
+                            
+                            Text("\(score)")
+                                .font(.system(size: 60, weight: .bold))
+                                .foregroundColor(.white)
+                            
+                            Text("BEST \(highestScore)")
+                                .foregroundStyle(.yellow)
+                        }
+                        
+                        Button {
+                            resetGame()
+                        }label: {
+                            Text("PLAY AGAIN")
+                                .fontWeight(.bold)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(
+                                    LinearGradient(
+                                        colors:[.neonBlue,.purple],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
+                                )
+                                .foregroundColor(.white)
+                                .cornerRadius(20)
+                        }
                     }
                 }
+                .padding(30)
+                .glassCard()
                 
                 Spacer()
             }
-            .padding()
-        }.onAppear {
-            showRandomCell()
-            startCellTimer()
-            startGameTimer()
-        }
-                .onDisappear {
-                    gameTimer?.invalidate()
-                    cellTimer?.invalidate()
             
-        }.alert(
-            "Game Over",
-            isPresented: $showGameOver){
-                Button("Play Again"){
-                    resetGame()
+        } else {
+            
+            ZStack {
+                
+                LinearGradient(
+                    colors: [.bgTop, .black, .bgBottom],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
+                
+                VStack(spacing: 20) {
+                    
+                    Text("💡 LIGHT IT UP")
+                        .font(.system(size:32,weight: .black))
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [.neonBlue, .neonPurple],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                    
+                    HStack {
+                        StatCard(
+                            title: "SCORE",
+                            value: "\(score)",
+                            color: .cyan,
+                            icon: "bolt.fill")
+                        
+                        StatCard(
+                            title: "HIGHEST SCORE",
+                            value: "\(highestScore)",
+                            color: .yellow,
+                            icon: "trophy.fill")
+                        
+                        StatCard(
+                            title: "TIME",
+                            value: "\(timeRemaining)",
+                            color: .green,
+                            icon: "timer")
+                    }
+                    
+                    VStack(spacing: 10) {
+                        StatCard(
+                            title: "LEVEL",
+                            value: "\(level)",
+                            color: .neonPink,
+                            icon: "star.fill")
+                    }
+                    
+                    
+                    LazyVGrid(columns: columns, spacing: 15) {
+                        ForEach(0..<9, id: \.self) {index in
+                            
+                            RoundedRectangle(cornerRadius:16)
+                                .fill(
+                                    activeCell == index ?
+                                    activeColor
+                                    : Color.white.opacity(0.1)
+                                )
+                                .shadow(
+                                    color: activeCell == index ?
+                                    activeColor
+                                    : .clear,
+                                    radius: activeCell == index ? (pulse ? 50 : 10)
+                                    : 0
+                                )
+                                .opacity(activeCell == index ?
+                                         (pulse ? 1.0:0.7):1.0
+                                )
+                                .animation(
+                                    .easeInOut(
+                                        duration: 0.4),
+                                    value: pulse
+                                )
+                                .frame(height: 90)
+                            
+                                .onTapGesture {
+                                    if activeCell == index {
+                                        score += 1
+                                        
+                                        if score > highestScore {
+                                            highestScore = score
+                                            
+                                            UserDefaults.standard.set(
+                                                highestScore,
+                                                forKey: "LightItUpHighestScore"
+                                            )
+                                        }
+                                        
+                                        showRandomCell()
+                                    }
+                                }
+                        }
+                    }
+                    .frame(height: 320)
+                    
+                    Spacer()
                 }
-            } message:{
-                Text ("Final Score: \(score)")
+                .padding()
+                
             }
+            
+            .onAppear {
+                withAnimation (
+                    .easeInOut(duration: 0.6)
+                    .repeatForever(autoreverses: true)
+                ){
+                    pulse = true
+                }
+                
+                showRandomCell()
+                startCellTimer()
+                startGameTimer()
+                
+            }
+            
+            .onDisappear {
+                gameTimer?.invalidate()
+                cellTimer?.invalidate()
+                
+            }
+            
+            
+           
+        }
+        
     }
-   
 }
 
 #Preview {
