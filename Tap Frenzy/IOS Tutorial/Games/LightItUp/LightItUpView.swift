@@ -26,20 +26,43 @@ struct LightItUpView: View {
     
     @State private var activeCell: Int? = nil
     
+    @State private var wrongCell : Int? = nil
+    
     @State private var activeColor: Color = .neonBlue
     
-
+    @State private var showLevelBanner = false
+    
     
     @State private var hideWorkItem: DispatchWorkItem?
     
     @State private var level = 1
     @State private var lightSpeed = 1.0
     
-    private let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
+    private var columns : [GridItem] {
+        switch level{
+        case 1:
+            return Array (repeating: GridItem(.flexible()), count: 3)
+        case 2:
+            return Array (repeating: GridItem(.flexible()), count: 2)
+        case 3:
+            return Array (repeating: GridItem(.flexible()), count: 3)
+        default:
+            return Array (repeating: GridItem(.flexible()), count: 3)
+        }
+    }
+    
+    private var visibleCards: Int{
+        switch level {
+        case 1:
+            return 3
+        case 2:
+            return 4
+        case 3:
+            return 6
+        default:
+            return 9
+        }
+    }
     
     private func endGame() {
         LeaderboardManager.shared.addScore(playerName: playerName, score: score, gameName: "Light It Up")
@@ -79,21 +102,34 @@ struct LightItUpView: View {
             
             timeRemaining -= 1
             
-            if timeRemaining == 45 {
+            switch timeRemaining{
+            case 45:
                 level = 2
                 lightSpeed = 0.8
-                startCellTimer()
-            }
-            
-            if timeRemaining == 30 {
+                
+            case 30:
                 level = 3
                 lightSpeed = 0.6
-                startCellTimer()
-            }
-            
-            if timeRemaining == 15 {
+                
+            case 15:
                 level = 4
                 lightSpeed = 0.4
+                
+            default:
+                break
+            }
+        
+            if timeRemaining == 45 || timeRemaining == 30 || timeRemaining == 15 {
+                withAnimation {
+                    showLevelBanner = true
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.2){
+                    withAnimation {
+                        showLevelBanner = false
+                    }
+                }
+                
                 startCellTimer()
             }
             
@@ -111,7 +147,7 @@ struct LightItUpView: View {
         
         hideWorkItem?.cancel()
         
-        activeCell = Int.random(in: 0..<9)
+        activeCell = Int.random(in: 0..<visibleCards)
         
         activeColor = neonColors.randomElement() ?? .neonBlue
         
@@ -149,6 +185,8 @@ struct LightItUpView: View {
         .orange
     ]
     
+  
+    
     var body: some View {
         if gameOver {
             ZStack {
@@ -163,56 +201,106 @@ struct LightItUpView: View {
                     
                     Spacer()
                     
-                    VStack(spacing:25){
+                    VStack(spacing:20){
                         
                         
-                        Image(systemName:"lightbulb.max.fill")
-                            .font(.system(size:90))
+                        Image(systemName:"trophy.fill")
+                            .font(.system(size:80))
                             .foregroundColor(.yellow)
                         
                         Text("GAME OVER")
                             .font(.system(size:34,weight: .black))
-                            .foregroundColor(.white)
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [.yellow, .orange],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                                
+                            )
+                        Divider()
                         
-                        VStack(spacing:10){
-                            Text("FINAL SCORE")
-                                .foregroundColor(.gray)
+                        VStack(spacing:12){
                             
-                            Text("\(score)")
-                                .font(.system(size: 60, weight: .bold))
+                            Label(playerName, systemImage: "person.fill")
                                 .foregroundColor(.white)
+                                .font(.headline)
                             
-                            Text("BEST \(highestScore)")
-                                .foregroundStyle(.yellow)
+                            HStack{
+                                VStack{
+                                    Text("SCORE")
+                                        .font(.caption)
+                                        .foregroundColor(.gray)
+                                    
+                                    Text("\(score)")
+                                        .font(.system(size: 42, weight: .bold))
+                                        .foregroundColor(.neonGreen)
+                                }
+                                Spacer()
+                                
+                                VStack{
+                                    
+                                    Text("BEST")
+                                        .font(.caption)
+                                        .foregroundColor(.gray)
+                                    
+                                    Text("\(highestScore)")
+                                        .font(.system(size: 42, weight: .bold))
+                                        .foregroundColor(.yellow)
+                                }
+                            }
+                            Divider()
+                            
+                            HStack {
+                                Label(
+                                "LEVEL \(level)",
+                                 systemImage: "star.fill"
+                                )
+                                .foregroundColor(.neonPink)
+                                
+                                Spacer()
+                                
+                                Label(
+                                    "\(60 - timeRemaining)s",
+                                    systemImage: "clock.fill"
+                                )
+                                .foregroundColor(.cyan)
+                            }
+                            
+                            
                         }
                         
                         Button {
                             resetGame()
-                        }label: {
-                            Text("PLAY AGAIN")
-                                .fontWeight(.bold)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(
-                                    LinearGradient(
-                                        colors:[.neonBlue,.purple],
-                                        startPoint: .leading,
-                                        endPoint: .trailing
-                                    )
-                                )
-                                .foregroundColor(.white)
-                                .cornerRadius(20)
-                        }
+                        }label:{
+                            
+                            Label(
+                            "PLAY AGAIN",
+                            systemImage:"arrow.clockwise"
+                        )
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        
+                        .background(
+                            LinearGradient(
+                                colors: [.neonBlue, .neonPurple],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .cornerRadius(18)
                     }
-                    .padding(30)
-                    .glassCard()
-                    
-                    Spacer()
                 }
+                .padding(30)
+                .glassCard()
                 
+                Spacer()
             }
             
-            
+        }
+    
         } else {
             
             ZStack {
@@ -257,19 +345,29 @@ struct LightItUpView: View {
                     }
                     
                     
-                        StatCard(
-                            title: "LEVEL",
+                       StatCard(
+                           title: "LEVEL",
                             value: "\(level)",
-                            color: .neonPink,
-                            icon: "star.fill")
+                           color: .neonPink,
+                            icon: "star.fill").font(.largeTitle)
                     
+                    if showLevelBanner {
+                        Text("LEVEL \(level)")
+                            .font(.largeTitle)
+                            .fontWeight(.black)
+                            .foregroundColor(.yellow)
+                            .transition(.scale.combined(with: .opacity))
+                    }
                     
                     ZStack{
                         LazyVGrid(columns: columns, spacing: 15) {
-                            ForEach(0..<9, id: \.self) {index in
+                            ForEach(0..<visibleCards, id: \.self) {index in
                                 
                                 RoundedRectangle(cornerRadius:16)
                                     .fill(
+                                        wrongCell == index ?
+                                        Color.red
+                                        :
                                         activeCell == index ?
                                         activeColor
                                         : Color.white.opacity(0.08)
@@ -282,10 +380,18 @@ struct LightItUpView: View {
                                             )
                                     )
                                     .overlay{
+                                        if wrongCell == index{
+                                            Image(systemName: "xmark.circle.fill")
+                                                .font(.system(size:32))
+                                                .foregroundColor(.red)
+                                        }
+                                    }
+                                    .overlay{
                                         if activeCell == index {
                                             Image(systemName: "hand.tap.fill")
-                                                .font(.system(size: 28))
+                                                .font(.system(size: 30))
                                                 .foregroundColor(.white)
+                                                .symbolEffect(.pulse)
                                         }
                                     }
                                     .shadow(
@@ -317,7 +423,20 @@ struct LightItUpView: View {
                                                 )
                                             }
                                             activeCell = nil
+                                            hideWorkItem?.cancel()
                                             showRandomCell()
+                                        }
+                                        else
+                                        {
+                                        // Wrong Tap
+                                            wrongCell = index
+                                            
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3){
+                                                wrongCell = nil
+                                            }
+                                            
+                                            score = max(score - 1, 0)
+                                            
                                         }
                                     }
                             }
