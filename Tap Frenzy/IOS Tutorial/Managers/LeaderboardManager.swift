@@ -100,4 +100,18 @@ class LeaderboardManager {
                 .map { $0 }
         }
     
+    func allGameNames() -> [String]{
+        Array (
+            Set(
+                loadScores().map {
+                    $0.gameName
+                }
+                
+            )
+            )
+        .sorted()
+    }
+    
+    
+    
 }

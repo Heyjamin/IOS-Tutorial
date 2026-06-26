@@ -11,15 +11,26 @@ import SwiftUI
 
 struct LeaderboardView: View {
     
-    let gameName: String
+   
     private let manager = LeaderboardManager.shared
     
     private var champion: LeaderboardManager.PlayerStatus?{
         manager.arcadeChampion()
     }
     
-    private var scores :[ScoreRecord]{
-        manager.topScores(for:gameName)
+    private var games :[String]{
+        manager.allGameNames()
+    }
+    
+    private func gameIcon (for game:String) -> String {
+        switch game {
+        case "Tap Frenzy" :
+            return "bolt.fill"
+        case "Light It Up" :
+            return "lightbulb.max.fill"
+        default:
+            return "gamecontroller.fill"
+        }
     }
     
     var body: some View {
@@ -35,7 +46,7 @@ struct LeaderboardView: View {
             )
             .ignoresSafeArea()
             
-            if scores.isEmpty {
+            if games.isEmpty {
                 VStack(spacing: 20){
                     Image(systemName: "trophy.fill")
                         .font(.system(size:80))
@@ -46,7 +57,7 @@ struct LeaderboardView: View {
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                     
-                    Text("Play \(gameName) to create the first record")
+                    Text("Play a game to create the first record")
                         .foregroundColor(.gray)
                 }
             }else{
@@ -90,60 +101,59 @@ struct LeaderboardView: View {
                         }
                         
                         
-                        ForEach (
-                            Array(
-                                scores.enumerated()
-                            ),
-                            id: \.element.id
-                        )
-                        {
-                            index, score in
-                            HStack {
-                                
-                                Text (
-                                    index == 0 ? "🥇" :
-                                        index == 1 ? "🥈" :
-                                        index == 2 ? "🥉" :
-                                        "\(index + 1)"
-                                    
-                                ).fontWeight(.bold)
-                                    .foregroundColor(
-                                        index == 0 ? .yellow :
-                                            index == 1 ? .white :
-                                            index == 2 ? .orange :
-                                                .neonBlue
-                                        
-                                    )
-                                
-                                Text (
-                                    score.playerName
-                                ).foregroundColor(.white)
-                                
-                                Spacer ()
-                                
-                                Text("\(score.score)"
-                                ).foregroundColor(.neonGreen)
+                        ForEach (games,id: \.self) { game in
+                            VStack(alignment: .leading, spacing:12){
+                                Label (game,
+                                      systemImage: gameIcon (for: game)
+                                       )
+                                    .font(.title3)
                                     .fontWeight(.bold)
+                                    .foregroundColor(.neonBlue)
+                                
+                                ForEach(
+                                    Array(manager.topScores(for:game).enumerated()),
+                                    id: \.element.id
+                                ){
+                                    index,score in
+                                    
+                                    HStack{
+                                        Text(
+                                            index == 0 ? "🥇" :
+                                                index == 1 ? "🥈" :
+                                                index == 2 ? "🥉" :
+                                                "\(index+1)"
+                                        )
+                                        
+                                        Text(score.playerName)
+                                            .foregroundColor(.white)
+                                        
+                                        Spacer()
+                                        
+                                        Text("\(score.score)")
+                                            .foregroundColor(.neonGreen)
+                                            .fontWeight(.bold)
+                                            
+                                    }
+                                    .padding(10)
+                                    .glassCard()
+                                }
                             }
-                            .padding()
-                            .glassCard()
-                            
+                            .padding(.bottom,12)
                         }
+                            
                     }
                     .padding()
                 }
                 
             }
         }
-        .navigationTitle(gameName)
+        .navigationTitle("Leaderboards")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 #Preview {
     NavigationStack {
-        LeaderboardView(
-            gameName: "Tap Frenzy"
-        )
+        LeaderboardView()
     }
 }

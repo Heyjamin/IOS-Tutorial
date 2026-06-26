@@ -158,9 +158,7 @@ struct ArenaView: View {
                 }
                 .sheet(isPresented: $showLeaderboard){
                     NavigationStack{
-                        LeaderboardView(
-                            gameName: "Tap Frenzy"
-                        )
+                        LeaderboardView()
                     }
                 }
             }

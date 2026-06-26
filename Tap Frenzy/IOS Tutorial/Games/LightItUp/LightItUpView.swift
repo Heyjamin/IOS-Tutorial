@@ -28,7 +28,9 @@ struct LightItUpView: View {
     
     @State private var activeColor: Color = .neonBlue
     
-    @State private var pulse = false
+
+    
+    @State private var hideWorkItem: DispatchWorkItem?
     
     @State private var level = 1
     @State private var lightSpeed = 1.0
@@ -106,15 +108,23 @@ struct LightItUpView: View {
     }
     
     private func showRandomCell() {
+        
+        hideWorkItem?.cancel()
+        
         activeCell = Int.random(in: 0..<9)
         
         activeColor = neonColors.randomElement() ?? .neonBlue
         
-        DispatchQueue.main.asyncAfter(
-            deadline: .now() + max(lightSpeed * 0.8,0.5)
-        ) {
+        let workItem = DispatchWorkItem {
             activeCell = nil
         }
+        
+        hideWorkItem = workItem
+        
+        DispatchQueue.main.asyncAfter(
+            deadline: .now() + max(lightSpeed * 0.8,0.5),
+            execute:workItem
+        )
     }
     
     private func startCellTimer()
@@ -152,6 +162,7 @@ struct LightItUpView: View {
                 VStack{
                     
                     Spacer()
+                    
                     VStack(spacing:25){
                         
                         
@@ -193,12 +204,14 @@ struct LightItUpView: View {
                                 .cornerRadius(20)
                         }
                     }
+                    .padding(30)
+                    .glassCard()
+                    
+                    Spacer()
                 }
-                .padding(30)
-                .glassCard()
                 
-                Spacer()
             }
+            
             
         } else {
             
@@ -243,74 +256,81 @@ struct LightItUpView: View {
                             icon: "timer")
                     }
                     
-                    VStack(spacing: 10) {
+                    
                         StatCard(
                             title: "LEVEL",
                             value: "\(level)",
                             color: .neonPink,
                             icon: "star.fill")
-                    }
                     
                     
-                    LazyVGrid(columns: columns, spacing: 15) {
-                        ForEach(0..<9, id: \.self) {index in
-                            
-                            RoundedRectangle(cornerRadius:16)
-                                .fill(
-                                    activeCell == index ?
-                                    activeColor
-                                    : Color.white.opacity(0.1)
-                                )
-                                .shadow(
-                                    color: activeCell == index ?
-                                    activeColor
-                                    : .clear,
-                                    radius: activeCell == index ? (pulse ? 50 : 10)
-                                    : 0
-                                )
-                                .opacity(activeCell == index ?
-                                         (pulse ? 1.0:0.7):1.0
-                                )
-                                .animation(
-                                    .easeInOut(
-                                        duration: 0.4),
-                                    value: pulse
-                                )
-                                .frame(height: 90)
-                            
-                                .onTapGesture {
-                                    if activeCell == index {
-                                        score += 1
-                                        
-                                        if score > highestScore {
-                                            highestScore = score
-                                            
-                                            UserDefaults.standard.set(
-                                                highestScore,
-                                                forKey: "LightItUpHighestScore"
+                    ZStack{
+                        LazyVGrid(columns: columns, spacing: 15) {
+                            ForEach(0..<9, id: \.self) {index in
+                                
+                                RoundedRectangle(cornerRadius:16)
+                                    .fill(
+                                        activeCell == index ?
+                                        activeColor
+                                        : Color.white.opacity(0.08)
+                                    )
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius:16)
+                                            .stroke(
+                                                activeCell == index ?
+                                                    .white : .clear, lineWidth: 3
                                             )
+                                    )
+                                    .overlay{
+                                        if activeCell == index {
+                                            Image(systemName: "hand.tap.fill")
+                                                .font(.system(size: 28))
+                                                .foregroundColor(.white)
                                         }
-                                        
-                                        showRandomCell()
                                     }
-                                }
+                                    .shadow(
+                                        color: activeCell == index ?
+                                        activeColor
+                                        : .clear,
+                                        radius: activeCell == index ? 25: 0
+                                    )
+                                    .scaleEffect(activeCell == index ? 1.12 : 1.0)
+                                    .rotationEffect(.degrees(activeCell == index ? 3:0)
+                                                    )
+                                        .animation(
+                                            .spring(response: 0.25, dampingFraction: 0.65),
+                                            value: activeCell
+                                        )
+                                
+                                    .frame(width:90, height: 90)
+                                
+                                    .onTapGesture {
+                                        if activeCell == index {
+                                            score += 1
+                                            
+                                            if score > highestScore {
+                                                highestScore = score
+                                                
+                                                UserDefaults.standard.set(
+                                                    highestScore,
+                                                    forKey: "LightItUpHighestScore"
+                                                )
+                                            }
+                                            activeCell = nil
+                                            showRandomCell()
+                                        }
+                                    }
+                            }
                         }
+                        .frame(height: 320)
+                        
                     }
-                    .frame(height: 320)
-                    
-                    Spacer()
                 }
                 .padding()
                 
             }
             
             .onAppear {
-                withAnimation (
-                    .easeInOut(duration: 0.6)
-                    .repeatForever(autoreverses: true)
-                ){
-                    pulse = true
-                }
                 
                 showRandomCell()
                 startCellTimer()
