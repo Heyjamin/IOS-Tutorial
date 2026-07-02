@@ -13,6 +13,22 @@ struct QuizResultView: View {
     
     @Environment(\.dismiss) private var dismiss
     
+    private var message: String {
+        switch score{
+        case 90...:
+            return "🏆 Trivia Master!"
+            
+        case 70...:
+            return "🎉 Excellent!"
+            
+        case 50...:
+            return "🎈 Well Done!"
+            
+        default:
+            return "💪 Keep Practicing!"
+        }
+    }
+    
     var body: some View {
         
         ZStack {
@@ -24,8 +40,9 @@ struct QuizResultView: View {
         .ignoresSafeArea()
         
         VStack (spacing: 30) {
-            Text("🎉")
-                .font(.system(size:80))
+            Text(message)
+                .font(.title3)
+                .foregroundStyle(.yellow)
             
             Text("Quiz Complete")
                 .font(.largeTitle.bold())
@@ -57,6 +74,6 @@ struct QuizResultView: View {
 
 
 #Preview {
-    QuizResultView(score: 82)
+    QuizResultView(score: 60)
 }
 

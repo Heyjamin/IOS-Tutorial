@@ -107,15 +107,61 @@ struct QuizRushView: View {
             
             var quizView: some View {
                 VStack(spacing: 20) {
-                    Text(viewModel.progressText)
-                        .font(.headline)
-                        .foregroundStyle(.white)
+                    VStack{
+                        ProgressView(
+                            value: Double(viewModel.currentIndex + 1),
+                            total: Double(viewModel.questions.count)
+                        )
+                    }
+                    .padding()
                     
-                    Text("Score: \(viewModel.score)")
-                        .foregroundStyle(.green)
-                    
-                    Text("🔥 Streak: \(viewModel.streak)")
-                        .foregroundStyle(.orange)
+                    HStack(spacing:15){
+                        VStack{
+                            Text("QUESTION")
+                                .font(.caption)
+                                .foregroundStyle(.gray)
+                            
+                            .tint(.cyan)
+                            .padding(.bottom)
+                            
+                            Text(viewModel.progressText)
+                                .font(.headline)
+                                .foregroundStyle(.white)
+                        }
+                        
+                        Spacer()
+                        
+                        VStack{
+                            Text("SCORE")
+                                .font(.caption)
+                                .foregroundStyle(.gray)
+                            
+                            Text("\(viewModel.score)")
+                                .font(.headline)
+                                .foregroundStyle(.green)
+                        }
+                        
+                        Spacer()
+                        
+                        VStack{
+                            Text("STREAK")
+                                .font(.caption)
+                                .foregroundStyle(.gray)
+                            
+                            Text("🔥 Streak:\(viewModel.streak)")
+                                .font(.headline)
+                                .foregroundStyle(.orange)
+                        }
+                    }.glassCard()
+//                    Text(viewModel.progressText)
+//                        .font(.headline)
+//                        .foregroundStyle(.white)
+//                    
+//                    Text("Score: \(viewModel.score)")
+//                        .foregroundStyle(.green)
+//                    
+//                    Text("🔥 Streak: \(viewModel.streak)")
+//                        .foregroundStyle(.orange)
                     
                     Spacer()
                     
@@ -123,7 +169,7 @@ struct QuizRushView: View {
                         
                         VStack{
                             
-                            Text(question.question)
+                            Text(question.question.htmlDecoded)
                                 .foregroundStyle(.white)
                                 .multilineTextAlignment(.center)
                                 
@@ -135,7 +181,14 @@ struct QuizRushView: View {
                             ForEach(question.allAnswers, id: \.self) {
                                 answer in
                                 
-                                AnswerButton(title:answer){
+                                AnswerButton(
+                                    title:answer,
+                                    isSelected: viewModel.selectedAnswer == answer,
+                                    isCorrect: viewModel.answerIsCorrect
+                                
+                                ){
+                                    guard viewModel.selectedAnswer == nil else { return }
+                                    
                                     viewModel.selectAnswer(answer)
                                 }
                             }
@@ -148,3 +201,6 @@ struct QuizRushView: View {
         }
     
 
+#Preview {
+    QuizRushView()
+}

@@ -32,6 +32,9 @@ class QuizRushViewModel: ObservableObject {
     
     @Published var gameOver = false
     
+    @Published var selectedAnswer: String?
+    @Published var answerIsCorrect: Bool?
+    
     private let service = TriviaService()
     
    func loadQuestions() async {
@@ -66,7 +69,10 @@ class QuizRushViewModel: ObservableObject {
     func selectAnswer(_ answer: String) {
         guard let question = currentQuestion else { return }
         
-        if answer == question.correct_answer {
+        selectedAnswer = answer
+        answerIsCorrect = (answer == question.correct_answer)
+        
+        if answerIsCorrect == true {
             streak += 1
             score += 10 + (streak * 2)
         }else{
@@ -74,13 +80,21 @@ class QuizRushViewModel: ObservableObject {
             score = max(score - 5, 0)
         }
         
-        nextQuestion()
+        Task{
+            try? await Task.sleep(for: .milliseconds(800))
+            
+            selectedAnswer = nil
+            answerIsCorrect = nil
+            
+            nextQuestion()
+        }
     }
     
     private func nextQuestion() {
         if currentIndex < questions.count - 1 {
             currentIndex += 1
         }else{
+            LeaderboardManager.shared.addScore(playerName:PlayerManager.shared.currentPlayer, score: score, gameName: "Quiz Rush")
             gameOver = true
         }
     }

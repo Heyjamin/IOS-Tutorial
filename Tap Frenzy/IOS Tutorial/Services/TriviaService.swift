@@ -18,10 +18,16 @@ struct TriviaService {
         
         let (data, _) = try await URLSession.shared.data(from:url)
         
-        let response = try JSONDecoder().decode(
-            TriviaResponse.self,
-            from: data
-        )
-        return response.results
+        print(String(data:data, encoding: .utf8) ?? "No JSON")
+        do{
+            let response = try JSONDecoder().decode(
+                TriviaResponse.self,
+                from: data
+            )
+            return response.results
+        }catch{
+            print("Decoding Eror:", error)
+            throw error
+        }
     }
 }

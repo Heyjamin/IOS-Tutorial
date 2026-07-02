@@ -8,19 +8,37 @@
 import SwiftUI
 
 struct AnswerButton: View {
+    
     let title:String
+    
+    let isSelected: Bool
+    
+    let isCorrect: Bool?
+    
     let action: () -> Void
     
+    private var background: Color {
+        guard isSelected else {
+            return Color.white.opacity(0.08)
+        }
+        
+        return isCorrect == true ? .green : .red
+    }
+    
     var body: some View {
+        
         Button(action: action) {
-            Text(title)
+            
+            Text(title.htmlDecoded)
                 .font(.headline)
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
-                .frame(maxWidth:.infinity, minHeight: 60)
-                .padding(.horizontal)
+                .frame(maxWidth:.infinity)
+                .padding()
         }
-        .glassCard()
+        .background(background)
+        .clipShape(RoundedRectangle(cornerRadius: 18))
+        .animation(.easeInOut(duration: 0.25),value: background)
     }
 }
 
@@ -28,7 +46,10 @@ struct AnswerButton: View {
     ZStack{
         Color.black.ignoresSafeArea()
         
-        AnswerButton(title: "Tim Berners-Lee") {
+        AnswerButton(
+            title: "Tim Berners-Lee",
+            isSelected: true,
+            isCorrect: true) {
             
         }
         .padding()
