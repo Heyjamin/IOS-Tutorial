@@ -12,12 +12,34 @@ struct ArenaView: View {
     @AppStorage("currentPlayer")
     private var playerName = ""
     
-    @State private var goTapFrenzy = false
-    @State private var goLightItUp = false
+    @State private var selectedGame: GameDestination?
     
     @State private var showLeaderboard = false
     
-    
+    private let games = [
+        GameInfo(
+            title: "Tap Frenzy",
+            subtitle: "Speed Challenge",
+            icon: "bolt.fill",
+            colorName: "yellow",
+            destination: .tapFrenzy
+        ),
+        GameInfo(
+            title: "Light It Up",
+            subtitle: "Memory Game",
+            icon: "square.grid.3x3.fill",
+            colorName: "blue",
+            destination: .lightItUp
+        ),
+        GameInfo(
+            title: "Quiz Rush",
+            subtitle: "Live Trivia",
+            icon: "questionmark.circle.fill",
+            colorName: "purple",
+            destination: .quizRush
+        )
+        
+    ]
     
     var body: some View {
         NavigationStack {
@@ -64,57 +86,17 @@ struct ArenaView: View {
                             .frame(height: 140)
                         
                         LazyVGrid(
-                            columns: [
-                                GridItem(.flexible()),
-                                GridItem(.flexible())
-                            ],
+                            columns: Array(repeating: GridItem(.flexible()),count:3),
                             spacing: 16
                         ){
-                            Button{
-                                goTapFrenzy = true
-                            } label: {
-                                VStack(spacing:10){
-                                    Image(systemName:"bolt.fill")
-                                        .font(.system(size:30))
-                                        .foregroundColor(.yellow)
-                                    
-                                    Text("Tap Frenzy")
-                                        .font(.headline)
-                                        .foregroundColor(.white)
+                            ForEach(games){ game in
+                                GameCard(game: game){
+                                    selectedGame = game.destination
                                 }
-                                .frame(maxWidth: .infinity)
-                                .frame(height:120)
-                                .glassCard()
                             }
-                            .navigationDestination(
-                                isPresented: $goTapFrenzy,){
-                                    TapFrenzyView()
-                                }
                             
-                            Button {
-                                goLightItUp = true
-                            }label: {
-                                VStack(spacing:10){
-                                    Image(systemName:"square.grid.3x3.fill")
-                                        .font(.system(size:30))
-                                        .foregroundColor(.neonBlue)
-                                    
-                                    Text("Light It Up")
-                                        .font(.headline)
-                                        .foregroundColor(.white)
-                                }
-                                .frame(maxWidth: .infinity)
-                                .frame(height:120)
-                                .glassCard()
-                            }.navigationDestination(
-                                isPresented: $goLightItUp,){
-                                    LightItUpView()
-                                }
                         }
-                        
-                        
-                        
-                        
+
                         Spacer()
                         
                         
@@ -155,6 +137,19 @@ struct ArenaView: View {
                     
                     .padding()
                     
+                }
+                .navigationDestination(item: $selectedGame){ destination in
+                    
+                    switch destination{
+                    case .tapFrenzy:
+                        TapFrenzyView()
+                        
+                    case .lightItUp:
+                        LightItUpView()
+                        
+                    case .quizRush:
+                        QuizRushView()
+                    }
                 }
                 .sheet(isPresented: $showLeaderboard){
                     NavigationStack{

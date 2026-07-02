@@ -11,6 +11,8 @@ struct QuizRushView: View {
     
     @StateObject var viewModel = QuizRushViewModel()
     
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         
         ZStack {
@@ -25,7 +27,18 @@ struct QuizRushView: View {
             content
             
         }
-        .navigationBarBackButtonHidden(true)
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar{
+            ToolbarItem(placement: .topBarLeading){
+                Button{
+                    dismiss()
+                }label:{
+                    Label("Arcade", systemImage:"chevron.left")
+                        .foregroundStyle(.white)
+                }
+            }
+        }
         .task {
             await viewModel.loadQuestions()
         }
@@ -109,52 +122,50 @@ struct QuizRushView: View {
             
             var quizView: some View {
                 VStack(spacing: 20) {
+                    
+                    Text("🧠 QUIZ RUSH")
+                        .font(.system(size:32,weight: .black))
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [.neonBlue, .neonPurple],
+                                startPoint: .leading,
+                                endPoint: .trailing)
+                        )
+                    
                     VStack{
                         ProgressView(
                             value: Double(viewModel.currentIndex + 1),
                             total: Double(viewModel.questions.count)
                         )
+                        .tint(.neonBlue)
+                        .scaleEffect(y:2)
+                        .padding(.horizontal)
                     }
                     .padding()
                     
-                    HStack(spacing:15){
-                        VStack{
-                            Text("QUESTION")
-                                .font(.caption)
-                                .foregroundStyle(.gray)
-                            
-                            .tint(.cyan)
-                            .padding(.bottom)
-                            
-                            Text(viewModel.progressText)
-                                .font(.headline)
-                                .foregroundStyle(.white)
-                        }
+                    HStack{
+                        StatCard(
+                                title: "QUESTION",
+                                value: "\(viewModel.currentIndex + 1) /\(viewModel.questions.count)",
+                                color:.cyan,
+                                icon: "list.number"
+                           )
                         
-                        Spacer()
+                        StatCard(
+                            title:"SCORE",
+                            value:"\(viewModel.score)",
+                            color: .green,
+                            icon: "star.fill"
+                        )
                         
-                        VStack{
-                            Text("SCORE")
-                                .font(.caption)
-                                .foregroundStyle(.gray)
-                            
-                            Text("\(viewModel.score)")
-                                .font(.headline)
-                                .foregroundStyle(.green)
-                        }
-                        
-                        Spacer()
-                        
-                        VStack{
-                            Text("STREAK")
-                                .font(.caption)
-                                .foregroundStyle(.gray)
-                            
-                            Text("🔥 Streak:\(viewModel.streak)")
-                                .font(.headline)
-                                .foregroundStyle(.orange)
-                        }
-                    }.glassCard()
+                        StatCard(
+                            title: "STREAK",
+                            value:"\(viewModel.streak)",
+                            color: .orange,
+                            icon:"flame.fill"
+                        )
+                    }
+                    
 //                    Text(viewModel.progressText)
 //                        .font(.headline)
 //                        .foregroundStyle(.white)
@@ -167,17 +178,27 @@ struct QuizRushView: View {
                     
                     Spacer()
                     
+                    
                     if let question = viewModel.currentQuestion {
                         
-                        VStack{
+                        VStack (spacing:15){
+                            
+                            Image(systemName:"brain.head.profile.fill")
+                                .font(.system(size: 42))
+                                .foregroundStyle(Color.neonPurple)
                             
                             Text(question.question.htmlDecoded)
+                                .font(.title3.bold())
                                 .foregroundStyle(.white)
                                 .multilineTextAlignment(.center)
                                 
                         }
+                        .frame(maxWidth: .infinity)
+                        .frame(minHeight:170)
                         .padding()
                         .glassCard()
+                        
+                        
                         
                         VStack(spacing:15){
                             ForEach(question.allAnswers, id: \.self) {
@@ -193,6 +214,7 @@ struct QuizRushView: View {
                                     
                                     viewModel.selectAnswer(answer)
                                 }
+                              
                             }
                         }
                     }
@@ -201,6 +223,7 @@ struct QuizRushView: View {
                 .padding()
             }
         }
+
 
 #Preview {
     QuizRushView()

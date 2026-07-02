@@ -8,27 +8,62 @@
 import SwiftUI
 
 struct GameCard: View {
-    let title: String
-    let icon: String
-    let description: String
+    let game: GameInfo
+    let action: () -> Void
     
     var body: some View {
-        VStack(spacing:12){
-            Image(systemName: icon)
-                .font(.largeTitle)
-                .foregroundColor(.neonBlue)
-            
-            Text(title)
-                .font(.title3)
-                .fontWeight(.black)
-                .foregroundStyle(.white)
-            
-            Text(description)
-                .foregroundColor(.gray)
+        Button(action:action){
+            VStack(spacing:12){
+                Image(systemName: game.icon)
+                    .font(.system(size:30))
+                    .foregroundStyle(color)
+                
+                Text(game.title)
+                    .font(.headline)
+                    .foregroundStyle(.white)
+                
+                Text(game.subtitle)
+                    .font(.caption2)
+                    .foregroundStyle(.gray)
+                    .multilineTextAlignment(.center)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height:120)
+            .glassCard()
         }
-        .frame(maxWidth:.infinity)
-        .padding()
-        .glassCard()
+    }
+    
+    private var color: Color{
+        switch game.colorName{
+        case "yellow":
+            return .yellow
+            
+        case "blue":
+            return .neonBlue
+            
+        case "purple":
+            return .neonPurple
+            
+        case "green":
+            return .green
+            
+        default:
+            return .white
+            
+        }
+    }
+}
+
+#Preview {
+    ZStack{
+        Color.black.ignoresSafeArea()
         
+        GameCard(
+            game: GameInfo(title: "Quiz Rush", subtitle: "Live Trivia", icon: "questionmark.circle.fill", colorName: "purple", destination: .quizRush
+            )
+        ){
+            
+        }
+        .padding()
     }
 }

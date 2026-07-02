@@ -36,6 +36,14 @@ struct AnswerButton: View {
                 .multilineTextAlignment(.center)
                 .frame(maxWidth:.infinity)
                 .padding()
+                .frame(height: 60)
+                .shadow(
+                    color: isSelected
+                    ? (isCorrect == true ? .green : .red)
+                    : .clear,
+                    radius: 15
+                )
+            
         }
         .background(RoundedRectangle(cornerRadius: 18).fill(backgroundColor)
         )
