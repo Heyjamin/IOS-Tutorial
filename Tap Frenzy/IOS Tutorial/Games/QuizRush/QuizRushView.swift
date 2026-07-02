@@ -30,7 +30,9 @@ struct QuizRushView: View {
             await viewModel.loadQuestions()
         }
         .fullScreenCover(isPresented: $viewModel.gameOver) {
-            QuizResultView(score: viewModel.score)
+            QuizResultView(score: viewModel.score){
+                viewModel.resetGame()
+            }
         }
         
     }
@@ -199,7 +201,6 @@ struct QuizRushView: View {
                 .padding()
             }
         }
-    
 
 #Preview {
     QuizRushView()

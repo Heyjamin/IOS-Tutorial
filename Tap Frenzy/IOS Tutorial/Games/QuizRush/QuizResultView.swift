@@ -7,11 +7,11 @@
 
 import SwiftUI
 
+
 struct QuizResultView: View {
     
     let score: Int
-    
-    @Environment(\.dismiss) private var dismiss
+    let onPlayAgain: () -> Void
     
     private var message: String {
         switch score{
@@ -36,44 +36,48 @@ struct QuizResultView: View {
                 colors: [.bgTop, .black,.bgBottom],
                 startPoint: .top,
                 endPoint: .bottom
-        )
-        .ignoresSafeArea()
-        
-        VStack (spacing: 30) {
-            Text(message)
-                .font(.title3)
-                .foregroundStyle(.yellow)
+            )
+            .ignoresSafeArea()
             
-            Text("Quiz Complete")
-                .font(.largeTitle.bold())
-                .foregroundStyle(.white)
-            
-            Text("Final Score")
-                .foregroundStyle(.gray)
-            
-            Text("\(score)")
-                .font(.system(size:60, weight: .bold))
-                .foregroundStyle(.green)
-            
-            Button {
-                dismiss()
-            } label: {
-                Text("Back to Arcade")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity)
-                    .padding()
+            VStack (spacing: 30) {
+                Text(message)
+                    .font(.title3)
+                    .foregroundStyle(.yellow)
+                
+                Text("Quiz Complete")
+                    .font(.largeTitle.bold())
+                    .foregroundStyle(.white)
+                
+                Text("Final Score")
+                    .foregroundStyle(.gray)
+                
+                Text("\(score)")
+                    .font(.system(size:60, weight: .bold))
+                    .foregroundStyle(.green)
+                
+                Button{
+                    onPlayAgain()
+                } label: {
+                    Text("Play Again")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                }
+                .glassCard()
             }
-            .glassCard()
+            
+            .padding()
+            
         }
         
-        .padding()
     }
-
-}
+    
 }
 
 
 #Preview {
-    QuizResultView(score: 60)
+    QuizResultView(score: 60){
+        print("Play Again")
+    }
 }
 

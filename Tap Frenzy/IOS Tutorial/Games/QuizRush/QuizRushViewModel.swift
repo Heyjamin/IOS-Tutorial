@@ -47,10 +47,12 @@ class QuizRushViewModel: ObservableObject {
            score = 0
            streak = 0
            gameOver = false
-           
+           selectedAnswer = nil
+           answerIsCorrect = nil
            
            state = .loaded
        }catch{
+           print(error)
            state = .failed(error.localizedDescription)
        }
     }
@@ -87,6 +89,16 @@ class QuizRushViewModel: ObservableObject {
             answerIsCorrect = nil
             
             nextQuestion()
+        }
+    }
+    
+    func resetGame() {
+        gameOver = false
+        selectedAnswer = nil
+        answerIsCorrect = nil
+        
+        Task{
+            await loadQuestions()
         }
     }
     

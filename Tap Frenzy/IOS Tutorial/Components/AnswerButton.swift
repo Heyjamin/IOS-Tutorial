@@ -17,7 +17,8 @@ struct AnswerButton: View {
     
     let action: () -> Void
     
-    private var background: Color {
+    private var backgroundColor: Color {
+        
         guard isSelected else {
             return Color.white.opacity(0.08)
         }
@@ -31,14 +32,17 @@ struct AnswerButton: View {
             
             Text(title.htmlDecoded)
                 .font(.headline)
-                .foregroundColor(.white)
+                .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth:.infinity)
                 .padding()
         }
-        .background(background)
-        .clipShape(RoundedRectangle(cornerRadius: 18))
-        .animation(.easeInOut(duration: 0.25),value: background)
+        .background(RoundedRectangle(cornerRadius: 18).fill(backgroundColor)
+        )
+        .overlay(RoundedRectangle(cornerRadius: 18).stroke(Color.white.opacity(0.2), lineWidth: 1)
+        )
+        .animation(.easeInOut(duration:0.25), value:backgroundColor)
+
     }
 }
 

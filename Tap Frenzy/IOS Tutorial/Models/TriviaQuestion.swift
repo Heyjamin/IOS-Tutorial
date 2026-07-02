@@ -5,6 +5,7 @@ extension String{
         self
             .replacingOccurrences(of: "&amp;", with: "&")
             .replacingOccurrences(of: "&quot;", with: "\"")
+            .replacingOccurrences(of: "&#039;", with: "'")
             .replacingOccurrences(of: "&#39;", with: "'")
             .replacingOccurrences(of: "&lt;", with: "<")
             .replacingOccurrences(of: "&gt;", with: ">")
