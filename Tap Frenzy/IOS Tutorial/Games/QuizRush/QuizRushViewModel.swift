@@ -35,6 +35,10 @@ class QuizRushViewModel: ObservableObject {
     @Published var selectedAnswer: String?
     @Published var answerIsCorrect: Bool?
     
+    @Published var correctAnswer: String?
+    
+    @Published var isAnswerLocked = false
+    
     private let service = TriviaService()
     
    func loadQuestions() async {
@@ -49,6 +53,7 @@ class QuizRushViewModel: ObservableObject {
            gameOver = false
            selectedAnswer = nil
            answerIsCorrect = nil
+           isAnswerLocked = false
            
            state = .loaded
        }catch{
@@ -69,9 +74,15 @@ class QuizRushViewModel: ObservableObject {
     }
     
     func selectAnswer(_ answer: String) {
+        
+        guard !isAnswerLocked else { return }
+        
         guard let question = currentQuestion else { return }
         
+        isAnswerLocked = true
+        
         selectedAnswer = answer
+        correctAnswer = question.correct_answer
         answerIsCorrect = (answer == question.correct_answer)
         
         if answerIsCorrect == true {
@@ -83,10 +94,15 @@ class QuizRushViewModel: ObservableObject {
         }
         
         Task{
-            try? await Task.sleep(for: .milliseconds(800))
+            let delay: Duration = answerIsCorrect == true
+            ? .seconds(1.2)
+            : .seconds(2.5)
+            try? await Task.sleep(for: delay)
             
             selectedAnswer = nil
             answerIsCorrect = nil
+            isAnswerLocked = false
+            correctAnswer = nil
             
             nextQuestion()
         }
@@ -96,6 +112,7 @@ class QuizRushViewModel: ObservableObject {
         gameOver = false
         selectedAnswer = nil
         answerIsCorrect = nil
+        isAnswerLocked = false
         
         Task{
             await loadQuestions()

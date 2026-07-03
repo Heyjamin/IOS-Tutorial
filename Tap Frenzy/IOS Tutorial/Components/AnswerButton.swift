@@ -15,15 +15,24 @@ struct AnswerButton: View {
     
     let isCorrect: Bool?
     
+    let correctAnswer: String?
+    
     let action: () -> Void
     
+   
+    
     private var backgroundColor: Color {
-        
-        guard isSelected else {
-            return Color.white.opacity(0.08)
+        if let correctAnswer{
+            if title == correctAnswer {
+                return .green
+            }
+            
+            if isSelected{
+                return isCorrect == true ? .green : .red
+            }
+            
         }
-        
-        return isCorrect == true ? .green : .red
+        return .white.opacity(0.08)
     }
     
     var body: some View {
@@ -61,7 +70,9 @@ struct AnswerButton: View {
         AnswerButton(
             title: "Tim Berners-Lee",
             isSelected: true,
-            isCorrect: true) {
+            isCorrect: true,
+            correctAnswer: nil,
+        ) {
             
         }
         .padding()

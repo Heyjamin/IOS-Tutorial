@@ -13,13 +13,15 @@ class PlayerManager {
     
     private init() {}
     
+    private let key = "currentPlayer"
+    
     var currentPlayer: String {
         
-        UserDefaults.standard.string(forKey: "CurrentPlayer") ?? ""
+        UserDefaults.standard.string(forKey: key) ?? ""
     }
     
     func savePlayer(_ name: String) {
-        UserDefaults.standard.set(name, forKey: "CurrentPlayer")
+        UserDefaults.standard.set(name, forKey: key)
         
     }
 }

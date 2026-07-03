@@ -13,6 +13,7 @@ struct QuizRushView: View {
     
     @Environment(\.dismiss) private var dismiss
     
+    
     var body: some View {
         
         ZStack {
@@ -26,18 +27,6 @@ struct QuizRushView: View {
             
             content
             
-        }
-        .navigationTitle("")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar{
-            ToolbarItem(placement: .topBarLeading){
-                Button{
-                    dismiss()
-                }label:{
-                    Label("Arcade", systemImage:"chevron.left")
-                        .foregroundStyle(.white)
-                }
-            }
         }
         .task {
             await viewModel.loadQuestions()
@@ -118,111 +107,139 @@ struct QuizRushView: View {
             }
         }
         
-        private extension QuizRushView {
+private extension QuizRushView {
+    
+    private func questionCard(_ question: TriviaQuestion) -> some View {
+        VStack(spacing: 20) {
+            Image(systemName: "brain.head.profile.fill")
+                .font(.system(size:42))
+                .foregroundColor(.neonPurple)
             
-            var quizView: some View {
-                VStack(spacing: 20) {
-                    
-                    Text("🧠 QUIZ RUSH")
-                        .font(.system(size:32,weight: .black))
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [.neonBlue, .neonPurple],
-                                startPoint: .leading,
-                                endPoint: .trailing)
-                        )
-                    
-                    VStack{
-                        ProgressView(
-                            value: Double(viewModel.currentIndex + 1),
-                            total: Double(viewModel.questions.count)
-                        )
-                        .tint(.neonBlue)
-                        .scaleEffect(y:2)
-                        .padding(.horizontal)
-                    }
-                    .padding()
-                    
-                    HStack{
-                        StatCard(
-                                title: "QUESTION",
-                                value: "\(viewModel.currentIndex + 1) /\(viewModel.questions.count)",
-                                color:.cyan,
-                                icon: "list.number"
-                           )
-                        
-                        StatCard(
-                            title:"SCORE",
-                            value:"\(viewModel.score)",
-                            color: .green,
-                            icon: "star.fill"
-                        )
-                        
-                        StatCard(
-                            title: "STREAK",
-                            value:"\(viewModel.streak)",
-                            color: .orange,
-                            icon:"flame.fill"
-                        )
-                    }
-                    
-//                    Text(viewModel.progressText)
-//                        .font(.headline)
-//                        .foregroundStyle(.white)
-//                    
-//                    Text("Score: \(viewModel.score)")
-//                        .foregroundStyle(.green)
-//                    
-//                    Text("🔥 Streak: \(viewModel.streak)")
-//                        .foregroundStyle(.orange)
-                    
-                    Spacer()
-                    
-                    
-                    if let question = viewModel.currentQuestion {
-                        
-                        VStack (spacing:15){
-                            
-                            Image(systemName:"brain.head.profile.fill")
-                                .font(.system(size: 42))
-                                .foregroundStyle(Color.neonPurple)
-                            
-                            Text(question.question.htmlDecoded)
-                                .font(.title3.bold())
-                                .foregroundStyle(.white)
-                                .multilineTextAlignment(.center)
-                                
-                        }
-                        .frame(maxWidth: .infinity)
-                        .frame(minHeight:170)
-                        .padding()
-                        .glassCard()
-                        
-                        
-                        
-                        VStack(spacing:15){
-                            ForEach(question.allAnswers, id: \.self) {
-                                answer in
-                                
-                                AnswerButton(
-                                    title:answer,
-                                    isSelected: viewModel.selectedAnswer == answer,
-                                    isCorrect: viewModel.answerIsCorrect
-                                
-                                ){
-                                    guard viewModel.selectedAnswer == nil else { return }
-                                    
-                                    viewModel.selectAnswer(answer)
-                                }
-                              
-                            }
-                        }
-                    }
-                    Spacer()
+            Text(question.question.htmlDecoded)
+                .font(.title3.bold())
+                .foregroundStyle(.white)
+                .multilineTextAlignment(.center)
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(minHeight: 170)
+        .padding(.vertical,10)
+        .glassCard()
+    }
+        
+    private func answerList(_ question: TriviaQuestion) -> some View {
+        VStack(spacing:15){
+            ForEach(question.allAnswers, id: \.self) { answer in
+                AnswerButton(
+                    title: answer,
+                    isSelected: viewModel.selectedAnswer == answer,
+                    isCorrect: viewModel.answerIsCorrect,
+                    correctAnswer: viewModel.correctAnswer
+                )
+                {
+                    viewModel.selectAnswer(answer)
                 }
-                .padding()
+                .disabled(viewModel.isAnswerLocked)
             }
         }
+    }
+    
+    
+    var quizView: some View {
+        VStack(spacing: 10) {
+            
+            // Header
+                Text("🧠 QUIZ RUSH")
+                    .font(.system(size:30,weight: .black))
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [.neonBlue, .neonPurple],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                Spacer()
+                
+                Color.clear
+                    .frame(width: 30)
+            
+            // Progress
+            ProgressView(
+                value: Double(viewModel.currentIndex + 1),
+                total: Double(viewModel.questions.count)
+            )
+            .tint(.neonBlue)
+            .scaleEffect(y:2)
+            .padding(.horizontal)
+            
+            // Status
+            HStack{
+                StatCard(
+                    title: "QUESTION",
+                    value: "\(viewModel.currentIndex + 1) /\(viewModel.questions.count)",
+                    color:.cyan,
+                    icon: "list.number"
+                )
+                
+                StatCard(
+                    title:"SCORE",
+                    value:"\(viewModel.score)",
+                    color: .green,
+                    icon: "star.fill"
+                )
+                
+                StatCard(
+                    title: "STREAK",
+                    value:"\(viewModel.streak)",
+                    color: .orange,
+                    icon:"flame.fill"
+                )
+            }
+            
+            //                    Text(viewModel.progressText)
+            //                        .font(.headline)
+            //                        .foregroundStyle(.white)
+            //
+            //                    Text("Score: \(viewModel.score)")
+            //                        .foregroundStyle(.green)
+            //
+            //                    Text("🔥 Streak: \(viewModel.streak)")
+            //                        .foregroundStyle(.orange)
+            
+            Spacer(minLength: 10)
+            
+            // Question
+            if let question = viewModel.currentQuestion {
+                
+                VStack (spacing:20){
+                    questionCard(question)
+                    
+                    // Feedback after selecting an answer
+                    if let isCorrect = viewModel.answerIsCorrect {
+                        if isCorrect {
+                            Text("✅ Correct!")
+                                .font(.headline.bold())
+                                .foregroundStyle(.green)
+                        }else{
+                            Text("✅ Correct Answer: \(viewModel.correctAnswer ?? "")")
+                                .font(.headline.bold())
+                                .foregroundStyle(.green)
+                                .multilineTextAlignment(.center)
+                        }
+                    }
+                    
+                    answerList(question)
+                }
+                .id(viewModel.currentIndex)
+                .transition(.opacity)
+                .animation(.easeInOut(duration:0.25), value: viewModel.currentIndex)
+            }
+            Spacer()
+        }
+        .padding()
+    }
+}
+
 
 
 #Preview {

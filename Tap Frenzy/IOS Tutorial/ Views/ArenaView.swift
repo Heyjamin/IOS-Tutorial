@@ -127,6 +127,7 @@ struct ArenaView: View {
                         
                         Button{
                             playerName = ""
+                            PlayerManager.shared.savePlayer("")
                         } label:{
                             Label("Change Player",
                                   systemImage: "person.crop.circle.badge.xmark")

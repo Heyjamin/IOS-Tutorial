@@ -23,6 +23,7 @@ struct PlayerRegistrationView : View {
         guard !trimmed.isEmpty else { return }
         
         savedPlayerName = trimmed
+        PlayerManager.shared.savePlayer(trimmed)
     }
     
     
