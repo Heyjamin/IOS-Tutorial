@@ -16,6 +16,10 @@ struct ArenaView: View {
     
     @State private var showLeaderboard = false
     
+    @State private var animateBackground = false
+    
+    @State private var animateGlow = false
+    
     private let games = [
         GameInfo(
             title: "Tap Frenzy",
@@ -46,15 +50,78 @@ struct ArenaView: View {
             
             
             ZStack {
+//                LinearGradient(
+//                    colors:[.bgTop,
+//                            .black,
+//                            .bgBottom],
+//                    startPoint: .topLeading,
+//                    endPoint: .bottomTrailing
+//                    
+//                )
+//                .ignoresSafeArea()
                 LinearGradient(
-                    colors:[.bgTop,
-                            .black,
-                            .bgBottom],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                    
+                    colors: [
+                        .bgTop,
+                        .black,
+                        .bgBottom,
+                        .neonBlue.opacity(0.35),
+                        .neonPurple.opacity(0.30),
+                    ],
+                    startPoint: animateBackground ? .topLeading : .bottomTrailing,
+                    endPoint: animateBackground ? .bottomTrailing : .topLeading
+                    )
+                .animation(
+                    .easeInOut(duration: 10)
+                    .repeatForever(autoreverses: true),
+                    value: animateBackground
                 )
                 .ignoresSafeArea()
+                
+                // Large Blue Glow
+                Circle()
+                    .fill(Color.neonBlue.opacity(0.25))
+                    .frame(width:350)
+                    .blur(radius:100)
+                    .offset(
+                        x: animateGlow ? -170:170,
+                        y: animateGlow ? -250:250
+                    )
+                    .animation(
+                        .easeInOut(duration: 9)
+                        .repeatForever(autoreverses: true),
+                        value: animateGlow
+                    )
+                
+                // Purple Glow
+                Circle()
+                    .fill(Color.neonPurple.opacity(0.25))
+                    .frame(width:280)
+                    .blur(radius:90)
+                    .offset(
+                        x: animateGlow ? 180:-180,
+                        y: animateGlow ? 220:-220
+                )
+                    .animation(
+                        .easeInOut(duration: 12)
+                        .repeatForever(autoreverses: true),
+                        value: animateGlow
+                        )
+                
+                // Pink Glow
+                Circle()
+                    .fill(Color.neonPurple.opacity(0.18))
+                    .frame(width:220)
+                    .blur(radius:80)
+                    .offset(
+                        x: animateGlow ? 120:-120,
+                        y: animateGlow ? -150:150
+                )
+                    .animation(
+                        .easeInOut(duration: 15)
+                        .repeatForever(autoreverses: true),
+                        value: animateGlow
+                        )
+                
                 ScrollView {
                     
                     VStack(spacing:20) {
@@ -64,10 +131,11 @@ struct ArenaView: View {
                                 LinearGradient(
                                     colors: [.neonBlue,
                                              .neonPurple,
-                                             .neonPink
+                                             .neonPink,
+                                             .neonBlue
                                     ],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
+                                    startPoint: animateBackground ? .leading: .trailing,
+                                    endPoint: animateBackground ? .trailing : .leading
                                 )
                             )
                         
