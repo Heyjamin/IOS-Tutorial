@@ -30,13 +30,7 @@ struct PlayerRegistrationView : View {
     var body: some View {
         NavigationStack{
             ZStack {
-                LinearGradient(
-                    colors: [Color.bgTop,
-                             Color.black,
-                             Color.bgBottom],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing)
-                .ignoresSafeArea()
+                NeonAnimatedBackground(style: .menu)
                 
                 VStack(spacing:25){
                     Text("⚡ NEON ARCADE ⚡")
@@ -80,8 +74,8 @@ struct PlayerRegistrationView : View {
                     
                     
                     Button {
+                        AudioManager.shared.playSFX(.button)
                         savePlayer()
-                        
                         goArena = true
                     } label: {
                         Text("SAVE PLAYER")
@@ -105,7 +99,7 @@ struct PlayerRegistrationView : View {
                     .navigationDestination(
                         isPresented: $goArena,
                     ){
-                        ArenaView()
+                        MainTabView()
                     }
                     
                     if !savedPlayerName.isEmpty {
@@ -126,8 +120,11 @@ struct PlayerRegistrationView : View {
                 }
                 .padding()
             }
+            .onAppear {
+                AudioManager.shared.configureSesion()
+                AudioManager.shared.playerMusic(.menu)
+            }
         }
-        
     }
 }
 
