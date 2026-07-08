@@ -57,7 +57,7 @@ enum Leveelworld: Int, CaseIterable {
     
     static func forLevel(_ level: Int) -> Leveelworld {
         let index = ((level-1) % Leveelworld.allCases.count) + 1
-        return Leveelworld(rawValue:inex) ?? .meadow
+        return Leveelworld(rawValue:index) ?? .meadow
     }
     
 }

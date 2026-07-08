@@ -17,48 +17,55 @@ struct AnswerButton: View {
     
     let correctAnswer: String?
     
+    var compact:Bool = false
+    
     let action: () -> Void
     
-   
+   private var decodedTitle: String {
+        title.htmlDecoded
+    }
     
     private var backgroundColor: Color {
         if let correctAnswer{
-            if title == correctAnswer {
+            let decodedCorrect = correctAnswer.htmlDecoded
+            if decodedTitle == decodedCorrect {
                 return .green
             }
-            
-            if isSelected{
+            if isSelected {
                 return isCorrect == true ? .green : .red
             }
-            
         }
         return .white.opacity(0.08)
     }
     
     var body: some View {
         
-        Button(action: action) {
+        Button(action:{
+            AudioManager.shared.playSFX(.button)
+            action()
+        }){
             
-            Text(title.htmlDecoded)
-                .font(.headline)
+            Text(title.decodedTitle)
+                .font(compact ? .subheadline.weight(.medium) : .headline)
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
+                .lineLimit(compact ? 4 : 3)
+                .minimumScaleFactor(0.85)
                 .frame(maxWidth:.infinity)
-                .padding()
-                .frame(height: 60)
-                .shadow(
-                    color: isSelected
-                    ? (isCorrect == true ? .green : .red)
-                    : .clear,
-                    radius: 15
+                .padding(.horizontal, 12)
+                .padding(.vertical, compact ? 10 :14)
+                .frame(minHeight: compact ? 44 : 56)
+                .background(
+                    RiundedRectangle(cornerRadius: 16, style: .continuous)
+                        .fill(backgroundColor)
+                        
+                    )
+                .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .stroke(Color.white.opacity(0.2), lineWidth:1)
                 )
             
         }
-        .background(RoundedRectangle(cornerRadius: 18).fill(backgroundColor)
-        )
-        .overlay(RoundedRectangle(cornerRadius: 18).stroke(Color.white.opacity(0.2), lineWidth: 1)
-        )
-        .animation(.easeInOut(duration:0.25), value:backgroundColor)
+        .buttonStyle(.plain)
 
     }
 }
@@ -66,14 +73,14 @@ struct AnswerButton: View {
 #Preview{
     ZStack{
         Color.black.ignoresSafeArea()
-        
-        AnswerButton(
-            title: "Tim Berners-Lee",
-            isSelected: true,
-            isCorrect: true,
-            correctAnswer: nil,
-        ) {
-            
+        VStack(spacing:10){
+            AnswerButton(
+                title: "Tim Berners-Lee",
+                isSelected: true,
+                isCorrect: true,
+                correctAnswer: nil,
+                compact: true
+            ) {}
         }
         .padding()
     }

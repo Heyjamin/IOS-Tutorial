@@ -17,7 +17,7 @@ struct LevelWorldBackground: View {
         LiveAuroraBackground(
             base: palette.base,
             auroraColors: palette.aurora,
-            particleColor = palette.particle,
+            particleColor: palette.particle,
             particleCount: 56
             
         )

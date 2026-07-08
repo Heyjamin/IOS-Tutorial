@@ -16,7 +16,7 @@ struct RootView: View {
         if playerName.isEmpty {
             PlayerRegistrationView()
         }else{
-            ArenaView()
+            MainTabView()
         }
     }
 }
