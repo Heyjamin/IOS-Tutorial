@@ -141,5 +141,117 @@ struct ScoreShareCardView: View {
         .preferredColorScheme(.dark)
     }
     
-    ================================
+}
+
+@MainActor
+enum ScoreShareRenderer {
+    static func makeImage(for data: ScoreShareData) -> UIImage {
+        let card = ScoreShareCardView(data: data)
+        let renderer = ImageRenderer(content: card)
+        renderer.scale = 2.0
+        renderer.proposedSize = ProposedViewSize(width:400, height: 560)
+        return renderer.uiImage
+    }
+    
+}
+
+@MainActor
+enum SharePresenter {
+    static func present(items:[Any]){
+        guard
+            let scene = UIApplication.shared.connectedScenes.compactMap({$0 as? UIWindowScene}).first,
+            let window = scene.windows.first(where: \.isKeyWindow),
+            let root = window.rootViewController
+        else { return }
+        
+        var presenter = root
+        while let presented = presenter.presentedViewController {
+            presenter = presented
+        }
+        
+        let controller = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        if let popover = controller.popoverPresentationController {
+            popover.sourceView = presenter.view
+            popover.sourceRect = CGRect(
+                x: presenter.view.bounds.midX,
+                y: presenter.view.bounds.midY,
+                width: 1,
+                height: 1
+            )
+            popover.permittedArrowDirections = []
+        }
+        presenter.present(controller, animated: true)
+    }
+}
+
+enum ResultButtonStyle {
+    case primary
+    case secondary
+    case share
+}
+
+struct ResultActionButton : View {
+    let title: String
+    let icon: String
+    var style: ResultButtonStyle = .primary
+    let action: () -> Void
+                 
+    var body: some View {
+        Button{
+            AudioManager.shared.playSFX(.button)
+            action()
+        } label: {
+            Label(title, systemImage: icon)
+                .font(.subheadline.weight(.semibold))
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background(background)
+                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        }
+        .buttonStyle(.plain)
+    }
+    
+    @ViewBuilder
+    private var background: some View {
+        switch style {
+        case .primary:
+            LinearGradient(colors: [.neonGreen, .neonBlue], startPoint: .leading, endPoint: .trailing)
+        case .secondary:
+            LinearGradient(colors: [.neonBlue, .neonPurple], startPoint: .leading, endPoint: .trailing)
+        case .share:
+            LinearGradient(colors: [.neonPurple, .neonPink], startPoint: .leading, endPoint: .trailing)
+        }
+    }
+}
+
+struct ShareScoreButton: View {
+    let data: ScoreShareData
+    var compact: Bool = false
+    
+    var body: some View {
+        ResultActionButton(
+            title: compact ? "Share" : "Share Score",
+            icon: "square.and.arrow.up",
+            style: .share
+        ){
+            guard let image = ScoreShareRenderer.makeImage(for: data) else { return }
+            SharePresenter.present(items: [image, data.shareCaption])
+        }
+    }
+}
+
+#Preview {
+    ScoreShareCardView(
+        data: ScoreShareData(
+            mode: .tapFrenzy,
+            score: 42,
+            headline: "LEVEL COMPLETED",
+            stageLevel: 3,
+            starsEarned: 4,
+            worldTitle: "Sunset Arena",
+            subtitle: "Combo Zone"
+            )
+        )
+    .padding()
 }

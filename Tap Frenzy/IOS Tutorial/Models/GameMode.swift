@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum CameMode: String, Codable, CaseIterable, Identifiable, Hashable{
+enum GameMode: String, Codable, CaseIterable, Identifiable, Hashable{
     case tapFrenzy = "Tap Frenzy"
     case lightItUp = "Light It Up"
     case quizRush = "Quiz Rush"

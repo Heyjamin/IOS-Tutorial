@@ -15,7 +15,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Components/GameGuideSheet.swift,
-				Components/Untitled.swift,
 			);
 			target = EF0146F82FD43545009E8F7D /* IOS Tutorial */;
 		};

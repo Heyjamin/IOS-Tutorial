@@ -22,6 +22,14 @@ enum GameDestination: Hashable, Identifiable{
     case tapFrenzy
     case lightItUp
     case quizRush
+    case levelSelect(GameMode)
     
-    var id: Self {self}
+    var id: String{
+        switch self {
+        case .tapFrenzy: return "tapFrenzy"
+        case .lightItUp: return "lightItUp"
+        case .quizRush: return "quizRush"
+        case .levelSelect(let mode): return "levels-\(mode.rawValue)"
+        }
+    }
 }
