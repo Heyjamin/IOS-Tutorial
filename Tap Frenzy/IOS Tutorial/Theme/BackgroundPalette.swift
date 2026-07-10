@@ -6,11 +6,11 @@
 //
 import SwiftUI
 
-enum AuroraStyle{
+enum AuroraStyle {
     case menu
     case game
     case calm
-    
+
     var colors: [Color] {
         switch self {
         case .menu:
@@ -20,8 +20,8 @@ enum AuroraStyle{
                 Color(red: 0.72, green: 0.42, blue: 0.18),
                 Color(red: 0.12, green: 0.38, blue: 0.28),
             ]
-            case .game:
-            return[
+        case .game:
+            return [
                 Color(red: 0.55, green: 0.12, blue: 0.18),
                 Color(red: 0.82, green: 0.35, blue: 0.08),
                 Color(red: 0.28, green: 0.10, blue: 0.42),
@@ -36,21 +36,18 @@ enum AuroraStyle{
             ]
         }
     }
-    
-    var base: Color{
+
+    var base: Color {
         Color(red: 0.04, green: 0.05, blue: 0.09)
     }
-    
 }
-
 
 struct WorldPalette {
     let base: Color
     let aurora: [Color]
     let particle: Color
-    
-    
-    static func forWorld(_ world: LevelWord) -> WorldPalette {
+
+    static func forWorld(_ world: LevelWorld) -> WorldPalette {
         switch world {
         case .meadow:
             return WorldPalette(
@@ -109,5 +106,5 @@ struct WorldPalette {
             )
         }
     }
-    
 }
+
