@@ -11,14 +11,14 @@ import Combine
 enum AppTab: Hashable, CaseIterable {
 
     case home
-    case status
+    case stats
     case map
     case settings
     
     var title: String {
         switch self {
         case .home: return "Home"
-        case .status: return "Status"
+        case .stats: return "Status"
         case .map: return "Map"
         case .settings: return "Settings"
         }
@@ -27,7 +27,7 @@ enum AppTab: Hashable, CaseIterable {
     var icon: String {
         switch self {
         case .home: return "gamecontroller"
-        case .status: return "chart.bar"
+        case .stats: return "chart.bar"
         case .map: return "map"
         case .settings: return "gear"
         }
@@ -36,7 +36,7 @@ enum AppTab: Hashable, CaseIterable {
 
 @MainActor
 final class AppNavigationStore: ObservableObject {
-    static let share = AppNavigationStore()
+    static let shared = AppNavigationStore()
     
     @Published var selectedTab: AppTab = .home
     @Published private(set) var homeResetToken = UUID()
