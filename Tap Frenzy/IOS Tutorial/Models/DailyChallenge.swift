@@ -12,11 +12,11 @@ struct GameDailyChallenge: Codable, Equatable{
     var streak: Int
     var completedToday: Bool
     var todayBestscore: Int
-    var lastCompletedday: String?
+    var lastCompletedDay: String?
     
     static func fresh(defaultTarget: Int) -> GameDailyChallenge {
         GameDailyChallenge(
-            targetScore: defaultTarget, streak: 0, completedToday: false, todayBestscore: 0, lastCompletedday: nil
+            targetScore: defaultTarget, streak: 0, completedToday: false, todayBestscore: 0, lastCompletedDay: nil
         )
     }
 }
