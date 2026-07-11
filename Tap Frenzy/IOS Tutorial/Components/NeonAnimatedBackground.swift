@@ -29,7 +29,7 @@ struct NeonAnimatedBackground: View {
             LiveAuroraBackground(
                 base: aurora.base,
                 auroraColors: aurora.colors,
-                particleColor: aurora,colors[1].opacity(0.85),
+                particleColor: aurora.colors[1].opacity(0.85),
                 particleCount: style == .game ? 64 : 52
             )
             

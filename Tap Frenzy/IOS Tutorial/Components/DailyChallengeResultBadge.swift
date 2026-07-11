@@ -11,7 +11,7 @@ struct DailyChallengeResultBadge: View {
     let mode: GameMode
     let score: Int
     
-    @ObservableObject private var challenges = DailyChallengeManager.shared
+    @ObservedObject private var challenges = DailyChallengeManager.shared
     
     private var record: GameDailyChallenge {
         challenges.record(for: mode)

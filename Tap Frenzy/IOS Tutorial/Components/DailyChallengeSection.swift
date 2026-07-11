@@ -15,7 +15,7 @@ enum DailyChallengeSectionStyle {
 struct DailyChallengeSection: View {
     var style: DailyChallengeSectionStyle = .full
     
-    @ObservableObject private var challenges = DailyChalllengeManager.shared
+    @ObservedObject private var challenges = DailyChallengeManager.shared
     
     var body: some View {
         
@@ -55,13 +55,13 @@ struct DailyChallengeSection: View {
                 .foregroundColor(.gray)
             
             ForEach(GameMode.allCases){ mode in
-                DailyChalleneRow(mode: mode, record: challenges.record(for:mode))
+                DailyChallengeRow(mode: mode, record: challenges.record(for:mode))
             }
             
             if challenges.allCompletedToday{
                 HStack{
                     Image(systemName: "star.circle.fill")
-                        .forgroundColor(.yellow)
+                        .foregroundColor(.yellow)
                     Text("all daily challenges colpleted! 🎉")
                         .font(.caption.bold())
                         .foregroundColor(.neonGreen)
@@ -85,11 +85,11 @@ struct DailyChallengeSection: View {
             sectionHeader
             
             HStack(spacing: 8){
-                ForEach(GameMode.allCases) { mode in compactChalleneTitle(mode: mode, record: challenges.record(for:mode))
+                ForEach(GameMode.allCases) { mode in compactChallengeTitle(mode: mode, record: challenges.record(for:mode))
                 }
             }
             
-            if challenges.allColpletedToday {
+            if challenges.allCompletedToday {
                 completionBanner
             }
         }
@@ -118,7 +118,7 @@ struct DailyChallengeSection: View {
             HStack(spacing: 4){
                 Image(systemName: "flame.fill")
                     .foregroundColor(.orange)
-                text("\(challenges.masterStreak)d")
+                Text("\(challenges.masterStreak)d")
                     .fontWeight(.bold)
                     .foregroundColor(.white)
             }
@@ -130,7 +130,7 @@ struct DailyChallengeSection: View {
     }
     
     private var completionBanner: some View {
-        HStack(spaceing: 6){
+        HStack(spacing: 6){
             Image(systemName: "star.circle.fill")
                 .foregroundColor(.yellow)
             Text("All complete today! 🎉")
@@ -154,7 +154,7 @@ struct DailyChallengeSection: View {
             
             ProgressView(value: progress)
                 .tint(record.completedToday ? .neonGreen : titleColor(for: mode))
-                .scaleEffect(x: 1, : 0.7, anchor: .center)
+                .scaleEffect(x: 1, y: 0.7, anchor: .center)
             
             if record.completedToday{
                 Image(systemName: "checkmark")
@@ -173,7 +173,7 @@ struct DailyChallengeSection: View {
         )
     }
 
-    private func titleColor(for mode: GameMode) -> color {
+    private func titleColor(for mode: GameMode) -> Color {
         switch mode{
         case .tapFrenzy: return .yellow
         case .lightItUp: return .neonBlue
@@ -221,19 +221,19 @@ struct DailyChallengeRow: View{
                     Text("\(record.streak)")
                         .font(.caption.bold())
                 }
-                .foregroundColor(record.streak > 0 ? .orange : gray)
+                .foregroundColor(record.streak > 0 ? .orange : .gray)
             }
             
             ProgressView(value: progress)
                 .tint(record.completedToday ? .neonGreen : rowColor)
             
             if !record.completedToday {
-                Tex("Score \(record.targetScore)+ to keep your streak")
+                Text("Score \(record.targetScore)+ to keep your streak")
                     .font(.caption2)
                     .foregroundColor(.gray)
             }
         }
-        .pading(10)
+        .padding(10)
         .background(
             RoundedRectangle(cornerRadius: 14)
                 .fill(Color.white.opacity(0.05))

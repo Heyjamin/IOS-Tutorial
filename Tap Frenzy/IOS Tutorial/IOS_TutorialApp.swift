@@ -10,11 +10,14 @@ import SwiftUI
 @main
 struct IOS_TutorialApp: App {
     var body: some Scene {
-       
-        
-            WindowGroup {
-                RootView()
+       WindowGroup {
+            RootView()
+                .onAppear{
+                    AudioManager.shared.configureSession()
+                    LocationService.shared.requestPermission()
+                    LocationService.shared.startUpdating()
+                    DailyChallengeManager.shared.refreshForToday()
             }
-        
+        }
     }
 }

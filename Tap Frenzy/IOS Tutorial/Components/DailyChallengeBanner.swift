@@ -35,14 +35,14 @@ struct DailyChallengeBanner: View {
             Spacer()
             
             if record.streak > 0 {
-                Lebel("\(record.streak)", systemImage: "flame.fill")
+                Label("\(record.streak)", systemImage: "flame.fill")
                     .font(.caption.bold())
                     .foregroundColor(.orange)
             }
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
-        .glassCard(.horizontal)
+        .glassCard()
         .padding(.horizontal)
         .onAppear {
             challenges.refreshForToday()

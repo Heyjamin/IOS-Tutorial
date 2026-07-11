@@ -11,7 +11,7 @@ struct GameSession: Codable, Identifiable, Hashable{
     let id: UUID
     let mode: GameMode
     let score: Int
-    let timestam: Date
+    let timestamp: Date
     let latitude: Double
     let longitude: Double
     

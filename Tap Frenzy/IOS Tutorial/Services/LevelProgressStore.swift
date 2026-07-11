@@ -20,7 +20,7 @@ final class LevelProgressStore: ObservableObject {
     static let shared = LevelProgressStore()
     
     private let key = "levelProgressStore"
-    @published private(set) var records: [String: LevelRecord] = [:]
+    @Published private(set) var records: [String: LevelRecord] = [:]
     
     private init() {
         load()

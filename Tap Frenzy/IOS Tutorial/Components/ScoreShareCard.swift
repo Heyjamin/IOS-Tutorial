@@ -132,11 +132,11 @@ struct ScoreShareCardView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .frame(width: 400, height: 500)
+        .frame(width: 400, height: 560)
         .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
         .overlay{
             RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .stroke(account.opacity(0.45), lineWidth: 2)
+                .stroke(accent.opacity(0.45), lineWidth: 2)
         }
         .preferredColorScheme(.dark)
     }
@@ -145,7 +145,7 @@ struct ScoreShareCardView: View {
 
 @MainActor
 enum ScoreShareRenderer {
-    static func makeImage(for data: ScoreShareData) -> UIImage {
+    static func makeImage(for data: ScoreShareData) -> UIImage? {
         let card = ScoreShareCardView(data: data)
         let renderer = ImageRenderer(content: card)
         renderer.scale = 2.0

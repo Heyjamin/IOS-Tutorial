@@ -72,9 +72,9 @@ final class AudioManager: ObservableObject {
     private var currentTrack: MusicTrack = .menu
     
     private init() {
-        sfxEnabled = UserDefaults.standard.bool(forKey: Keys.sfxEnabled) as? Bool ?? true
-        musicEnabled = UserDefaults.standard.bool(forKey: Keys.musicEnabled) as? Bool ?? true
-        volume = UserDefaults.standard.double(forKey: Keys.volume) as? Double ?? 0.7
+        sfxEnabled = UserDefaults.standard.object(forKey: Keys.sfxEnabled) as? Bool ?? true
+        musicEnabled = UserDefaults.standard.object(forKey: Keys.musicEnabled) as? Bool ?? true
+        volume = UserDefaults.standard.object(forKey: Keys.volume) as? Double ?? 0.7
         configureSession()
     }
         

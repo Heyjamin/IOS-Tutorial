@@ -35,7 +35,7 @@ enum MapDefaults{
 final class LocationService: NSObject, ObservableObject{
     static let shared = LocationService()
     
-    @Published var currentLocation: CLLocationCoordinate2D??
+    @Published var currentLocation: CLLocationCoordinate2D?
     @Published var authorizationStatus: CLAuthorizationStatus = .notDetermined
     
     private let manager = CLLocationManager()
@@ -45,6 +45,10 @@ final class LocationService: NSObject, ObservableObject{
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyBest
         authorizationStatus = manager.authorizationStatus
+    }
+    
+    func requestPermission(){
+        manager.requestWhenInUseAuthorization()
     }
     
     func startUpdating(){

@@ -46,11 +46,11 @@ final class DailyChallengeManager: ObservableObject {
         refreshForToday()
         
         guard var record = records[mode] else { return false }
-        record.todayBestscore = max(record.todayBestscore, score)
+        record.todayBestScore = max(record.todayBestScore, score)
         
         var justCompleted = false
         if score >= record.targetScore && !record.completedToday {
-            justCompleted = completeChallenge(mode: mod, record: &record)
+            justCompleted = completeChallenge(mode: mode, record: &record)
         }else{
             records[mode] = record
         }
@@ -76,7 +76,7 @@ final class DailyChallengeManager: ObservableObject {
         let today = Self.dayKey(for: Date(), calendar: calendar)
         masterStreak = 0
         lastAllCompletedDay = nil
-        bootsrapRecords(for: today)
+        bootstrapRecords(for: today)
         currentDayKey = today
         persist()
     }
@@ -124,8 +124,8 @@ final class DailyChallengeManager: ObservableObject {
     
     private func handleDayTransition(from previousDay: String, to newDay: String) {
         guard
-            let prevDate = self.parseDayKey(previousDay, calendar: calendar),
-            let newDate = self.parseDayKey(newDay, calendar: calendar)
+            let prevDate = Self.parseDayKey(previousDay, calendar: calendar),
+            let newDate = Self.parseDayKey(newDay, calendar: calendar)
         else{
             resetAllStreaks()
             bootstrapRecords(for: newDay)
@@ -136,7 +136,7 @@ final class DailyChallengeManager: ObservableObject {
         
         if gap > 1 {
             resetAllStreaks()
-        } else ifgap == 1 {
+        } else if gap == 1 {
             breakStrakssIfMissed(on: previousDay)
             breakMasterStreakIfMissed(on: previousDay)
         }
@@ -144,8 +144,8 @@ final class DailyChallengeManager: ObservableObject {
         for mode in GameMode.allCases {
             var record = records[mode] ?? .fresh(defaultTarget: mode.baseDailyTarget)
             record.completedToday = false
-            record.todayBestscore = 0
-            record.targetScore = mode.baseDailyTarget(
+            record.todayBestScore = 0
+            record.targetScore = mode.scaledDailyTarget(
                 personalBest: SessionStore.shared.bestScore(for: mode) ?? 0
             )
             records[mode] = record
@@ -155,7 +155,7 @@ final class DailyChallengeManager: ObservableObject {
     private func breakStrakssIfMissed(on day: String) {
         for mode in GameMode.allCases {
             guard var record = records[mode] else { continue }
-            if record.lastCompletedDay!= day {
+            if record.lastCompletedDay != day {
                 record.streak = 0
                 records[mode] = record
             }
@@ -179,7 +179,7 @@ final class DailyChallengeManager: ObservableObject {
         }
     }
     
-    private func bootstrapRecords(for today: String) {
+    private func bootstrapRecords(for day: String) {
         for mode in GameMode.allCases {
             records[mode] = .fresh(
                 defaultTarget: mode.scaledDailyTarget(

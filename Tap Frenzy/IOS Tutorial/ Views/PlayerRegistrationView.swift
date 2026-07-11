@@ -121,8 +121,8 @@ struct PlayerRegistrationView : View {
                 .padding()
             }
             .onAppear {
-                AudioManager.shared.configureSesion()
-                AudioManager.shared.playerMusic(.menu)
+                AudioManager.shared.configureSession()
+                AudioManager.shared.playMusic(.menu)
             }
         }
     }

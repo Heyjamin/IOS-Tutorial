@@ -14,7 +14,7 @@ struct GameHUDBar: View {
     
     var body: some View {
         HStack(spacing: 12){
-            if let guideMode{
+            if let guideMode {
                 GameGuideButton(mode: guideMode)
             }
             
@@ -24,7 +24,7 @@ struct GameHUDBar: View {
         }
     }
     
-    private var audioMenuButon: some view{
+    private var audioMenuButton: some View{
         Menu{
             Toggle(isOn: musicBinding){
                 Label("Background Music", systemImage: "music.note")

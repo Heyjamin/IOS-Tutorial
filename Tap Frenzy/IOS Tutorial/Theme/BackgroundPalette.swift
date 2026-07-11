@@ -60,7 +60,7 @@ struct WorldPalette {
                 ],
                 particle: Color(red: 0.85, green: 0.72, blue: 0.35)
             )
-        case .ocean:
+        case .ocian:
             return WorldPalette(
                 base: Color(red: 0.02, green: 0.06, blue: 0.14),
                 aurora: [

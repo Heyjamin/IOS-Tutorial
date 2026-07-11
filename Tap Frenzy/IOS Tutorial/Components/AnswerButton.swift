@@ -45,7 +45,7 @@ struct AnswerButton: View {
             action()
         }){
             
-            Text(title.decodedTitle)
+            Text(decodedTitle)
                 .font(compact ? .subheadline.weight(.medium) : .headline)
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
@@ -56,7 +56,7 @@ struct AnswerButton: View {
                 .padding(.vertical, compact ? 10 :14)
                 .frame(minHeight: compact ? 44 : 56)
                 .background(
-                    RiundedRectangle(cornerRadius: 16, style: .continuous)
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
                         .fill(backgroundColor)
                         
                     )

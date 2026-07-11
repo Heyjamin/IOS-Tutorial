@@ -63,7 +63,7 @@ struct GameCard: View {
                         )
                     )
             )
-            .overlay(alignment: leading){
+            .overlay(alignment: .leading){
                 RoundedRectangle(cornerRadius:16, style: .continuous)
                     .fill(accentColor)
                     .frame(width: 3)

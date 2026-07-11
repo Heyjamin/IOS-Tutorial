@@ -24,7 +24,7 @@ enum LevelDiffiiculty: String, Codable, CaseIterable {
     }
 }
 
-enum Leveelworld: Int, CaseIterable {
+enum LevelWorld: Int, CaseIterable {
     case meadow = 1
     case ocian = 2
     case sunset = 3
@@ -55,9 +55,9 @@ enum Leveelworld: Int, CaseIterable {
         return [p.base, p.base.opacity(0.6),p.base]
     }
     
-    static func forLevel(_ level: Int) -> Leveelworld {
-        let index = ((level-1) % Leveelworld.allCases.count) + 1
-        return Leveelworld(rawValue:index) ?? .meadow
+    static func forLevel(_ level: Int) -> LevelWorld {
+        let index = ((level-1) % LevelWorld.allCases.count) + 1
+        return LevelWorld(rawValue:index) ?? .meadow
     }
     
 }
@@ -67,7 +67,7 @@ struct GameLevelConfig: Identifiable {
     let mode: GameMode
     let difficulty: LevelDiffiiculty
     let subtitle: String
-    let world: Leveelworld
+    let world: LevelWorld
     /// Min scores for 1* ... 5*
     let starThresholds: [Int]
     
@@ -76,8 +76,7 @@ struct GameLevelConfig: Identifiable {
     func stars(for score: Int) -> Int{
         var earned = 0
         for (index, threshold) in starThresholds.enumerated() {
-            if score >= threshold {
-                earned = index + 1
+            if score >= threshold {earned = index + 1}
             }
             return earned
         }
@@ -89,7 +88,7 @@ struct GameLevelConfig: Identifiable {
             levelsPerGame
         }
         
-        static func config(mode: GameMode,, level: Int) -> GameLevelConfig {
+        static func config(mode: GameMode, level: Int) -> GameLevelConfig {
             let clamped = min(max(level, 1), levelsPerGame(for: mode))
             switch mode {
             case .tapFrenzy: return tapFrenzyLevels[clamped - 1]
@@ -98,7 +97,7 @@ struct GameLevelConfig: Identifiable {
             }
         }
         
-        static func allLevels(for mode: GameMode) -> [GameLevelConfig]{
+        static func allLevels(for mode: GameMode) -> [GameLevelConfig] {
             (1...levelsPerGame(for: mode)).map { config(mode: mode, level: $0)}
         }
         
@@ -145,7 +144,7 @@ struct GameLevelConfig: Identifiable {
             GameLevelConfig(number: 7, mode: .quizRush, difficulty: .medium, subtitle: "Rapid Fire", world: .ocian, starThresholds: [40,55,80,100,120]),
             GameLevelConfig(number: 8, mode: .quizRush, difficulty: .hard, subtitle: "Genius Only", world: .sunset, starThresholds: [45,60,85,110,135]),
             GameLevelConfig(number: 9, mode: .quizRush, difficulty: .hard, subtitle: "Mind Blitz", world: .volcano, starThresholds: [55,70,95,120,143]),
-            GameLevelConfig(number: 9, mode: .quizRush, difficulty: .hard, subtitle: "Ultimate Quiz", world: .volcano, starThresholds: [60,88,110,135,160),
+            GameLevelConfig(number: 9, mode: .quizRush, difficulty: .hard, subtitle: "Ultimate Quiz", world: .volcano, starThresholds: [60,88,110,135,160]),
             
         ]
         
@@ -157,7 +156,7 @@ struct GameLevelConfig: Identifiable {
         let durationMs: Int
         let moveInterval: Double
         let emojiInterval: Double
-        let normalemoji: String
+        let normalEmoji: String
         let bonusEmoji: String
         let penaltyEmoji: String
         let bonusPoints: Int
@@ -165,9 +164,9 @@ struct GameLevelConfig: Identifiable {
         
         static func settings(for level: Int) -> TapFrenzyLevelSettings {
             switch level {
-            case 1: return TapFrenzyLevelSettings(durationMs: 13_000, moveInterval: 2.6, emojiInterval: 3.8, normalemoji: "🖐️", bonusEmoji: "✨", penaltyEmoji: "☠️", bonusPoints: 3, specialChance: 0.12)
-            case 2: return TapFrenzyLevelSettings(durationMs: 12_000, moveInterval: 2.3, emojiInterval: 3.2, normalemoji: "😀", bonusEmoji: "🌟", penaltyEmoji: "😡", bonusPoints: 3, specialChance: 0.15)
-            case 3: return TapFrenzyLevelSettings(durationMs: 11_000, moveInterval: 2.0, emojiInterval: 2.8, normalemoji: "😇", bonusEmoji: "💎", penaltyEmoji: "🧨", bonusPoints: 4, specialChance: 0.18)
+            case 1: return TapFrenzyLevelSettings(durationMs: 13_000, moveInterval: 2.6, emojiInterval: 3.8, normalEmoji: "🖐️", bonusEmoji: "✨", penaltyEmoji: "☠️", bonusPoints: 3, specialChance: 0.12)
+            case 2: return TapFrenzyLevelSettings(durationMs: 12_000, moveInterval: 2.3, emojiInterval: 3.2, normalEmoji: "😀", bonusEmoji: "🌟", penaltyEmoji: "😡", bonusPoints: 3, specialChance: 0.15)
+            case 3: return TapFrenzyLevelSettings(durationMs: 11_000, moveInterval: 2.0, emojiInterval: 2.8, normalEmoji: "😇", bonusEmoji: "💎", penaltyEmoji: "🧨", bonusPoints: 4, specialChance: 0.18)
             case 4: return TapFrenzyLevelSettings(durationMs: 10_500, moveInterval: 1.75, emojiInterval: 2.4, normalEmoji: "😃", bonusEmoji: "🎯", penaltyEmoji: "☠️", bonusPoints: 4, specialChance: 0.20)
             case 5: return TapFrenzyLevelSettings(durationMs: 10_000, moveInterval: 1.55, emojiInterval: 2.1, normalEmoji: "🙂", bonusEmoji: "💫", penaltyEmoji: "💥", bonusPoints: 4, specialChance: 0.22)
             case 6: return TapFrenzyLevelSettings(durationMs: 9_500, moveInterval: 1.35, emojiInterval: 1.9, normalEmoji: "🤗", bonusEmoji: "⚡", penaltyEmoji: "💀", bonusPoints: 5, specialChance: 0.24)
@@ -198,7 +197,7 @@ struct GameLevelConfig: Identifiable {
         let bonusPoints: Int
         let trapPenalty: Int
         
-        static func settings (for level: Int) ->LightItUpLevelSetings {
+        static func settings (for level: Int) -> LightItUpLevelSettings {
             switch level {
             case 1:
                 return LightItUpLevelSettings(duration: 80, visibleCards: 3, columns: 3, lightSpeed: 1.55, cellDisplayDuration: 2.1, bonusChance: 0.18, trapChance: 0.0, bonusPoints: 3, trapPenalty: 1
@@ -234,7 +233,7 @@ struct GameLevelConfig: Identifiable {
         }
     }
     
-    enum LightCelKind {
+    enum LightCellKind {
         case normal
         case bonus
         case trap
@@ -282,7 +281,7 @@ struct GameLevelConfig: Identifiable {
             }
         }
     }
-}
+
 
 struct GameLevelRoute: Hashable{
     let mode: GameMode

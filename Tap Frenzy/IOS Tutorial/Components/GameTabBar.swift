@@ -14,7 +14,7 @@ struct GameTabBar: View {
         HStack (spacing: 0) {
             ForEach(AppTab.allCases, id: \.self) { tab in
                 Button{
-                    AudiioManager.shared.playSFX(.button)
+                    AudioManager.shared.playSFX(.button)
                     navigation.selectTab(tab)
                 } label: {
                     VStack(spacing: 3){
@@ -37,7 +37,7 @@ struct GameTabBar: View {
         .background(.ultraThinMaterial.opacity(0.95))
         .overlay(alignment: .top){
             Rectangle()
-                .fill(color.white.opacity(0.12))
+                .fill(Color.white.opacity(0.12))
                 .frame(height: 0.5)
         }
     }

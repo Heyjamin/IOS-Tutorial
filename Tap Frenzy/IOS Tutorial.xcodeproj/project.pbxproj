@@ -10,33 +10,9 @@
 		EF0146F92FD43545009E8F7D /* IOS Tutorial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "IOS Tutorial.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		74DD8D4C2FFEB0A700F6823C /* Exceptions for "IOS Tutorial" folder in "IOS Tutorial" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Components/GameGuideSheet.swift,
-			);
-			target = EF0146F82FD43545009E8F7D /* IOS Tutorial */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		74DD8D4D2FFEB0B300F6823C /* Exceptions for "IOS Tutorial" folder in "Copy Bundle Resources" phase from "IOS Tutorial" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = EF0146F72FD43545009E8F7D /* Resources */;
-			membershipExceptions = (
-				Components/GameGuideSheet.swift,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		EF0146FB2FD43545009E8F7D /* IOS Tutorial */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				74DD8D4C2FFEB0A700F6823C /* Exceptions for "IOS Tutorial" folder in "IOS Tutorial" target */,
-				74DD8D4D2FFEB0B300F6823C /* Exceptions for "IOS Tutorial" folder in "Copy Bundle Resources" phase from "IOS Tutorial" target */,
-			);
 			path = "IOS Tutorial";
 			sourceTree = "<group>";
 		};
