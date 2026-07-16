@@ -17,16 +17,16 @@ struct DailyChallengeBanner: View {
     
     var body: some View {
         HStack(spacing: 10){
-            Image(systemName: record.completedToday ? "checkmark.seal.fill" : "target")
+            Image(systemName: record.completedToday ? Const.checkmarkIcon : Const.targetIcon)
                 .foregroundColor(record.completedToday ? .neonGreen : .yellow)
             
             VStack(alignment: .leading, spacing: 2){
-                Text("Daily Challenge")
+                Text("\(Const.txtDailyChallenge)")
                     .font(.caption.bold())
                     .foregroundColor(.white)
                 
                 if record.completedToday {
-                    Text("Complete! 🔥 Streak: \(record.streak) days")
+                    Text("\(Const.txtCompleteStrak) \(record.streak) \(Const.txtDays)")
                         .font(.caption2)
                         .foregroundColor(.gray)
                 }
@@ -35,7 +35,7 @@ struct DailyChallengeBanner: View {
             Spacer()
             
             if record.streak > 0 {
-                Label("\(record.streak)", systemImage: "flame.fill")
+                Label("\(record.streak)", systemImage: Const.flameIcon)
                     .font(.caption.bold())
                     .foregroundColor(.orange)
             }

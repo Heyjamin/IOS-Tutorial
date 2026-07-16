@@ -27,11 +27,11 @@ struct GameHUDBar: View {
     private var audioMenuButton: some View{
         Menu{
             Toggle(isOn: musicBinding){
-                Label("Background Music", systemImage: "music.note")
+                Label(Const.txtBackgroundMusic, systemImage: Const.musicIcon)
             }
             
             Toggle(isOn: sfxBinding){
-                Label("sound Effects", systemImage: "speaker.wave.2")
+                Label(Const.txtSoundEffects, systemImage: Const.speakerIcon)
             }
         } label: {
             Image(systemName: audioStatusIcon)
@@ -46,7 +46,7 @@ struct GameHUDBar: View {
         }
         .menuStyle(.button)
         .buttonStyle(.plain)
-        .accessibilityLabel("Sound settings")
+        .accessibilityLabel(Const.txtSoundSettings)
         
     }
     
@@ -72,10 +72,10 @@ struct GameHUDBar: View {
     
     private var audioStatusIcon: String{
         switch (audio.musicEnabled, audio.sfxEnabled){
-        case(true,true): return "speaker.wave.2.fill"
-        case(true,false): return "speaker.fill"
-        case(false,true): return "music.note"
-        default: return "speaker.slash.fill"
+        case(true,true): return Const.speakerIcon
+        case(true,false): return Const.speakerFillIcon
+        case(false,true): return Const.musicIcon
+        default: return Const.speakerMuteIcon
         }
     }
 }
@@ -95,7 +95,7 @@ extension View{
     ZStack{
         Color.black.ignoresSafeArea()
         VStack{
-            Text("⚡ TAP FRENZY")
+            Text(Const.flash + Const.txtTapFrenzy)
                 .font(.title.bold())
                 .foregroundColor(.white)
             Spacer()

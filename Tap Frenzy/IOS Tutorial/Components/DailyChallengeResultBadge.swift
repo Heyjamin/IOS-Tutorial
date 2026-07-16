@@ -21,19 +21,19 @@ struct DailyChallengeResultBadge: View {
         let metTarget = score >= record.targetScore
         
         HStack(spacing: 8){
-            Image(systemName: metTarget ? "checkmark.seal.fill" : "xmark.seal")
+            Image(systemName: metTarget ? Const.checkmarkIcon : Const.xmarkIcon)
                 .foregroundColor(metTarget ? .neonGreen : .neonRed)
             
             VStack(alignment: .leading, spacing: 2){
-                Text("daily Challenge")
+                Text("\(Const.txtDailyChallenge)")
                     .font(.caption.bold())
                     .foregroundColor(.white)
                 
                 if metTarget{
-                    Text("Target \(record.targetScore) reached! Streak: \(record.streak) 🔥")
+                    Text("\(Const.txtTarget) \(record.targetScore) \(Const.txtReachedStreak) \(record.streak) \(Const.flame)")
                         .foregroundColor(.neonGreen)
                 }else{
-                    Text("Needed \(record.targetScore) pts . hort by \(max(0, record.targetScore - score))")
+                    Text("\(Const.txtNeeded) \(record.targetScore) \(Const.txtPtsHortBy) \(max(0, record.targetScore - score))")
                         .font(.caption2)
                         .foregroundColor(.neonGreen)
                 }

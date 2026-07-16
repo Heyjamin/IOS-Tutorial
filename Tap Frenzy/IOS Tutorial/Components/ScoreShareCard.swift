@@ -19,9 +19,9 @@ struct ScoreShareData{
     
     var shareCaption: String{
         if let stageLevel, let starsEarned {
-            return "I earned \(starsEarned)* on \(mode.rawValue) level \(stageLevel) with \(score) pts in Neon Archade! 🎮"
+            return Const.txtIErned + " \(starsEarned)" + Const.txtStarOn + "\(mode.rawValue)" + Const.txtLevel + " \(stageLevel)" + Const.txtWith + " \(score) " + Const.txtPtsInNeonArc
         }
-        return " I scored \(score) on \(mode.rawValue) in Neon Archade! 🎮"
+        return Const.txtIScored + " \(score) " + Const.txtOn + " \(mode.rawValue) " + Const.txtInNeonArc
     }
 }
 
@@ -52,7 +52,7 @@ struct ScoreShareCardView: View {
             )
             
             VStack(spacing: 0){
-                Text("NEON ARCADE")
+                Text(Const.txtHomeTitle)
                     .font(.system(size: 13, weight: .black, design: .rounded))
                     .foregroundStyle(
                         LinearGradient(colors:[.neonBlue, .neonPurple], startPoint: .leading, endPoint: .trailing)
@@ -74,12 +74,12 @@ struct ScoreShareCardView: View {
                 
                 Spacer().frame(height: 14)
                 
-                Text(data.mode.rawValue)
+                Text(data.mode.title)
                     .font(.title3.bold())
                     .foregroundColor(.white)
                 
                 if let stageLevel = data.stageLevel{
-                    Text("Level \(stageLevel)" + (data.worldTitle.map { " . \($0)"} ?? ""))
+                    Text(Const.txtLevel.capitalized + " \(stageLevel)" + (data.worldTitle.map { " . \($0)"} ?? ""))
                         .font(.caption)
                         .foregroundColor(.white.opacity(0.65))
                         .padding(.top, 4)
@@ -102,7 +102,7 @@ struct ScoreShareCardView: View {
                     .minimumScaleFactor(0.7)
                     .lineLimit(1)
                 
-                Text("POINTS")
+                Text(Const.txtPoints.uppercased())
                     .font(.caption2.bold())
                     .foregroundColor(.white.opacity(0.45))
                     .tracking(2)
@@ -125,7 +125,7 @@ struct ScoreShareCardView: View {
                 
                 Spacer()
                 
-                Text("Neon Arcade . iOS")
+                Text(Const.txtShareCardFooter)
                     .font(.caption2.bold())
                     .foregroundColor(.white.opacity(0.3))
                     .padding(.bottom, 28)
@@ -231,8 +231,8 @@ struct ShareScoreButton: View {
     
     var body: some View {
         ResultActionButton(
-            title: compact ? "Share" : "Share Score",
-            icon: "square.and.arrow.up",
+            title: compact ? Const.txtShare : Const.txtShareScore,
+            icon: Const.squareAndArrowIcon,
             style: .share
         ){
             guard let image = ScoreShareRenderer.makeImage(for: data) else { return }
@@ -246,11 +246,11 @@ struct ShareScoreButton: View {
         data: ScoreShareData(
             mode: .tapFrenzy,
             score: 42,
-            headline: "LEVEL COMPLETED",
+            headline: Const.txtLevelCompleted.uppercased(),
             stageLevel: 3,
             starsEarned: 4,
-            worldTitle: "Sunset Arena",
-            subtitle: "Combo Zone"
+            worldTitle: Const.sunsetArena,
+            subtitle: Const.comboZone,
             )
         )
     .padding()

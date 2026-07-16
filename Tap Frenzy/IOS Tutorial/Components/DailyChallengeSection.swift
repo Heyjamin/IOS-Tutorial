@@ -31,16 +31,16 @@ struct DailyChallengeSection: View {
         
         VStack(alignment: .leading, spacing: 14){
             HStack{
-                Label("Daily Challenges",systemImage: "calendar.badge.clock")
+                Label("\(Const.txtDailyChallenges)",systemImage: Const.calendarBadgeIcon)
                     .font(.headline.bold())
                     .foregroundColor(.yellow)
                 
                 Spacer()
                 
                 HStack(spacing: 4){
-                    Image(systemName: "flame.fill")
+                    Image(systemName: Const.flameIcon)
                         .foregroundColor(.orange)
-                    Text("\(challenges.masterStreak)d")
+                    Text("\(challenges.masterStreak) \(Const.txtD)")
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                 }
@@ -50,7 +50,7 @@ struct DailyChallengeSection: View {
                 .background(Capsule().fill(Color.white.opacity(0.1)))
             }
             
-            Text("\(challenges.completedCountToday)/3 completed today")
+            Text("\(challenges.completedCountToday)\(Const.txt3CompletedToday)")
                 .font(.caption)
                 .foregroundColor(.gray)
             
@@ -60,9 +60,9 @@ struct DailyChallengeSection: View {
             
             if challenges.allCompletedToday{
                 HStack{
-                    Image(systemName: "star.circle.fill")
+                    Image(systemName: Const.starCircleIcon)
                         .foregroundColor(.yellow)
-                    Text("all daily challenges colpleted! 🎉")
+                    Text("\(Const.txtAllDayChallengesCompleted)")
                         .font(.caption.bold())
                         .foregroundColor(.neonGreen)
                 }
@@ -109,16 +109,16 @@ struct DailyChallengeSection: View {
 
     private var sectionHeader : some View {
         HStack{
-            Label("Daily Challenges", systemImage: "calendar.badge.colck")
+            Label("\(Const.txtDailyChallenges)", systemImage: Const.calendarBadgeIcon)
                 .font(.subheadline.weight(.bold))
                 .foregroundColor(.yellow)
             
             Spacer()
             
             HStack(spacing: 4){
-                Image(systemName: "flame.fill")
+                Image(systemName: Const.flameIcon)
                     .foregroundColor(.orange)
-                Text("\(challenges.masterStreak)d")
+                Text("\(challenges.masterStreak) \(Const.txtD)")
                     .fontWeight(.bold)
                     .foregroundColor(.white)
             }
@@ -131,9 +131,9 @@ struct DailyChallengeSection: View {
     
     private var completionBanner: some View {
         HStack(spacing: 6){
-            Image(systemName: "star.circle.fill")
+            Image(systemName: Const.starCircleIcon)
                 .foregroundColor(.yellow)
-            Text("All complete today! 🎉")
+            Text("\(Const.txtAllDayChallengesCompleted)")
                 .font(.caption2.weight(.bold))
                 .foregroundColor(.neonGreen)
         }
@@ -157,7 +157,7 @@ struct DailyChallengeSection: View {
                 .scaleEffect(x: 1, y: 0.7, anchor: .center)
             
             if record.completedToday{
-                Image(systemName: "checkmark")
+                Image(systemName: Const.checkmarkIcon2)
                     .font(.system(size: 9, weight: .medium, design: .rounded))
                     .foregroundColor(.white.opacity(0.55))
                     .lineLimit(1)
@@ -204,9 +204,9 @@ struct DailyChallengeRow: View{
                     .foregroundColor(.white)
                 
                 Spacer()
-                
+                // Neet to be update String Variables.......
                 if record.completedToday{
-                    Label ("Done", systemImage: "checkmark.seal.fill")
+                    Label (Const.txtDone, systemImage: Const.checkmarkIcon)
                         .font(.caption.bold())
                         .foregroundColor(.neonGreen)
                 }else{
@@ -216,7 +216,7 @@ struct DailyChallengeRow: View{
                 }
                 
                 HStack(spacing: 2){
-                    Image(systemName: "flame.fill")
+                    Image(systemName: Const.flameIcon)
                         .font(.caption2)
                     Text("\(record.streak)")
                         .font(.caption.bold())
@@ -228,7 +228,7 @@ struct DailyChallengeRow: View{
                 .tint(record.completedToday ? .neonGreen : rowColor)
             
             if !record.completedToday {
-                Text("Score \(record.targetScore)+ to keep your streak")
+                Text(Const.txtScore + " \(record.targetScore)+ " + Const.txtToKeepStreak)
                     .font(.caption2)
                     .foregroundColor(.gray)
             }

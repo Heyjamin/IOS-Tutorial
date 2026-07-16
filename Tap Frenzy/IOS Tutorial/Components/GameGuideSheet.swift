@@ -21,122 +21,77 @@ enum GameGuideContent {
         case .tapFrenzy:
             return [
                 GameGuideSection(
-                    title: "How to Win",
-                    icon: "trophy.fill",
+                    title: Const.txtHowToWin,
+                    icon: Const.trophyIcon,
                     color: .yellow,
-                    items: [
-                        "Tap the emoji target as fast as you can before the timer hits zero.",
-                        "Each correct tap adds points based on your combo multiplier.",
-                        "Tap quickly in a row (within 0.5s) to build combo up to ×10.",
-                        "Earn ★★ (2 stars) or more to unlock the next level.",
-                        "Higher score = more stars — check the target on screen.",
-                    ]
+                    items: Const.tapFrenzyHowToWin
                 ),
                 GameGuideSection(
-                    title: "Bonuses",
-                    icon: "star.fill",
+                    title: Const.txtBonuses,
+                    icon: Const.starFillIcon,
                     color: .neonGreen,
-                    items: [
-                        "✨ 🌟 💎 🎯 💫 ⚡ 🚀 🪎 🏆 👑 — bonus emojis give extra points on top of combo.",
-                        "Bonus emojis appear randomly — tap them quickly!",
-                    ]
+                    items: Const.tapFrenzyBonuses
                 ),
                 GameGuideSection(
-                    title: "Traps",
-                    icon: "exclamationmark.triangle.fill",
+                    title: Const.txtTraps,
+                    icon: Const.trapsIcon,
                     color: .neonRed,
-                    items: [
-                        "☠️ 😡 🧨 💥 💀 😈 👹— trap emojis subtract your combo value from score.",
-                        "The emoji moves around and shrinks as time runs out — stay focused!",
-                        "Missing taps costs nothing, but traps will pull your score down.",
-                    ]
+                    items: Const.tapFrenzyTraps
                 ),
             ]
         case .lightItUp:
             return [
                 GameGuideSection(
-                    title: "How to Win",
-                    icon: "trophy.fill",
+                    title: Const.txtHowToWin,
+                    icon: Const.trapsIcon,
                     color: .yellow,
-                    items: [
-                        "Tap the lit cell when an emoji appears on the grid.",
-                        "Normal cells 🖐️ give +1 point each.",
-                        "Score as much as you can before the countdown ends.",
-                        "Earn ★★ (2 stars) or more to unlock the next level.",
-                    ]
+                    items: Const.lightItUpHowToWin
                 ),
                 GameGuideSection(
-                    title: "Bonuses",
-                    icon: "star.fill",
+                    title: Const.txtBonuses,
+                    icon: Const.starFillIcon,
                     color: .neonGreen,
-                    items: [
-                        "🌟 Bonus cells give extra points (varies by level).",
-                        "They glow green — tap them before they disappear!",
-                    ]
+                    items: Const.lightItUpBonuses
                 ),
                 GameGuideSection(
-                    title: "Traps",
-                    icon: "exclamationmark.triangle.fill",
+                    title: Const.txtTraps,
+                    icon: Const.trapsIcon,
                     color: .neonRed,
-                    items: [
-                        "💣 Trap cells subtract points — they glow red.",
-                        "Tapping a dark / unlit cell costs −1 point.",
-                        "Cells only stay visible for a short time — react fast!",
-                        "Higher levels add more traps and a bigger grid.",
-                    ]
+                    items: Const.lightItUpTraps
                 ),
             ]
         case .quizRush:
             return [
                 GameGuideSection(
-                    title: "How to Win",
-                    icon: "trophy.fill",
+                    title: Const.txtHowToWin,
+                    icon: Const.trophyIcon,
                     color: .yellow,
-                    items: [
-                        "Pick the correct answer for each trivia question.",
-                        "Correct answer: 10 base pts + streak bonus (streak × 2).",
-                        "Answer faster to earn a speed bonus — watch the timer bar!",
-                        "Complete all questions with the highest score you can.",
-                        "Earn ★★ (2 stars) or more to unlock the next level.",
-                    ]
+                    items: Const.quizRushHowToWin
                 ),
                 GameGuideSection(
-                    title: "Speed Bonus",
-                    icon: "bolt.fill",
-                    color: .neonBlue,
-                    items: [
-                        "Each question has a countdown timer.",
-                        "More time left = bigger speed bonus on correct answers.",
-                        "Higher levels give less time but bigger max bonuses.",
-                    ]
+                    title: Const.txtBonuses,
+                    icon: Const.starFillIcon,
+                    color: .neonGreen,
+                    items: Const.quizRushBonuses
                 ),
                 GameGuideSection(
-                    title: "Hints",
-                    icon: "lightbulb.fill",
+                    title: Const.txtHints,
+                    icon: Const.hintIcon,
                     color: .yellow,
-                    items: [
-                        "Easy (L1–3): 3 hints — tap Use Hint on any question you choose.",
-                        "1st hint = category · 2nd = first letter · 3rd = 50/50 answers.",
-                        "Medium (L4–7): 3 random hints appear automatically on random questions.",
-                        "Hard (L8–10): No hints — you're on your own!",
-                    ]
+                    items: Const.quizRushHints
                 ),
                 GameGuideSection(
-                    title: "Traps",
-                    icon: "exclamationmark.triangle.fill",
+                    title: Const.txtTraps,
+                    icon: Const.trapsIcon,
                     color: .neonRed,
-                    items: [
-                        "Wrong answer: −5 points and your streak resets to zero.",
-                        "Timer runs out: counts as wrong (−5 pts), correct answer shown.",
-                        "Don't rush blindly — a wrong tap hurts more than a slow correct one.",
-                    ]
+                    items: Const.quizRushTraps
                 ),
             ]
         }
     }
     
     static func title(for mode: GameMode) -> String{
-        "\(mode.rawValue) Guide"
+        "\(mode.title) " + Const.txtGuide
     }
     
     static func accentColor(for mode: GameMode) -> Color {
@@ -173,7 +128,7 @@ struct GameGuideSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 ToolbarItem(placement: .confirmationAction){
-                    Button("Done"){
+                    Button(Const.txtDone){
                         AudioManager.shared.playSFX(.button)
                         dismiss()
                     }
@@ -196,7 +151,7 @@ struct GameGuideSheet: View {
                 )
             
             VStack(alignment: .leading, spacing: 4){
-                Text(mode.rawValue)
+                Text(mode.title)
                     .font(.headline.bold())
                     .foregroundColor(.white)
                 Text(mode.subtitle)
@@ -249,7 +204,7 @@ struct GameGuideButton: View {
             AudioManager.shared.playSFX(.button)
             showGuide = true
         } label: {
-            Image(systemName: "book.fill")
+            Image(systemName: Const.guideIcon)
                 .font(.system(size: 16, weight: .bold))
                 .foregroundColor(.white)
                 .frame(width: 40, height: 40)
@@ -263,7 +218,7 @@ struct GameGuideButton: View {
                 .shadow(color: GameGuideContent.accentColor(for: mode).opacity(0.35), radius: 8)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Game guide")
+        .accessibilityLabel(Const.txtGameGuide)
         .sheet(isPresented: $showGuide) {
             GameGuideSheet(mode: mode)
         }

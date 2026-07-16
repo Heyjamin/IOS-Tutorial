@@ -8,33 +8,41 @@
 import Foundation
 
 enum GameMode: String, Codable, CaseIterable, Identifiable, Hashable{
-    case tapFrenzy = "Tap Frenzy"
-    case lightItUp = "Light It Up"
-    case quizRush = "Quiz Rush"
+    case tapFrenzy
+    case lightItUp
+    case quizRush
     
     var id: String { rawValue }
     
+    var title: String{
+        switch self{
+        case .tapFrenzy: return Const.txtTapFrenzy
+        case .lightItUp: return Const.txtLightItUp
+        case .quizRush: return Const.txtQuizRush
+        }
+    }
+    
     var icon: String {
         switch self {
-        case .tapFrenzy: return "bolt.fill"
-        case .lightItUp: return "square.grid.3x3.fill"
-        case .quizRush: return "questionmark.circle.fill"
+        case .tapFrenzy: return Const.tapFrenzyIcon
+        case .lightItUp: return Const.lightItUpIcon
+        case .quizRush: return Const.quizRushIcon
         }
     }
     
     var subtitle: String{
         switch self{
-        case .tapFrenzy: return "Speed Challenge"
-        case .lightItUp: return "Memory Game"
-        case .quizRush: return "Live Trivia"
+        case .tapFrenzy: return Const.txtTapFrenzySubTitile
+        case .lightItUp: return Const.txtLightItUpSubTitle
+        case .quizRush: return Const.txtQuizRushSubTitle
         }
     }
     
     var colorName: String{
         switch self{
-        case .tapFrenzy: return "yellow"
-        case .lightItUp: return "blue"
-        case .quizRush: return "purple"
+        case .tapFrenzy: return Const.txtYellow
+        case .lightItUp: return Const.txtBlue
+        case .quizRush: return Const.txtPurple
         }
     }
     

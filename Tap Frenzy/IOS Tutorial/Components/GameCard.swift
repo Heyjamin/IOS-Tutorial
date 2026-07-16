@@ -44,7 +44,7 @@ struct GameCard: View {
                 
                 Spacer(minLength: 4)
                 
-                Image(systemName: "play.fill")
+                Image(systemName: Const.playIcon)
                     .font(.caption.weight(.bold))
                     .foregroundStyle(.white.opacity(0.85))
                     .padding(10)
@@ -79,16 +79,16 @@ struct GameCard: View {
     
     private var accentColor: Color{
         switch game.colorName{
-        case "yellow":
+        case Const.txtYellow:
             return .yellow
             
-        case "blue":
+        case Const.txtBlue:
             return .neonBlue
             
-        case "purple":
+        case Const.txtPurple:
             return .neonPurple
             
-        case "green":
+        case Const.txtGreen:
             return .neonGreen
             
         default:
@@ -103,14 +103,19 @@ struct GameCard: View {
         Color.black.ignoresSafeArea()
         VStack(spacing: 10){
             GameCard(
-                game: GameInfo(title: "Tap Frenzy", subtitle: "Speed challenge", icon: "bolt.fill", colorName: "yellow", destination: .tapFrenzy
+                game: GameInfo(title: Const.txtTapFrenzy, subtitle: Const.txtTapFrenzySubTitile, icon: Const.tapFrenzyIcon, colorName: Const.txtYellow, destination: .tapFrenzy
             )
         ){}
         
         GameCard(
-            game: GameInfo(title: "Quiz Rush", subtitle: "Live Trivia", icon: "questionmark.circle.fill", colorName: "purple", destination: .quizRush
+            game: GameInfo(title: Const.txtLightItUp, subtitle: Const.txtLightItUpSubTitle, icon: Const.lightItUpIcon, colorName: Const.txtBlue, destination: .quizRush
                           )
         ){}
+            
+            GameCard(
+                game: GameInfo(title: Const.txtQuizRush, subtitle: Const.txtQuizRushSubTitle, icon: Const.quizRushIcon, colorName: Const.txtPurple, destination: .quizRush
+                              )
+            ){}
     }
     .padding()
     }

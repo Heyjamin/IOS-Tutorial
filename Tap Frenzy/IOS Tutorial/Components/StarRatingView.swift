@@ -15,7 +15,7 @@ struct StarRatingView: View {
     var body: some View {
         HStack(spacing: 2) {
             ForEach(1...maxStars, id: \.self){ index in
-                Image(systemName: index <= stars ? "star.fill" : "star")
+                Image(systemName: index <= stars ? Const.starFillIcon : Const.starIcon)
                     .font(.system(size:size))
                     .foregroundColor(index <= stars ? .yellow : .gray.opacity(0.45))
             }

@@ -12,7 +12,7 @@ struct LightItUpView: View {
 
     @State private var activeStageLevel: Int
     @State private var score = 0
-    @State private var highestScore = UserDefaults.standard.integer(forKey: "LightItUpHighestScore")
+    @State private var highestScore = UserDefaults.standard.integer(forKey: Const.txtLightItUpHighestScore)
     @State private var timeRemaining = 60
     @State private var gameTimer: Timer?
     @State private var cellTimer: Timer?
@@ -24,7 +24,7 @@ struct LightItUpView: View {
     @State private var starsEarned = 0
     @State private var toastMessage = ""
 
-    @AppStorage("currentPlayer")
+    @AppStorage(Const.txtCurrentPlayer)
     private var playerName = ""
 
     init(stageLevel: Int = 1) {
@@ -51,7 +51,7 @@ struct LightItUpView: View {
         AudioManager.shared.playSFX(.gameOver)
         if score >= highestScore && score > 0 {
             highestScore = score
-            UserDefaults.standard.set(highestScore, forKey: "LightItUpHighestScore")
+            UserDefaults.standard.set(highestScore, forKey: Const.txtLightItUpHighestScore)
             AudioManager.shared.playSFX(.success)
         }
         gameOver = true
@@ -138,7 +138,7 @@ struct LightItUpView: View {
                 stageLevel: activeStageLevel,
                 score: score,
                 starsEarned: starsEarned,
-                headline: "LEVEL COMPLETE",
+                headline: Const.txtLevelCompleted.uppercased(),
                 subtitle: toastMessage.isEmpty ? levelConfig.subtitle : toastMessage,
                 bestScore: highestScore,
                 isNewRecord: score >= highestScore && score > 0,
@@ -156,7 +156,7 @@ struct LightItUpView: View {
                         .padding(.bottom, 6)
 
                     VStack(spacing: 8) {
-                        Text("💡 LIGHT IT UP · L\(activeStageLevel)")
+                        Text(Const.light + Const.txtLightItUp.uppercased() + " · L\(activeStageLevel)")
                             .font(.system(size: 18, weight: .black))
                             .foregroundStyle(
                                 LinearGradient(colors: [.neonBlue, .neonPurple], startPoint: .leading, endPoint: .trailing)
@@ -240,11 +240,11 @@ struct LightItUpView: View {
 
     private var compactStatsRow: some View {
         HStack(spacing: 0) {
-            lightStatItem(icon: "bolt.fill", label: "Score", value: "\(score)", color: .cyan)
+            lightStatItem(icon: Const.boltFill, label: Const.txtScore, value: "\(score)", color: .cyan)
             lightDivider
-            lightStatItem(icon: "star.fill", label: "Target", value: "\(levelConfig.starThresholds[1])+", color: .yellow)
+            lightStatItem(icon: Const.starFillIcon, label: Const.txtTarget, value: "\(levelConfig.starThresholds[1])+", color: .yellow)
             lightDivider
-            lightStatItem(icon: "timer", label: "Time", value: "\(timeRemaining)", color: .neonGreen)
+            lightStatItem(icon: Const.timerIcon, label: Const.txtTime, value: "\(timeRemaining)", color: .neonGreen)
         }
         .padding(.vertical, 8)
         .background(
@@ -278,7 +278,7 @@ struct LightItUpView: View {
 
     private var bottomLegendBar: some View {
         HStack(spacing: 12) {
-            Label("⭐ Bonus", systemImage: "plus.circle")
+            Label(Const.txtBonus, systemImage: Const.plusCircleIcon)
                 .font(.caption.bold())
                 .foregroundColor(.neonGreen)
 
