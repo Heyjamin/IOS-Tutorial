@@ -13,7 +13,7 @@ class PlayerManager {
     
     private init() {}
     
-    private let key = "currentPlayer"
+    private let key = Const.txtCurrentPlayer
     
     var currentPlayer: String {
         

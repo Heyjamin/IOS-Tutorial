@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PlayerRegistrationView : View {
     
-    @AppStorage("currentPlayer")
+    @AppStorage(Const.txtCurrentPlayer)
     private var savedPlayerName = ""
     
     @State private var playerName = ""
@@ -33,7 +33,7 @@ struct PlayerRegistrationView : View {
                 NeonAnimatedBackground(style: .menu)
                 
                 VStack(spacing:25){
-                    Text("⚡ NEON ARCADE ⚡")
+                    Text(Const.flash + " " + Const.txtNeonArcade.uppercased() + " " + Const.flash )
                         .font(.system(size:36,weight: .black))
                         .foregroundStyle(
                             LinearGradient(colors: [
@@ -41,13 +41,13 @@ struct PlayerRegistrationView : View {
                                 .neonPurple,
                                 .neonPink
                             ], startPoint: .leading, endPoint: .trailing))
-                    Text("Welcome to the Neon Arcade")
+                    Text(Const.txtWelcome)
                         .foregroundStyle(
                             Color.white
                         )
                     
                     TextField(
-                        "Enter your name",
+                        Const.txtEnterName,
                         text: $playerName
                     )
                     .padding()
@@ -78,7 +78,7 @@ struct PlayerRegistrationView : View {
                         savePlayer()
                         goArena = true
                     } label: {
-                        Text("SAVE PLAYER")
+                        Text(Const.txtSavePlayer)
                             .fontWeight(.bold)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -104,7 +104,7 @@ struct PlayerRegistrationView : View {
                     
                     if !savedPlayerName.isEmpty {
                         VStack (spacing:8) {
-                            Text("CURRENT PLAYER")
+                            Text(Const.txtCurrentPlayerName.uppercased())
                                 .font(.caption)
                                 .fontWeight(.bold)
                                 .foregroundColor(.neonGreen)

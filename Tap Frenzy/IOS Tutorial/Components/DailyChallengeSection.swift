@@ -38,7 +38,7 @@ struct DailyChallengeSection: View {
                 Spacer()
                 
                 HStack(spacing: 4){
-                    Image(systemName: Const.flameIcon)
+                    Image(systemName: Const.flameFillIcon)
                         .foregroundColor(.orange)
                     Text("\(challenges.masterStreak) \(Const.txtD)")
                         .fontWeight(.bold)
@@ -116,7 +116,7 @@ struct DailyChallengeSection: View {
             Spacer()
             
             HStack(spacing: 4){
-                Image(systemName: Const.flameIcon)
+                Image(systemName: Const.flameFillIcon)
                     .foregroundColor(.orange)
                 Text("\(challenges.masterStreak) \(Const.txtD)")
                     .fontWeight(.bold)
@@ -216,7 +216,7 @@ struct DailyChallengeRow: View{
                 }
                 
                 HStack(spacing: 2){
-                    Image(systemName: Const.flameIcon)
+                    Image(systemName: Const.flameFillIcon)
                         .font(.caption2)
                     Text("\(record.streak)")
                         .font(.caption.bold())

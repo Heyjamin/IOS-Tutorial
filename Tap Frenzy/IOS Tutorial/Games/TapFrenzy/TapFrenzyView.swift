@@ -17,7 +17,7 @@ struct TapFrenzyView: View {
 
     @State private var emojiMode: TapEmojiMode = .normal
     @State private var emojiTimer: Timer?
-    @State private var currentEmoji: String = "👆"
+    @State private var currentEmoji: String = Const.hand
 
     @State private var buttonOffsetX: CGFloat = 0
     @State private var buttonOffsetY: CGFloat = 0
@@ -27,7 +27,7 @@ struct TapFrenzyView: View {
     @State private var playAreaSize = CGSize(width: 300, height: 260)
 
     @State private var score = 0
-    @State private var highestScore = UserDefaults.standard.integer(forKey: "HighestScore")
+    @State private var highestScore = UserDefaults.standard.integer(forKey: Const.txtHighestScore)
     @State private var isNewRecord = false
     @State private var timeRemaining = 10_000
     @State private var gameOver = false
@@ -35,7 +35,7 @@ struct TapFrenzyView: View {
     @State private var toastMessage = ""
     @State private var starsEarned = 0
 
-    @AppStorage("currentPlayer")
+    @AppStorage(Const.txtCurrentPlayer)
     var playerName = ""
 
     init(stageLevel: Int = 1) {
@@ -62,7 +62,7 @@ struct TapFrenzyView: View {
     var formattedTime: String {
         let seconds = (timeRemaining % 60000) / 1000
         let milliseconds = (timeRemaining % 1000) / 10
-        return String(format: "%02d.%02d", seconds, milliseconds)
+        return String(format: Const.timerCountDownFormat, seconds, milliseconds)
     }
 
     var body: some View {
@@ -75,7 +75,7 @@ struct TapFrenzyView: View {
                     stageLevel: activeStageLevel,
                     score: score,
                     starsEarned: starsEarned,
-                    headline: isNewRecord ? "NEW RECORD!" : "LEVEL COMPLETE",
+                    headline: isNewRecord ? Const.txtNewRecord.uppercased() : Const.txtLevelComplete.uppercased(),
                     subtitle: toastMessage.isEmpty ? levelConfig.subtitle : toastMessage,
                     bestScore: highestScore,
                     isNewRecord: isNewRecord,
@@ -90,7 +90,7 @@ struct TapFrenzyView: View {
                         .padding(.bottom, 6)
 
                     VStack(spacing: 8) {
-                        Text("⚡ TAP FRENZY · L\(activeStageLevel)")
+                        Text(Const.flash + Const.txtTapFrenzy.uppercased() + " - " + Const.txtL + "\(activeStageLevel)")
                             .font(.system(size: 18, weight: .black))
                             .foregroundStyle(
                                 LinearGradient(colors: [.cyan, .purple, .pink], startPoint: .leading, endPoint: .trailing)
@@ -160,11 +160,11 @@ struct TapFrenzyView: View {
 
     private var compactStatsRow: some View {
         HStack(spacing: 0) {
-            tapStatItem(icon: "bolt.fill", label: "Score", value: "\(score)", color: .cyan)
+            tapStatItem(icon: Const.boltFillIcon , label: Const.txtScore, value: "\(score)", color: .cyan)
             tapDivider
-            tapStatItem(icon: "star.fill", label: "Target", value: "\(levelConfig.starThresholds[1])+", color: .yellow)
+            tapStatItem(icon: Const.starFillIcon, label: Const.txtTarget, value: "\(levelConfig.starThresholds[1])+", color: .yellow)
             tapDivider
-            tapStatItem(icon: "timer", label: "Time", value: formattedTime, color: .neonGreen)
+            tapStatItem(icon: Const.timerIcon, label: Const.txtTime, value: formattedTime, color: .neonGreen)
         }
         .padding(.vertical, 8)
         .background(
@@ -198,13 +198,13 @@ struct TapFrenzyView: View {
 
     private var bottomStatusBar: some View {
         HStack(spacing: 12) {
-            Label("COMBO ×\(comboMultiplier)", systemImage: "flame.fill")
+            Label(Const.txtComboX + "\(comboMultiplier)", systemImage: Const.flameFillIcon)
                 .font(.caption.bold())
                 .foregroundColor(.orange)
 
             Spacer(minLength: 8)
 
-            Label(modeLabel, systemImage: emojiMode == .penalty ? "exclamationmark.triangle.fill" : "sparkles")
+            Label(modeLabel, systemImage: emojiMode == .penalty ? Const.trapsIcon : Const.sparklesIcon)
                 .font(.caption.bold())
                 .foregroundColor(emojiGlowColor)
                 .lineLimit(1)
@@ -232,9 +232,9 @@ struct TapFrenzyView: View {
 
     private var modeLabel: String {
         switch emojiMode {
-        case .normal: return "NORMAL"
-        case .bonus: return "BONUS \(levelSettings.bonusEmoji)"
-        case .penalty: return "TRAP \(levelSettings.penaltyEmoji)"
+        case .normal: return Const.txtNormal.uppercased()
+        case .bonus: return Const.txtBonus + "\(levelSettings.bonusEmoji)"
+        case .penalty: return Const.txtTrap + "\(levelSettings.penaltyEmoji)"
         }
     }
 
@@ -303,7 +303,7 @@ struct TapFrenzyView: View {
 
         if score > highestScore {
             highestScore = score
-            UserDefaults.standard.set(highestScore, forKey: "HighestScore")
+            UserDefaults.standard.set(highestScore, forKey: Const.txtHighestScore)
             isNewRecord = true
             AudioManager.shared.playSFX(.success)
         } else {
@@ -348,11 +348,11 @@ struct TapFrenzyView: View {
         switch emojiMode {
         case .bonus:
             points += levelSettings.bonusPoints
-            toastMessage = "BONUS \(levelSettings.bonusEmoji) +\(points)"
+            toastMessage = Const.txtBonus.uppercased() + " \(levelSettings.bonusEmoji) +\(points)"
             AudioManager.shared.playSFX(.bonus)
         case .penalty:
             points = -comboMultiplier
-            toastMessage = "TRAP \(levelSettings.penaltyEmoji) \(points)"
+            toastMessage = Const.txtTrap + " \(levelSettings.penaltyEmoji) \(points)"
             AudioManager.shared.playSFX(.penalty)
         case .normal:
             toastMessage = ""

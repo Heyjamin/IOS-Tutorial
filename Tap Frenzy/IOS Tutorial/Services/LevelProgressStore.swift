@@ -19,7 +19,7 @@ final class LevelProgressStore: ObservableObject {
     
     static let shared = LevelProgressStore()
     
-    private let key = "levelProgressStore"
+    private let key = Const.txtLevelProgressStore
     @Published private(set) var records: [String: LevelRecord] = [:]
     
     private init() {

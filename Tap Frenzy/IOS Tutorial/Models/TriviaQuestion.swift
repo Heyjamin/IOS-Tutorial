@@ -22,106 +22,20 @@ extension String {
     }
 
     private func decodingHTMLEntitiesSinglePass() -> String {
-        var result = replaceNumericEntities(in: self, pattern: "&#x([0-9A-Fa-f]+);") { code in
+        var result = replaceNumericEntities(in: self, pattern: Const.selfPattern) { code in
             Unicode.Scalar(code).map(Character.init)
         }
 
-        result = replaceNumericEntities(in: result, pattern: "&#(\\d+);") { code in
+        result = replaceNumericEntities(in: result, pattern: Const.resultPattern) { code in
             Unicode.Scalar(code).map(Character.init)
         }
 
-        for (entity, character) in Self.htmlNamedEntities {
+        for (entity, character) in Const.htmlNamedEntities {
             result = result.replacingOccurrences(of: entity, with: character)
         }
 
         return result
     }
-
-    private static let htmlNamedEntities: [(String, String)] = [
-        ("&amp;", "&"),
-        ("&quot;", "\""),
-        ("&apos;", "'"),
-        ("&#039;", "'"),
-        ("&#39;", "'"),
-        ("&lt;", "<"),
-        ("&gt;", ">"),
-        ("&nbsp;", " "),
-        ("&rsquo;", "'"),
-        ("&lsquo;", "'"),
-        ("&rdquo;", "\""),
-        ("&ldquo;", "\""),
-        ("&hellip;", "…"),
-        ("&mdash;", "—"),
-        ("&ndash;", "–"),
-        ("&eacute;", "é"),
-        ("&Eacute;", "É"),
-        ("&egrave;", "è"),
-        ("&Egrave;", "È"),
-        ("&ecirc;", "ê"),
-        ("&Ecirc;", "Ê"),
-        ("&euml;", "ë"),
-        ("&Euml;", "Ë"),
-        ("&aacute;", "á"),
-        ("&Aacute;", "Á"),
-        ("&agrave;", "à"),
-        ("&Agrave;", "À"),
-        ("&acirc;", "â"),
-        ("&Acirc;", "Â"),
-        ("&auml;", "ä"),
-        ("&Auml;", "Ä"),
-        ("&aring;", "å"),
-        ("&Aring;", "Å"),
-        ("&iacute;", "í"),
-        ("&Iacute;", "Í"),
-        ("&igrave;", "ì"),
-        ("&Igrave;", "Ì"),
-        ("&icirc;", "î"),
-        ("&Icirc;", "Î"),
-        ("&iuml;", "ï"),
-        ("&Iuml;", "Ï"),
-        ("&oacute;", "ó"),
-        ("&Oacute;", "Ó"),
-        ("&ograve;", "ò"),
-        ("&Ograve;", "Ò"),
-        ("&ocirc;", "ô"),
-        ("&Ocirc;", "Ô"),
-        ("&ouml;", "ö"),
-        ("&Ouml;", "Ö"),
-        ("&oslash;", "ø"),
-        ("&Oslash;", "Ø"),
-        ("&uacute;", "ú"),
-        ("&Uacute;", "Ú"),
-        ("&ugrave;", "ù"),
-        ("&Ugrave;", "Ù"),
-        ("&ucirc;", "û"),
-        ("&Ucirc;", "Û"),
-        ("&uuml;", "ü"),
-        ("&Uuml;", "Ü"),
-        ("&ntilde;", "ñ"),
-        ("&Ntilde;", "Ñ"),
-        ("&ccedil;", "ç"),
-        ("&Ccedil;", "Ç"),
-        ("&yacute;", "ý"),
-        ("&Yacute;", "Ý"),
-        ("&szlig;", "ß"),
-        ("&eth;", "ð"),
-        ("&ETH;", "Ð"),
-        ("&thorn;", "þ"),
-        ("&THORN;", "Þ"),
-        ("&pi;", "π"),
-        ("&deg;", "°"),
-        ("&copy;", "©"),
-        ("&reg;", "®"),
-        ("&trade;", "™"),
-        ("&cent;", "¢"),
-        ("&pound;", "£"),
-        ("&euro;", "€"),
-        ("&yen;", "¥"),
-        ("&iquest;", "¿"),
-        ("&iexcl;", "¡"),
-        ("&bull;", "•"),
-        ("&middot;", "·"),
-    ]
 
     private func replaceNumericEntities(
         in text: String,
@@ -175,7 +89,7 @@ struct TriviaQuestion: Codable, Identifiable {
         let rawQuestion = try container.decode(String.self, forKey: .question)
         let rawCorrect = try container.decode(String.self, forKey: .correct_answer)
         let rawIncorrect = try container.decode([String].self, forKey: .incorrect_answers)
-        let rawCategory = try container.decodeIfPresent(String.self, forKey: .category) ?? "General Knowledge"
+        let rawCategory = try container.decodeIfPresent(String.self, forKey: .category) ?? Const.txtGeneralKonwledge
 
         question = rawQuestion.htmlDecoded
         correct_answer = rawCorrect.htmlDecoded
@@ -188,7 +102,7 @@ struct TriviaQuestion: Codable, Identifiable {
         question: String,
         correct_answer: String,
         incorrect_answers: [String],
-        category: String = "General Knowledge",
+        category: String = Const.txtGeneralKonwledge,
         displayAnswers: [String]? = nil
     ) {
         self.question = question.htmlDecoded
@@ -204,9 +118,9 @@ struct TriviaQuestion: Codable, Identifiable {
 
     var startsWithHint: String {
         let trimmed = correct_answer.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard let first = trimmed.first else { return "💡 Check the answer choices carefully" }
+        guard let first = trimmed.first else { return Const.txtQRInstructions}
         let letters = trimmed.filter { $0.isLetter || $0.isNumber }.count
-        return "💡 Starts with \"\(String(first).uppercased())\" · \(letters) characters"
+        return Const.txtStartsWith + " \"\(String(first).uppercased())\" · \(letters)" + Const.txtCharactors
     }
 
     /// Keeps the correct answer and one wrong option from the shuffled list.
@@ -218,11 +132,11 @@ struct TriviaQuestion: Codable, Identifiable {
     func hintText(kind: QuizHintKind) -> String {
         switch kind {
         case .category:
-            return "💡 Category: \(categoryLabel)"
+            return Const.txtCategory + " \(categoryLabel)"
         case .startsWith:
             return startsWithHint
         case .fiftyFifty:
-            return "💡 50/50 — two wrong answers removed"
+            return Const.txtFifyFifty
         }
     }
 }

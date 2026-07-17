@@ -21,7 +21,7 @@ struct StatsTab: View {
                 }else{
                     ScrollView{
                         VStack(spacing: 20){
-                            Text("📊 STATS")
+                            Text(Const.barchart + " " + Const.txtStats.uppercased())
                                 .font(.system(size: 30, weight: .black))
                                 .foregroundStyle(
                                     LinearGradient(
@@ -33,16 +33,16 @@ struct StatsTab: View {
                             
                             HStack(spacing: 12){
                                 StatCard(
-                                    title: "GAMES",
+                                    title: Const.txtGames.uppercased(),
                                     value: "\(viewModel.totalGames)",
                                     color: .cyan,
-                                    icon: "gamecontroller.fill"
+                                    icon: Const.gameControllerIcon
                                 )
                                 StatCard(
-                                    title: "TOTAL",
+                                    title: Const.txtTotal.uppercased(),
                                     value: "\(viewModel.totalScore)",
                                     color: .neonGreen,
-                                    icon: "sum"
+                                    icon: Const.sumIcon
                                 )
                             }
                             .glassCard()
@@ -55,7 +55,7 @@ struct StatsTab: View {
                     }
                 }
             }
-            .navigationTitle("Stats")
+            .navigationTitle(Const.txtStats)
             .navigationBarTitleDisplayMode(.inline)
             .onAppear{
                 viewModel.reload()
@@ -66,13 +66,13 @@ struct StatsTab: View {
     
     private var emptyState: some View{
         VStack(spacing: 16){
-            Image(systemName: "chart.bar")
+            Image(systemName: Const.chartBarIcon)
                 .font(.system(size: 70))
                 .foregroundColor(.neonBlue)
-            Text("No Stats Yet")
+            Text(Const.txtNoStatsYet)
                 .font(.title2.bold())
                 .foregroundColor(.white)
-            Text("Complete a game to see your stats here")
+            Text(Const.txtNoStatsMsg)
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
         }
@@ -81,7 +81,7 @@ struct StatsTab: View {
     
     private var personalBestsSection: some View{
         VStack(alignment: .leading, spacing: 12){
-            Text("Personal Bests")
+            Text(Const.txtPersonalBests)
                 .font(.headline)
                 .foregroundColor(.white)
             
@@ -102,16 +102,16 @@ struct StatsTab: View {
     
     private var chartSection: some View{
         VStack(alignment: .leading, spacing: 12){
-            Text("Scores by Session")
+            Text(Const.txtScoresBySession)
                 .font(.headline)
                 .foregroundColor(.white)
             
             Chart(viewModel.sessions.reversed()){ session in
                 BarMark(
-                    x: .value("Game", session.mode.rawValue),
-                    y: .value("Score", session.score),
+                    x: .value(Const.txtGames, session.mode.rawValue),
+                    y: .value(Const.txtScore, session.score),
                 )
-                .foregroundStyle(by: .value("Mode", session.mode.rawValue))
+                .foregroundStyle(by: .value(Const.txtMode, session.mode.rawValue))
             }
             .frame(height: 220)
             .chartForegroundStyleScale([
@@ -125,7 +125,7 @@ struct StatsTab: View {
     
     private var recentSection: some View{
         VStack(alignment: .leading, spacing: 12){
-            Text("Recent Games")
+            Text(Const.txtRecentGames)
                 .font(.headline)
                 .foregroundColor(.white)
             

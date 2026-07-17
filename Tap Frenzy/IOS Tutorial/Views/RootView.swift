@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RootView: View {
     
-    @AppStorage("currentPlayer")
+    @AppStorage(Const.txtCurrentPlayer)
     private var playerName = ""
     
     var body: some View {

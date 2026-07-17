@@ -63,9 +63,9 @@ final class AudioManager: ObservableObject {
     }
     
     private enum Keys {
-        static let sfxEnabled = "audioSfxEnabled"
-        static let musicEnabled = "audioMusicEnabled"
-        static let volume = "audioVolume"
+        static let sfxEnabled = Const.txtSfxEnabled
+        static let musicEnabled = Const.txtMusicEnabled
+        static let volume = Const.txtVolume
     }
     
     private var musicPlayer: AVAudioPlayer?
@@ -84,7 +84,7 @@ final class AudioManager: ObservableObject {
             try session.setCategory(.ambient, mode: .default, options:[.mixWithOthers])
             try session.setActive(true)
         }catch{
-            print("Audio session error:", error)
+            print(Const.txtAudioError, error)
         }
     }
     
@@ -99,7 +99,7 @@ final class AudioManager: ObservableObject {
         }
      
         guard let url = Bundle.main.url(forResource: track.rawValue, withExtension: "wav") else{
-            print("Missing music file: ", track.rawValue)
+            print(Const.txtMissingMusicFile, track.rawValue)
             return
         }
         
@@ -112,7 +112,7 @@ final class AudioManager: ObservableObject {
             player.play()
             musicPlayer = player
         }catch{
-            print("Music playback error:", error)
+            print(Const.txtMusicPlaybackError, error)
         }
     }
     
@@ -141,7 +141,7 @@ final class AudioManager: ObservableObject {
             player.prepareToPlay()
             player.play()
         }catch{
-            print("SFX Error:", error)
+            print(Const.txtSfxError, error)
         }
     }
     

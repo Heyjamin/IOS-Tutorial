@@ -35,7 +35,7 @@ struct DailyChallengeBanner: View {
             Spacer()
             
             if record.streak > 0 {
-                Label("\(record.streak)", systemImage: Const.flameIcon)
+                Label("\(record.streak)", systemImage: Const.flameFillIcon)
                     .font(.caption.bold())
                     .foregroundColor(.orange)
             }

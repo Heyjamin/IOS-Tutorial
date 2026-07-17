@@ -14,22 +14,22 @@ struct MainTabView: View {
         TabView(selection: $navigation.selectedTab){
             HomeTab()
                 .tabItem {
-                    Label("Home", systemImage:"gamecontroller")
+                    Label(Const.Home, systemImage:Const.gameControllerIcon)
                 }
                 .tag(AppTab.home)
             StatsTab()
                 .tabItem{
-                    Label("Stats", systemImage: "chart.bar")
+                    Label(Const.Status, systemImage: Const.chartBarIcon)
                 }
                 .tag(AppTab.stats)
             MapTab()
                 .tabItem{
-                    Label("Map", systemImage: "map")
+                    Label(Const.Map, systemImage: Const.mapIcon)
                 }
                 .tag(AppTab.map)
             SettingsTab()
                 .tabItem{
-                    Label("Settings", systemImage: "gear")
+                    Label(Const.Settings, systemImage: Const.gearIcon)
                 }
                 .tag(AppTab.settings)
         }

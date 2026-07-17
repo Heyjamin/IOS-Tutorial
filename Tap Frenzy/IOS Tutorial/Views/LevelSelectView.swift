@@ -161,11 +161,11 @@ struct LevelCard: View {
     
     private var worldEmoji: String {
         switch config.world {
-        case .meadow: return "🌾"
-        case .ocian: return "🌊"
-        case.sunset: return "🌅"
-        case .cosmos: return "🌌"
-        case .volcano: return "🌋"
+        case .meadow: return Const.meadow
+        case .ocian: return Const.ocian
+        case.sunset: return Const.sunset
+        case .cosmos: return Const.cosmos
+        case .volcano: return Const.volcano
         }
     }
     

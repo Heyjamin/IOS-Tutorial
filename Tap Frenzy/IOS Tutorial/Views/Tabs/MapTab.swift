@@ -51,14 +51,14 @@ struct MapTab: View {
     
     private var emptyStateBanner: some View {
         HStack(spacing: 12){
-            Image(systemName: "mappin.and.ellipse")
+            Image(systemName: Const.mappingElepseIcon)
                 .font(.title2)
                 .foregroundColor(.neonBlue)
             VStack(alignment: .leading, spacing: 2){
-                Text("Sri Lanka")
+                Text(Const.txtSriLanka)
                     .font(.subheadline.bold())
                     .foregroundColor(.white)
-                Text ("Play a game to score pins on the map")
+                Text (Const.txtMapDescription)
                     .font(.caption2)
                     .foregroundColor(.gray)
             }
@@ -79,12 +79,12 @@ struct MapTab: View {
                 Text(session.timestamp, style: .date)
                     .font(.caption)
                     .foregroundColor(.gray)
-                Text(String(format: "%.4f°, %.4f°", coordinate.latitude, coordinate.longitude))
+                Text(String(format: Const.coodinateFormat, coordinate.latitude, coordinate.longitude))
                     .font(.caption2)
                     .foregroundColor(.gray)
             }
             Spacer()
-            Text("\(session.score) pts")
+            Text("\(session.score) \(Const.txtPts)" )
                 .font(.title3.bold())
                 .foregroundColor(.neonGreen)
         }

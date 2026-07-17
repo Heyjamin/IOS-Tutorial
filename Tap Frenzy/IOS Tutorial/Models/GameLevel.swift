@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum LevelDiffiiculty: String, Codable, CaseIterable {
+enum LevelDifficulty: String, Codable, CaseIterable {
     case easy = "Easy"
     case medium = "Medium"
     case hard = "Hard"
@@ -34,15 +34,15 @@ enum LevelWorld: Int, CaseIterable {
     var title:String {
         switch self {
         case .meadow:
-            return "Neon Meadow"
+            return Const.world1
         case .ocian:
-            return "Crystal cian"
+            return Const.world2
         case .sunset:
-            return "Sunset Arena"
+            return Const.world3
         case .volcano:
-            return "Volcano Core"
+            return Const.world4
         case .cosmos:
-            return "Cosmos Void"
+            return Const.world5
         }
     }
     
@@ -65,7 +65,7 @@ enum LevelWorld: Int, CaseIterable {
 struct GameLevelConfig: Identifiable {
     let number: Int
     let mode: GameMode
-    let difficulty: LevelDiffiiculty
+    let difficulty: LevelDifficulty
     let subtitle: String
     let world: LevelWorld
     /// Min scores for 1* ... 5*
@@ -104,47 +104,47 @@ struct GameLevelConfig: Identifiable {
         // LEVELS: Tap Frenzy
         
         static let tapFrenzyLevels: [GameLevelConfig] = [
-            GameLevelConfig(number: 1, mode: .tapFrenzy, difficulty: .easy, subtitle: "Warm Up", world: .meadow, starThresholds: [4,12,20,28,38]),
-            GameLevelConfig(number: 2, mode: .tapFrenzy, difficulty: .easy, subtitle: "Getting Faster", world: .ocian, starThresholds: [6,14,22,32,42]),
-            GameLevelConfig(number: 3, mode: .tapFrenzy, difficulty: .easy, subtitle: "Combo Zone", world: .sunset, starThresholds: [8,16,25,35,48]),
-            GameLevelConfig(number: 4, mode: .tapFrenzy, difficulty: .medium, subtitle: "Chaos Mode", world: .volcano, starThresholds: [10,18,28,40,52]),
-            GameLevelConfig(number: 5, mode: .tapFrenzy, difficulty: .medium, subtitle: "Speed Rush", world: .cosmos, starThresholds: [12,20,30,42,58]),
-            GameLevelConfig(number: 6, mode: .tapFrenzy, difficulty: .medium, subtitle: "Hyper Tap", world: .meadow, starThresholds: [14,22,34,48,64]),
-            GameLevelConfig(number: 7, mode: .tapFrenzy, difficulty: .medium, subtitle: "Blur Speed", world: .ocian, starThresholds: [16,24,36,50,66]),
-            GameLevelConfig(number: 8, mode: .tapFrenzy, difficulty: .hard, subtitle: "Frenzy Mode", world: .sunset, starThresholds: [18,28,40,54,70]),
-            GameLevelConfig(number: 9, mode: .tapFrenzy, difficulty: .hard, subtitle: "Insane Combo", world: .volcano, starThresholds: [20,30,44,60,78]),
-            GameLevelConfig(number: 10, mode: .tapFrenzy, difficulty: .hard, subtitle: "Ultimate Legend", world: .cosmos, starThresholds: [22,34,48,64,85]),
+            GameLevelConfig(number: 1, mode: .tapFrenzy, difficulty: .easy, subtitle: Const.txtTFSubL1, world: .meadow, starThresholds: [4,12,20,28,38]),
+            GameLevelConfig(number: 2, mode: .tapFrenzy, difficulty: .easy, subtitle: Const.txtTFSubL2, world: .ocian, starThresholds: [6,14,22,32,42]),
+            GameLevelConfig(number: 3, mode: .tapFrenzy, difficulty: .easy, subtitle: Const.txtTFSubL3, world: .sunset, starThresholds: [8,16,25,35,48]),
+            GameLevelConfig(number: 4, mode: .tapFrenzy, difficulty: .medium, subtitle: Const.txtTFSubL4, world: .volcano, starThresholds: [10,18,28,40,52]),
+            GameLevelConfig(number: 5, mode: .tapFrenzy, difficulty: .medium, subtitle: Const.txtTFSubL5, world: .cosmos, starThresholds: [12,20,30,42,58]),
+            GameLevelConfig(number: 6, mode: .tapFrenzy, difficulty: .medium, subtitle: Const.txtTFSubL6, world: .meadow, starThresholds: [14,22,34,48,64]),
+            GameLevelConfig(number: 7, mode: .tapFrenzy, difficulty: .medium, subtitle: Const.txtTFSubL7, world: .ocian, starThresholds: [16,24,36,50,66]),
+            GameLevelConfig(number: 8, mode: .tapFrenzy, difficulty: .hard, subtitle: Const.txtTFSubL8, world: .sunset, starThresholds: [18,28,40,54,70]),
+            GameLevelConfig(number: 9, mode: .tapFrenzy, difficulty: .hard, subtitle: Const.txtTFSubL9, world: .volcano, starThresholds: [20,30,44,60,78]),
+            GameLevelConfig(number: 10, mode: .tapFrenzy, difficulty: .hard, subtitle: Const.txtTFSubL10, world: .cosmos, starThresholds: [22,34,48,64,85]),
         ]
         
         
         // LEVELS: Light It Up
         
         static let lightItUpLevels: [GameLevelConfig] = [
-            GameLevelConfig(number: 1, mode: .lightItUp, difficulty: .easy, subtitle: "First Lights", world: .meadow, starThresholds: [4,8,14,20,28]),
-            GameLevelConfig(number: 2, mode: .lightItUp, difficulty: .easy, subtitle: "Quick Hands", world: .ocian, starThresholds: [6,10,16,24,34]),
-            GameLevelConfig(number: 3, mode: .lightItUp, difficulty: .easy, subtitle: "Soft Glow", world: .sunset, starThresholds: [8,12,18,28,40]),
-            GameLevelConfig(number: 4, mode: .lightItUp, difficulty: .medium, subtitle: "Trap Alley", world: .volcano, starThresholds: [10,14,20,30,44]),
-            GameLevelConfig(number: 5, mode: .lightItUp, difficulty: .medium, subtitle: "Danger Grid", world: .cosmos, starThresholds: [12,16,24,36,52]),
-            GameLevelConfig(number: 6, mode: .lightItUp, difficulty: .medium, subtitle: "Speed Grid", world: .meadow, starThresholds: [14,18,26,38,54]),
-            GameLevelConfig(number: 7, mode: .lightItUp, difficulty: .medium, subtitle: "Flash Matrix", world: .ocian, starThresholds: [16,20,28,40,58]),
-            GameLevelConfig(number: 8, mode: .lightItUp, difficulty: .hard, subtitle: "Inferno Titles", world: .sunset, starThresholds: [18,22,30,44,60]),
-            GameLevelConfig(number: 9, mode: .lightItUp, difficulty: .hard, subtitle: "Nightmare Grid", world: .volcano, starThresholds: [20,24,34,48,68]),
-            GameLevelConfig(number: 10, mode: .lightItUp, difficulty: .hard, subtitle: "Master Grid", world: .cosmos, starThresholds: [22,26,38,54,72]),
+            GameLevelConfig(number: 1, mode: .lightItUp, difficulty: .easy, subtitle: Const.txtLIUSubL1, world: .meadow, starThresholds: [4,8,14,20,28]),
+            GameLevelConfig(number: 2, mode: .lightItUp, difficulty: .easy, subtitle: Const.txtLIUSubL2, world: .ocian, starThresholds: [6,10,16,24,34]),
+            GameLevelConfig(number: 3, mode: .lightItUp, difficulty: .easy, subtitle: Const.txtLIUSubL3, world: .sunset, starThresholds: [8,12,18,28,40]),
+            GameLevelConfig(number: 4, mode: .lightItUp, difficulty: .medium, subtitle: Const.txtLIUSubL4, world: .volcano, starThresholds: [10,14,20,30,44]),
+            GameLevelConfig(number: 5, mode: .lightItUp, difficulty: .medium, subtitle: Const.txtLIUSubL5, world: .cosmos, starThresholds: [12,16,24,36,52]),
+            GameLevelConfig(number: 6, mode: .lightItUp, difficulty: .medium, subtitle: Const.txtLIUSubL6, world: .meadow, starThresholds: [14,18,26,38,54]),
+            GameLevelConfig(number: 7, mode: .lightItUp, difficulty: .medium, subtitle: Const.txtLIUSubL7, world: .ocian, starThresholds: [16,20,28,40,58]),
+            GameLevelConfig(number: 8, mode: .lightItUp, difficulty: .hard, subtitle: Const.txtLIUSubL8, world: .sunset, starThresholds: [18,22,30,44,60]),
+            GameLevelConfig(number: 9, mode: .lightItUp, difficulty: .hard, subtitle: Const.txtLIUSubL9, world: .volcano, starThresholds: [20,24,34,48,68]),
+            GameLevelConfig(number: 10, mode: .lightItUp, difficulty: .hard, subtitle: Const.txtLIUSubL10, world: .cosmos, starThresholds: [22,26,38,54,72]),
         ]
         
         // LEVELS: Quiz Rush
         
         static let quizRushLevels: [GameLevelConfig] = [
-            GameLevelConfig(number: 1, mode: .quizRush, difficulty: .easy, subtitle: "Warm-Up Quiz", world: .meadow, starThresholds: [10,20,30,40,50]),
-            GameLevelConfig(number: 2, mode: .quizRush, difficulty: .easy, subtitle: "Brain Boost", world: .ocian, starThresholds: [15,28,34,40,65]),
-            GameLevelConfig(number: 3, mode: .quizRush, difficulty: .easy, subtitle: "Think Fast", world: .sunset, starThresholds: [20,35,48,62,78]),
-            GameLevelConfig(number: 4, mode: .quizRush, difficulty: .medium, subtitle: "Quick Recall", world: .volcano, starThresholds: [25,40,50,70,90]),
-            GameLevelConfig(number: 5, mode: .quizRush, difficulty: .medium, subtitle: "Expert Round", world: .cosmos, starThresholds: [30,45,60,80,100]),
-            GameLevelConfig(number: 6, mode: .quizRush, difficulty: .medium, subtitle: "Brain Storm", world: .meadow, starThresholds: [35,50,70,90,110]),
-            GameLevelConfig(number: 7, mode: .quizRush, difficulty: .medium, subtitle: "Rapid Fire", world: .ocian, starThresholds: [40,55,80,100,120]),
-            GameLevelConfig(number: 8, mode: .quizRush, difficulty: .hard, subtitle: "Genius Only", world: .sunset, starThresholds: [45,60,85,110,135]),
-            GameLevelConfig(number: 9, mode: .quizRush, difficulty: .hard, subtitle: "Mind Blitz", world: .volcano, starThresholds: [55,70,95,120,143]),
-            GameLevelConfig(number: 9, mode: .quizRush, difficulty: .hard, subtitle: "Ultimate Quiz", world: .volcano, starThresholds: [60,88,110,135,160]),
+            GameLevelConfig(number: 1, mode: .quizRush, difficulty: .easy, subtitle: Const.txtQRSubL1, world: .meadow, starThresholds: [10,20,30,40,50]),
+            GameLevelConfig(number: 2, mode: .quizRush, difficulty: .easy, subtitle: Const.txtQRSubL2, world: .ocian, starThresholds: [15,28,34,40,65]),
+            GameLevelConfig(number: 3, mode: .quizRush, difficulty: .easy, subtitle: Const.txtQRSubL3, world: .sunset, starThresholds: [20,35,48,62,78]),
+            GameLevelConfig(number: 4, mode: .quizRush, difficulty: .medium, subtitle: Const.txtQRSubL4, world: .volcano, starThresholds: [25,40,50,70,90]),
+            GameLevelConfig(number: 5, mode: .quizRush, difficulty: .medium, subtitle: Const.txtQRSubL5, world: .cosmos, starThresholds: [30,45,60,80,100]),
+            GameLevelConfig(number: 6, mode: .quizRush, difficulty: .medium, subtitle: Const.txtQRSubL6, world: .meadow, starThresholds: [35,50,70,90,110]),
+            GameLevelConfig(number: 7, mode: .quizRush, difficulty: .medium, subtitle: Const.txtQRSubL7, world: .ocian, starThresholds: [40,55,80,100,120]),
+            GameLevelConfig(number: 8, mode: .quizRush, difficulty: .hard, subtitle: Const.txtQRSubL8, world: .sunset, starThresholds: [45,60,85,110,135]),
+            GameLevelConfig(number: 9, mode: .quizRush, difficulty: .hard, subtitle: Const.txtQRSubL9, world: .volcano, starThresholds: [55,70,95,120,143]),
+            GameLevelConfig(number: 9, mode: .quizRush, difficulty: .hard, subtitle: Const.txtQRSubL10, world: .volcano, starThresholds: [60,88,110,135,160]),
             
         ]
         
@@ -164,16 +164,16 @@ struct GameLevelConfig: Identifiable {
         
         static func settings(for level: Int) -> TapFrenzyLevelSettings {
             switch level {
-            case 1: return TapFrenzyLevelSettings(durationMs: 13_000, moveInterval: 2.6, emojiInterval: 3.8, normalEmoji: "🖐️", bonusEmoji: "✨", penaltyEmoji: "☠️", bonusPoints: 3, specialChance: 0.12)
-            case 2: return TapFrenzyLevelSettings(durationMs: 12_000, moveInterval: 2.3, emojiInterval: 3.2, normalEmoji: "😀", bonusEmoji: "🌟", penaltyEmoji: "😡", bonusPoints: 3, specialChance: 0.15)
-            case 3: return TapFrenzyLevelSettings(durationMs: 11_000, moveInterval: 2.0, emojiInterval: 2.8, normalEmoji: "😇", bonusEmoji: "💎", penaltyEmoji: "🧨", bonusPoints: 4, specialChance: 0.18)
-            case 4: return TapFrenzyLevelSettings(durationMs: 10_500, moveInterval: 1.75, emojiInterval: 2.4, normalEmoji: "😃", bonusEmoji: "🎯", penaltyEmoji: "☠️", bonusPoints: 4, specialChance: 0.20)
-            case 5: return TapFrenzyLevelSettings(durationMs: 10_000, moveInterval: 1.55, emojiInterval: 2.1, normalEmoji: "🙂", bonusEmoji: "💫", penaltyEmoji: "💥", bonusPoints: 4, specialChance: 0.22)
-            case 6: return TapFrenzyLevelSettings(durationMs: 9_500, moveInterval: 1.35, emojiInterval: 1.9, normalEmoji: "🤗", bonusEmoji: "⚡", penaltyEmoji: "💀", bonusPoints: 5, specialChance: 0.24)
-            case 7: return TapFrenzyLevelSettings(durationMs: 9_000, moveInterval: 1.2, emojiInterval: 1.7, normalEmoji: "😁", bonusEmoji: "🚀", penaltyEmoji: "☠️", bonusPoints: 5, specialChance: 0.26)
-            case 8: return TapFrenzyLevelSettings(durationMs: 8_500, moveInterval: 1.0, emojiInterval: 1.5, normalEmoji: "☺️", bonusEmoji: "🪎", penaltyEmoji: "😈",bonusPoints: 5, specialChance: 0.28)
-            case 9: return TapFrenzyLevelSettings(durationMs: 8_000, moveInterval: 0.85, emojiInterval: 1.25, normalEmoji: "🥰", bonusEmoji: "🏆", penaltyEmoji: "🧨", bonusPoints: 6, specialChance: 0.30)
-            default: return TapFrenzyLevelSettings(durationMs: 7_500, moveInterval: 0.72, emojiInterval: 1.05,normalEmoji: "🤩", bonusEmoji: "👑", penaltyEmoji: "👹", bonusPoints: 6, specialChance: 0.32)
+            case 1: return TapFrenzyLevelSettings(durationMs: 13_000, moveInterval: 2.6, emojiInterval: 3.8, normalEmoji: Const.hand, bonusEmoji: Const.sparkels, penaltyEmoji: Const.danger, bonusPoints: 3, specialChance: 0.12)
+            case 2: return TapFrenzyLevelSettings(durationMs: 12_000, moveInterval: 2.3, emojiInterval: 3.2, normalEmoji: Const.smile1, bonusEmoji: Const.starFlash, penaltyEmoji: Const.angree, bonusPoints: 3, specialChance: 0.15)
+            case 3: return TapFrenzyLevelSettings(durationMs: 11_000, moveInterval: 2.0, emojiInterval: 2.8, normalEmoji: Const.bless, bonusEmoji: Const.gem, penaltyEmoji: Const.tnt, bonusPoints: 4, specialChance: 0.18)
+            case 4: return TapFrenzyLevelSettings(durationMs: 10_500, moveInterval: 1.75, emojiInterval: 2.4, normalEmoji: Const.smile2, bonusEmoji: Const.target, penaltyEmoji: Const.danger, bonusPoints: 4, specialChance: 0.20)
+            case 5: return TapFrenzyLevelSettings(durationMs: 10_000, moveInterval: 1.55, emojiInterval: 2.1, normalEmoji: Const.smile3, bonusEmoji: Const.starCircle, penaltyEmoji: Const.blast, bonusPoints: 4, specialChance: 0.22)
+            case 6: return TapFrenzyLevelSettings(durationMs: 9_500, moveInterval: 1.35, emojiInterval: 1.9, normalEmoji: Const.happyHand, bonusEmoji: Const.flash, penaltyEmoji: Const.zombi, bonusPoints: 5, specialChance: 0.24)
+            case 7: return TapFrenzyLevelSettings(durationMs: 9_000, moveInterval: 1.2, emojiInterval: 1.7, normalEmoji: Const.smile1, bonusEmoji: Const.rocket, penaltyEmoji: Const.danger, bonusPoints: 5, specialChance: 0.26)
+            case 8: return TapFrenzyLevelSettings(durationMs: 8_500, moveInterval: 1.0, emojiInterval: 1.5, normalEmoji: Const.happy, bonusEmoji: Const.tresure, penaltyEmoji: Const.hornDevil,bonusPoints: 5, specialChance: 0.28)
+            case 9: return TapFrenzyLevelSettings(durationMs: 8_000, moveInterval: 0.85, emojiInterval: 1.25, normalEmoji: Const.love, bonusEmoji: Const.trophy, penaltyEmoji: Const.tnt, bonusPoints: 6, specialChance: 0.30)
+            default: return TapFrenzyLevelSettings(durationMs: 7_500, moveInterval: 0.72, emojiInterval: 1.05,normalEmoji: Const.fantastic, bonusEmoji: Const.crown, penaltyEmoji: Const.devil, bonusPoints: 6, specialChance: 0.32)
             }
         }
     }
@@ -240,9 +240,9 @@ struct GameLevelConfig: Identifiable {
         
         var emoji: String{
             switch self{
-            case .normal: return "🖐️"
-            case .bonus: return "🌟"
-            case .trap: return "💣"
+            case .normal: return Const.hand
+            case .bonus: return Const.starFlash
+            case .trap: return Const.bomb
             }
         }
     }

@@ -29,13 +29,13 @@ class NotificationService {
         dateComponents.minute = minute
         
         let content = UNMutableNotificationContent()
-        content.title = "Daily Archade Challenge"
-        content.body = "Your daily arcade challenge is waiting! 🎮"
+        content.title = Const.msgDailyChallenge
+        content.body = Const.msgDailyChallengeBody
         content.sound = .default
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         
-        let request = UNNotificationRequest(identifier: "dailyChallenge", content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: Const.txtDailyChallengeId, content: content, trigger: trigger)
         
         center.add(request)
     }

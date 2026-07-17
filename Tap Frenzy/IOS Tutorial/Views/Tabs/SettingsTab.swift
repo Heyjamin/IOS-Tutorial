@@ -11,16 +11,16 @@ struct SettingsTab: View {
     @ObservedObject private var audio = AudioManager.shared
     @ObservedObject private var challenges = DailyChallengeManager.shared
     
-    @AppStorage("currentPlayer")
+    @AppStorage(Const.txtCurrentPlayer)
     private var playerName = ""
     
-    @AppStorage("dailyChallengeEnabled")
+    @AppStorage(Const.txtDailyChallengeEnabled)
     private var dailyChallengeEnabled = false
     
-    @AppStorage("dailyChallengeHour")
+    @AppStorage(Const.txtDailyChallengeHour)
     private var dailyChallengeHour = 9
     
-    @AppStorage("dailyChallengeMinutes")
+    @AppStorage(Const.txtDailyChallengeMinutes)
     private var dailyChallengeMinute = 0
     
     @State private var challengeTime = Date()
@@ -34,21 +34,21 @@ struct SettingsTab: View {
                 NeonAnimatedBackground(style: .calm)
                 
                 Form{
-                    Section("Audio"){
-                        Toggle("Sound Effects", isOn: $audio.sfxEnabled)
+                    Section(Const.txtAudio){
+                        Toggle(Const.txtSoundEffects, isOn: $audio.sfxEnabled)
                             .onChange(of: audio.sfxEnabled) { _, enabled in
                                 if enabled {audio.playSFX(.button)}
                             }
-                        Toggle("Background Music", isOn: $audio.musicEnabled)
+                        Toggle(Const.txtBackgroundMusic, isOn: $audio.musicEnabled)
                             .onChange(of: audio.musicEnabled) { _, enabled in
                                 if enabled {audio.playMusic(.menu)}
                             }
                         
                         VStack(alignment: .leading, spacing: 8){
                             HStack{
-                                Image(systemName: "speaker.fill")
+                                Image(systemName: Const.speakerFillIcon)
                                     .foregroundColor(.neonBlue)
-                                Text("Volume")
+                                Text(Const.txtVolume)
                                 Spacer()
                                 Text("\(Int(audio.volume * 100))%")
                                     .foregroundColor(.secondary)
@@ -63,42 +63,42 @@ struct SettingsTab: View {
                         }
                     }
                     
-                    Section("Player"){
+                    Section(Const.txtPlayer){
                         HStack{
-                            Text("Current Player")
+                            Text(Const.txtCurrentPlayerName)
                             Spacer()
                             Text(playerName.isEmpty ? "-" : playerName)
                                 .foregroundColor(.secondary)
                         }
                         
-                        Button ("Change Player", role: .destructive){
+                        Button (Const.txtChangePlayer, role: .destructive){
                             audio.playSFX(.button)
                             playerName = ""
                             PlayerManager.shared.savePlayer("")
                         }
                     }
                     
-                    Section("Daily Challenge"){
+                    Section(Const.txtDailyChallenge){
                         HStack{
-                            Text("master Streak")
+                            Text(Const.txtMasterStreak)
                             Spacer()
-                            Label("\(challenges.masterStreak) days", systemImage: "flame.fill")
+                            Label("\(challenges.masterStreak) " + Const.txtDays, systemImage: Const.flameFillIcon)
                                 .foregroundColor(.orange)
                         }
                         
-                        Button("Reset Daily Challenges", role: .destructive){
+                        Button(Const.txtResetDailyChallenges, role: .destructive){
                             audio.playSFX(.button)
                             showResetChallengesConfirmation = true
                         }
                         
-                        Toggle("Enable Notifications", isOn: $dailyChallengeEnabled)
+                        Toggle(Const.txtEnableNotifications, isOn: $dailyChallengeEnabled)
                             .onChange(of: dailyChallengeEnabled) { _, enabled in
                                 audio.playSFX(.button)
                                 Task { await updateNotifcations(enabled: enabled)}
                             }
                         
                         DatePicker(
-                            "Challenge Time",
+                            Const.txtChallengeTime,
                             selection: $challengeTime,
                             displayedComponents: .hourAndMinute
                         )
@@ -113,21 +113,21 @@ struct SettingsTab: View {
                         }
                     }
                     
-                    Section("Data"){
-                        Button("Reset All Stats", role: .destructive){
+                    Section(Const.txtData){
+                        Button(Const.txtResetAllStats, role: .destructive){
                             audio.playSFX(.button)
                             showResetConifrmation = true
                         }
                         
-                        Button("Reset Level Progress", role: .destructive){
+                        Button(Const.txtResetLevelProg, role: .destructive){
                             audio.playSFX(.button)
                             showResetLevelsConfirmation = true
                         }
                     }
                     
-                    Section("About"){
+                    Section(Const.txtAbout){
                         HStack(spacing: 12){
-                            Image(systemName: "gamecontroller.fill")
+                            Image(systemName: Const.gameControllerIcon)
                                 .font(.title2)
                                 .foregroundStyle(
                                     LinearGradient(
@@ -137,9 +137,9 @@ struct SettingsTab: View {
                                         )
                                     )
                             VStack(alignment: .leading, spacing: 2){
-                                Text("Nen Arcade")
+                                Text(Const.txtNeonArcade.capitalized)
                                     .font(.headline)
-                                Text("Tap Frenzy Mini-Game Collection")
+                                Text(Const.txtGameDescription)
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                             }
@@ -147,7 +147,7 @@ struct SettingsTab: View {
                         .padding(.vertical, 4)
                         
                         HStack{
-                            Text("Version")
+                            Text(Const.txtVersion)
                             Spacer()
                             Text(appVersionLabel)
                                 .foregroundColor(.secondary)
@@ -155,14 +155,14 @@ struct SettingsTab: View {
                         }
                         
                         VStack(alignment: .leading, spacing: 6){
-                            Text("Created by Nuwan Jeewantha")
+                            Text(Const.txtCreatedBy)
                                 .font(.subheadline.weight(.semibold))
                             
-                            Text("COBSCCOMP251P-045")
+                            Text(Const.txtIndexNo)
                                 .font(.caption)
                                 .foregroundColor(.neonBlue)
                             
-                            Text("Student - NIBM iOS Module")
+                            Text(Const.txtStudentModule)
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
@@ -172,7 +172,7 @@ struct SettingsTab: View {
                 }
                 .scrollContentBackground(.hidden)
             }
-            .navigationTitle("Settings")
+            .navigationTitle(Const.txtSettings)
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 AudioManager.shared.playMusic(.menu)
@@ -182,40 +182,40 @@ struct SettingsTab: View {
                 ) ?? Date()
             }
             .confirmationDialog(
-                "Reset all game stats?",
+                Const.txtResetStatConf,
                 isPresented: $showResetConifrmation,
                 titleVisibility: .visible
             ){
-                Button("Reset All Stats", role: .destructive){
+                Button(Const.txtResetAllStats, role: .destructive){
                     SessionStore.shared.clearAll()
                     }
-                Button("Cancel", role: .cancel){}
+                Button(Const.txtCancel, role: .cancel){}
             } message: {
-                Text("This permenetly deletes all saved game sessions.")
+                Text(Const.txtPermenetDeletConfMsg)
             }
             .confirmationDialog(
-                "Reset daily challenges?",
+                Const.txtResetDailyChallengeConf,
                 isPresented: $showResetChallengesConfirmation,
                 titleVisibility: .visible
             ){
-                Button("Reset Challenges", role: .destructive){
+                Button(Const.txtResetChallenges, role: .destructive){
                     challenges.resetAllChallenges()
                 }
-                Button("Cancel", role: .cancel){}
+                Button(Const.txtCancel, role: .cancel){}
             } message: {
-                Text("All streaks and today's progress will restart from zero.")
+                Text(Const.txtResetStreakResetConfMsg)
             }
             .confirmationDialog(
-                "Reset all level progress?",
+                Const.txtResetAllLevelProgConf,
                 isPresented: $showResetLevelsConfirmation,
                 titleVisibility: .visible
             ){
-                Button("Reset Levels", role: .destructive){
+                Button(Const.txtResetLevels, role: .destructive){
                     LevelProgressStore.shared.resetAll()
                 }
-                Button("Cancel", role: .cancel){}
+                Button(Const.txtCancel, role: .cancel){}
             } message: {
-                Text("All level stars and unlocks will be reset. Level 1 stays open.")
+                Text(Const.txtResetLevelConfMsg)
             }
         }
     }

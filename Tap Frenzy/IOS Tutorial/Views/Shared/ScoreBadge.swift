@@ -30,7 +30,7 @@ struct ScoreBadge: View {
 #Preview {
     ZStack{
         Color.black.ignoresSafeArea()
-        ScoreBadge(title: "SCORE", score: 47, color: .neonGreen)
+        ScoreBadge(title: Const.txtScore.uppercased(), score: 47, color: .neonGreen)
             .padding()
     }
 }

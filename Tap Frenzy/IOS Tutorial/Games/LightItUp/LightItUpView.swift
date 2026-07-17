@@ -240,7 +240,7 @@ struct LightItUpView: View {
 
     private var compactStatsRow: some View {
         HStack(spacing: 0) {
-            lightStatItem(icon: Const.boltFill, label: Const.txtScore, value: "\(score)", color: .cyan)
+            lightStatItem(icon: Const.boltFillIcon, label: Const.txtScore, value: "\(score)", color: .cyan)
             lightDivider
             lightStatItem(icon: Const.starFillIcon, label: Const.txtTarget, value: "\(levelConfig.starThresholds[1])+", color: .yellow)
             lightDivider
@@ -284,7 +284,7 @@ struct LightItUpView: View {
 
             Spacer(minLength: 8)
 
-            Label("💣 Trap", systemImage: "minus.circle")
+            Label(Const.txtTrap, systemImage: Const.minusCircleIcon)
                 .font(.caption.bold())
                 .foregroundColor(.neonRed)
         }
@@ -312,15 +312,15 @@ struct LightItUpView: View {
         switch activeCellKind {
         case .normal:
             score += 1
-            toastMessage = "+1 👆"
+            toastMessage = Const.txtPointOne
             AudioManager.shared.playSFX(.tap)
         case .bonus:
             score += settings.bonusPoints
-            toastMessage = "⭐ BONUS +\(settings.bonusPoints)!"
+            toastMessage = Const.txtBonusPoint + "\(settings.bonusPoints)!"
             AudioManager.shared.playSFX(.bonus)
         case .trap:
             score = max(score - settings.trapPenalty, 0)
-            toastMessage = "💣 TRAP -\(settings.trapPenalty)!"
+            toastMessage = Const.txtTrapPenalty + "\(settings.trapPenalty)!"
             AudioManager.shared.playSFX(.penalty)
         }
 

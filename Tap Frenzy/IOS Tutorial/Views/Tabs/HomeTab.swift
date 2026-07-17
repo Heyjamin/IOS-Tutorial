@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeTab: View {
-    @AppStorage("currentPlayer")
+    @AppStorage(Const.txtCurrentPlayer)
     private var playerName = ""
     
     @ObservedObject private var navigation = AppNavigationStore.shared
@@ -69,7 +69,7 @@ struct HomeTab: View {
     private var homeHeader: some View {
         HStack(alignment: .center, spacing: 12){
             VStack(alignment: .leading, spacing: 2){
-                Text("NEON ARCADE")
+                Text(Const.txtNeonArcade)
                     .font(.system(size:22, weight: .black, design: .rounded))
                     .foregroundStyle(
                         LinearGradient(
@@ -78,14 +78,14 @@ struct HomeTab: View {
                             endPoint: .trailing
                         )
                     )
-                Text("Ready to play, \(playerName)")
+                Text("\(Const.txtReadyToPlay) \(playerName)")
                     .font(.caption)
                     .foregroundColor(.white.opacity(0.55))
                     .lineLimit(1)
             }
                 Spacer(minLength: 8)
                 
-                Image(systemName: "gamecontroller.fill")
+            Image(systemName: Const.gameControllerIcon)
                     .font(.title3)
                     .foregroundStyle(
                         LinearGradient(colors: [.neonBlue, .neonPurple], startPoint: .top, endPoint: .bottom)
@@ -99,13 +99,13 @@ struct HomeTab: View {
     private var gamesSection: some View {
         VStack(alignment: .leading, spacing: 10){
             HStack{
-                Text("Arcade Modes")
+                Text(Const.txtArcadeGames)
                     .font(.subheadline.weight(.bold))
                     .foregroundColor(.white.opacity(0.9))
                 
                 Spacer()
                 
-                Text("\(games.count) games")
+                Text("\(games.count) \(Const.txtGames)" )
                     .font(.caption2.weight(.medium))
                     .foregroundColor(.white.opacity(0.45))
             }

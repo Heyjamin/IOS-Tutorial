@@ -35,7 +35,7 @@ struct QuizRushView: View {
                     stageLevel: activeStageLevel,
                     score: finalScore,
                     starsEarned: starsEarned,
-                    headline: "Quiz Complete",
+                    headline: Const.txtQuizCompleted,
                     subtitle: viewModel.resultMessage,
                     bestScore: LevelProgressStore.shared.bestScore(mode: .quizRush, level: activeStageLevel),
                     isNewRecord: false,
@@ -113,7 +113,7 @@ private extension QuizRushView {
         VStack(spacing: 20) {
             Spacer()
             ProgressView()
-            Text("Loading Questions...")
+            Text(Const.txtLoadingQuestions)
                 .foregroundStyle(.white)
             Spacer()
         }
@@ -122,16 +122,16 @@ private extension QuizRushView {
     func errorView(_ message: String) -> some View {
         ScrollView {
             VStack(spacing: 20) {
-                Image(systemName: "wifi.exclamationmark")
+                Image(systemName: Const.wiFiExclamationIcon)
                     .font(.system(size: 48))
                     .foregroundStyle(.red)
-                Text("Unable to load questions")
+                Text(Const.txtUnableToLoadQuiz)
                     .font(.headline)
                     .foregroundStyle(.white)
                 Text(message)
                     .foregroundStyle(.gray)
                     .multilineTextAlignment(.center)
-                Button("Retry") {
+                Button(Const.txtRetry) {
                     Task { await viewModel.loadQuestions() }
                 }
                 .buttonStyle(.borderedProminent)
@@ -183,12 +183,12 @@ private extension QuizRushView {
             viewModel.useHintOnCurrentQuestion()
         } label: {
             HStack(spacing: 8) {
-                Image(systemName: "lightbulb.fill")
+                Image(systemName: Const.hintIcon)
                     .foregroundColor(.yellow)
-                Text("Use Hint")
+                Text(Const.txtUseHint)
                     .font(.caption.weight(.bold))
                 Spacer()
-                Text("\(viewModel.hintsRemaining) left")
+                Text("\(viewModel.hintsRemaining) " + Const.txtLeft)
                     .font(.caption2.weight(.semibold))
                     .foregroundColor(.white.opacity(0.6))
             }
@@ -210,7 +210,7 @@ private extension QuizRushView {
 
     func hintBanner(_ text: String) -> some View {
         HStack(spacing: 8) {
-            Image(systemName: "lightbulb.fill")
+            Image(systemName: Const.hintIcon)
                 .font(.caption)
                 .foregroundColor(.yellow)
             Text(text)
@@ -235,12 +235,12 @@ private extension QuizRushView {
         ScrollView(showsIndicators: false) {
             VStack(spacing: 10) {
                 VStack(spacing: 2) {
-                    Text("🧠 QUIZ RUSH")
+                    Text(Const.brain + Const.txtQuizRush.uppercased())
                         .font(.system(size: 20, weight: .black))
                         .foregroundStyle(
                             LinearGradient(colors: [.neonBlue, .neonPurple], startPoint: .leading, endPoint: .trailing)
                         )
-                    Text("Level \(activeStageLevel) · \(levelConfig.world.title)")
+                    Text(Const.txtLevel.capitalized + " \(activeStageLevel) · \(levelConfig.world.title)")
                         .font(.caption2)
                         .foregroundColor(.gray)
                 }
@@ -282,7 +282,7 @@ private extension QuizRushView {
                             .foregroundColor(viewModel.answerIsCorrect == true ? .neonGreen : .neonRed)
                             .multilineTextAlignment(.center)
                     } else if viewModel.answerIsCorrect == false || viewModel.timedOut {
-                        Text("✅ \(viewModel.correctAnswer?.htmlDecoded ?? "")")
+                        Text(Const.correct + "\(viewModel.correctAnswer?.htmlDecoded ?? "")")
                             .font(.caption.bold())
                             .foregroundStyle(.green)
                             .multilineTextAlignment(.center)
@@ -298,11 +298,11 @@ private extension QuizRushView {
 
     var compactStatsRow: some View {
         HStack(spacing: 0) {
-            quizStatItem(icon: "list.number", label: "Q", value: "\(viewModel.currentIndex + 1)/\(viewModel.questions.count)", color: .cyan)
+            quizStatItem(icon: Const.listNumberIcon, label: Const.txtQ, value: "\(viewModel.currentIndex + 1)/\(viewModel.questions.count)", color: .cyan)
             divider
-            quizStatItem(icon: "star.fill", label: "Score", value: "\(viewModel.score)", color: .neonGreen)
+            quizStatItem(icon: Const.starFillIcon, label: Const.txtScore, value: "\(viewModel.score)", color: .neonGreen)
             divider
-            quizStatItem(icon: "flame.fill", label: "Streak", value: "\(viewModel.streak)", color: .orange)
+            quizStatItem(icon: Const.flameFillIcon, label: Const.txtStreak, value: "\(viewModel.streak)", color: .orange)
         }
         .padding(.vertical, 8)
         .background(
@@ -348,11 +348,11 @@ private struct QuizTimerBar: View {
     var body: some View {
         VStack(spacing: compact ? 4 : 6) {
             HStack {
-                Label("Timer", systemImage: "timer")
+                Label(Const.txtTimer, systemImage: Const.timerIcon)
                     .font(.caption2.bold())
                     .foregroundColor(.white)
                 Spacer()
-                Text(String(format: "%.1fs", max(timeRemaining, 0)))
+                Text(String(format: Const.timerFormat, max(timeRemaining, 0)))
                     .font(.caption.bold().monospacedDigit())
                     .foregroundColor(timerColor)
             }

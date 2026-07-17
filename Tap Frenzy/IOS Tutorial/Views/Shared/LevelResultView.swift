@@ -72,7 +72,7 @@ struct LevelResultView: View {
     
     private var resultHeader: some View {
         VStack(spacing: 8){
-            Image(systemName: starsEarned >= 3 ? "star.circle.fill":"flag.checkered")
+            Image(systemName: starsEarned >= 3 ? Const.starCircleIcon:Const.flagIcon)
                 .font(.system(size: 52))
                 .foregroundColor(starsEarned >= 3 ? .yellow : .neonBlue)
             
@@ -98,11 +98,11 @@ struct LevelResultView: View {
     
     private var scoreCard: some View {
         VStack(spacing: 6){
-            Text("STARS EARNED")
+            Text(Const.txtStarsEarned)
                 .font(.caption2.weight(.bold))
                 .foregroundColor(.gray)
             StarRatingView(stars: starsEarned, size:24)
-            Text("\(score) points")
+            Text("\(score) " + Const.txtPoints.capitalized)
                 .font(.title3.weight(.bold))
                 .foregroundColor(.neonGreen)
         }
@@ -121,12 +121,12 @@ struct LevelResultView: View {
     @ViewBuilder
     private var statusHint: some View {
         if starsEarned < GameLevelConfig.unlockStarsRequired {
-            Text("Score \(config.starThresholds[1]) + for *** to unlock next level")
+            Text(Const.txtScore.capitalized + " \(config.starThresholds[1]) " + Const.txtStarsToUnlock)
                 .font(.caption2)
                 .foregroundColor(.neonRed)
                 .multilineTextAlignment(.center)
         }else if canAdvance{
-            Text("Next level unlocked! Tap Next Level to continue.")
+            Text(Const.txtNextLevelUnlocked)
                 .font(.caption2.weight(.bold))
                 .foregroundColor(.neonGreen)
                 .multilineTextAlignment(.center)
@@ -136,14 +136,14 @@ struct LevelResultView: View {
     private var bottomActions: some View {
         VStack(spacing: 8) {
             if canAdvance, let onNextLevel {
-                ResultActionButton(title: "Next Level", icon: "arrow.right.circle.fill", style: .primary){
+                ResultActionButton(title: Const.txtNextLevel, icon: Const.arrowRightCircleIcon, style: .primary){
                     onNextLevel()
                 }
             }
             
             HStack (spacing: 10){
                 ShareScoreButton(data: shareData, compact: true)
-                ResultActionButton(title: "Play Again", icon: "arrow.clockwise", style: .secondary){
+                ResultActionButton(title: Const.txtPlayAgain, icon: Const.arrowClockwiseIcon, style: .secondary){
                     onPlayAgain()
                 }
             }
@@ -161,7 +161,7 @@ struct LevelResultView: View {
         stageLevel: 1,
         score: 25,
         starsEarned: 3,
-        headline: "Level Complete",
+        headline: Const.txtLevelComplete,
         subtitle: nil,
         bestScore: 30,
         isNewRecord: false,

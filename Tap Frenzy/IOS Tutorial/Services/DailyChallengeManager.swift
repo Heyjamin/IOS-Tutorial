@@ -17,7 +17,7 @@ final class DailyChallengeManager: ObservableObject {
     @Published private(set) var currentDayKey: String = ""
     @Published private(set) var masterStreak: Int = 0
     
-    private let storageKey = "dailyChallengeStore"
+    private let storageKey = Const.txtStorageKey
     private let calendar = Calendar.current
     
     private init() {
@@ -227,7 +227,7 @@ final class DailyChallengeManager: ObservableObject {
         let y = calendar.component(.year, from: start)
         let m = calendar.component(.month, from: start)
         let d = calendar.component(.day, from: start)
-        return String(format: "%04d-%02d-%02d", y,m,d)
+        return String(format: Const.dateFormat, y,m,d)
     }
     
     private static func parseDayKey(_ key: String, calendar: Calendar) -> Date? {

@@ -11,7 +11,7 @@ import CoreLocation
 class SessionStore {
     static let shared = SessionStore()
     
-    private let key = "gameSessions"
+    private let key = Const.txtGameSessions
     
     private init() {}
     
@@ -31,7 +31,7 @@ class SessionStore {
             let data = try JSONEncoder().encode(sessions)
             UserDefaults.standard.set(data, forKey: key)
         } catch {
-            print ("SessionStore save error: ", error)
+            print (Const.txtSessionSaveError, error)
         }
     }
     

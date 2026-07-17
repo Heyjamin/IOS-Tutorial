@@ -17,19 +17,19 @@ enum AppTab: Hashable, CaseIterable {
     
     var title: String {
         switch self {
-        case .home: return "Home"
-        case .stats: return "Status"
-        case .map: return "Map"
-        case .settings: return "Settings"
+        case .home: return Const.Home
+        case .stats: return Const.Status
+        case .map: return Const.Map
+        case .settings: return Const.Settings
         }
     }
 
     var icon: String {
         switch self {
-        case .home: return "gamecontroller"
-        case .stats: return "chart.bar"
-        case .map: return "map"
-        case .settings: return "gear"
+        case .home: return Const.gameControllerIcon
+        case .stats: return Const.chartBarIcon
+        case .map: return Const.mapIcon
+        case .settings: return Const.gearIcon
         }
     }
 }

@@ -23,7 +23,7 @@ struct ResultView: View {
             VStack(spacing: 0){
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 16){
-                        Image(systemName: isNewRecord ? "trophy.fill" : "flag.checkered")
+                        Image(systemName: isNewRecord ? Const.trophyIcon : Const.flagIcon)
                             .font(.system(size: 56))
                             .foregroundColor(isNewRecord ? .yellow : .neonBlue)
                         
@@ -39,10 +39,10 @@ struct ResultView: View {
                                 .multilineTextAlignment(.center)
                         }
                         
-                        ScoreBadge (title: "FINAL SCORE", score:score, color: .neonGreen)
+                        ScoreBadge (title: Const.txtFinalScore, score:score, color: .neonGreen)
                         
                         if let bestScore, bestScore > 0 {
-                            Text("BEST \(bestScore)")
+                            Text(Const.txtBest + " \(bestScore)")
                                 .font(.subheadline.weight(.bold))
                                 .foregroundColor(.yellow)
                         }
@@ -65,7 +65,7 @@ struct ResultView: View {
                     ),
                     compact: true
                     )
-                    ResultActionButton(title: "Play again", icon: "arrow.clockwise", style: .secondary){
+                    ResultActionButton(title: Const.txtPlayAgain, icon: Const.arrowClockwiseIcon, style: .secondary){
                         onPlayAgain()
                     }
                 }
@@ -82,8 +82,8 @@ struct ResultView: View {
     ResultView(
         mode: .tapFrenzy,
         score: 47,
-        headline: "GAME OVER",
-        subtitle: "Nice run!",
+        headline: Const.txtGameOver,
+        subtitle: Const.txtNiceRun,
         bestScore: 52,
         isNewRecord: false,
         onPlayAgain: {})

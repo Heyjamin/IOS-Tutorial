@@ -177,11 +177,11 @@ class QuizRushVM: ObservableObject {
         let config = GameLevelConfig.config(mode: .quizRush, level: stageLevel)
         let stars = config.stars(for: score)
         switch stars {
-        case 5: return "🏆 Perfect Quiz!"
-        case 4: return "🎉 Excellent!"
-        case 3: return "🎈 Well Done!"
-        case 2: return "👍 Level Cleared!"
-        default: return "💪 Keep Practicing!"
+        case 5: return Const.msgPerfect
+        case 4: return Const.msgExcellent
+        case 3: return Const.msgWellDone
+        case 2: return Const.msgLevelCleared
+        default: return Const.msgKeepPracticing
         }
     }
 
@@ -236,14 +236,14 @@ class QuizRushVM: ObservableObject {
             lastBasePoints = 10 + (streak * 2)
             lastTimeBonus = timeBonus(for: timeRemaining)
             score += lastBasePoints + lastTimeBonus
-            feedbackText = "⚡ +\(lastBasePoints) base · +\(lastTimeBonus) speed bonus!"
+            feedbackText = Const.flash + " +\(lastBasePoints)" + Const.txtBase + " · +\(lastTimeBonus) " + Const.txtSpeedBonus
             AudioManager.shared.playSFX(.correct)
         } else {
             streak = 0
             score = max(score - 5, 0)
             feedbackText = fromTimeout
-                ? "⏰ Time's up! −5 pts"
-                : "❌ Wrong! −5 pts"
+            ? Const.txtTimesUp
+            : Const.txtWrong
             AudioManager.shared.playSFX(.wrong)
         }
 
