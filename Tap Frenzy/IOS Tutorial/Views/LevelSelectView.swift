@@ -29,7 +29,7 @@ struct LevelSelectView: View {
                             .font(.system(size:40))
                             .foregroundStyle(modeAccent)
                         
-                        Text(mode.rawValue)
+                        Text(mode.title)
                             .font(.system(size: 28, weight: .black))
                             .foregroundColor(.white)
                         

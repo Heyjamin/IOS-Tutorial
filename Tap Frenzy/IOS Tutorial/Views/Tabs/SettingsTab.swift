@@ -48,7 +48,7 @@ struct SettingsTab: View {
                             HStack{
                                 Image(systemName: Const.speakerFillIcon)
                                     .foregroundColor(.neonBlue)
-                                Text(Const.txtVolume)
+                                Text(Const.txtVolumeSetting)
                                 Spacer()
                                 Text("\(Int(audio.volume * 100))%")
                                     .foregroundColor(.secondary)

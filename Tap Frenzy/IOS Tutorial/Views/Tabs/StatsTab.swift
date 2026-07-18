@@ -87,7 +87,7 @@ struct StatsTab: View {
             
             ForEach(GameMode.allCases){ mode in
                 HStack{
-                    Label(mode.rawValue, systemImage: mode.icon)
+                    Label(mode.title.capitalized, systemImage: mode.icon)
                         .foregroundColor(.white)
                     Spacer()
                     Text("\(viewModel.bestScore(for: mode))")
@@ -108,7 +108,7 @@ struct StatsTab: View {
             
             Chart(viewModel.sessions.reversed()){ session in
                 BarMark(
-                    x: .value(Const.txtGames, session.mode.rawValue),
+                    x: .value(Const.txtGames, session.mode.title),
                     y: .value(Const.txtScore, session.score),
                 )
                 .foregroundStyle(by: .value(Const.txtMode, session.mode.rawValue))
@@ -134,7 +134,7 @@ struct StatsTab: View {
                     Image(systemName: session.mode.icon)
                         .foregroundColor(.neonBlue)
                     VStack(alignment: .leading) {
-                        Text(session.mode.rawValue)
+                        Text(session.mode.title.capitalized)
                             .foregroundColor(.white)
                             .fontWeight(.semibold)
                         Text(session.timestamp, style: .date)

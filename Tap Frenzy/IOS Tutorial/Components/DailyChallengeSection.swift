@@ -199,7 +199,7 @@ struct DailyChallengeRow: View{
                     .foregroundColor(rowColor)
                     .frame(width: 24)
                 
-                Text(mode.rawValue)
+                Text(mode.title)
                     .font(.subheadline.bold())
                     .foregroundColor(.white)
                 

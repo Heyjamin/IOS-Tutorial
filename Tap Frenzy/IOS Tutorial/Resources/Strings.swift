@@ -243,15 +243,15 @@ struct Const {
   static let txtQRSubL10 = "Ultimate Quiz"
 
   // Share Card
-  static let txtIErned = "I earned"
-  static let txtIScored = "I scored"
+  static let txtIErned = "I earned "
+  static let txtIScored = "I scored "
   static let txtStarOn = "⭐ on"
   static let txtOn = "on"
   static let txtLevel = "lvel"
   static let txtWith = "with"
   static let txtPtsInNeonArc = "pts in Neon Archade! 🎮"
-  static let txtInNeonArc = "in Neon Archade! 🎮"
-  static let txtPoints = "points"
+  static let txtInNeonArc = " in Neon Archade! 🎮"
+  static let txtPoints = " points"
   static let txtShareCardFooter = "Neon Archade . iOS"
   static let txtShare = "Share"
   static let txtShareScore = "Share Score"
@@ -261,6 +261,7 @@ struct Const {
   static let txtSpeedBonus = "speed bonus!"
   static let txtTimesUp = "⏰ Time's up! −5 pts"
   static let txtWrong = "❌ Wrong! −5 pts"
+  static let txtLocationError = "❌ Location Error:"
 
   // Game worlds
   static let sunsetArena = "Sunset Arena"
@@ -293,7 +294,7 @@ struct Const {
   static let txtComboX = "COMBO ×"
   static let txtNormal = "normal"
   static let txtLevels = "levels"
-  static let txtStarsEarned = "STARS EARNED"
+  static let txtStarsEarned = " STARS EARNED"
   static let txtStarsToUnlock = "+ for ⭐⭐⭐ to unlock next level"
   static let txtNextLevelUnlocked = "Next level unlocked! Tap Next Level to continue."
   static let txtNextLevel = "Next Level"

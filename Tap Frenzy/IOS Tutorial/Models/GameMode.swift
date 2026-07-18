@@ -12,13 +12,13 @@ enum GameMode: String, Codable, CaseIterable, Identifiable, Hashable{
     case lightItUp
     case quizRush
     
-    var id: String { rawValue }
+    var id: String { title }
     
     var title: String{
         switch self{
-        case .tapFrenzy: return Const.txtTapFrenzy
-        case .lightItUp: return Const.txtLightItUp
-        case .quizRush: return Const.txtQuizRush
+        case .tapFrenzy: return Const.txtTapFrenzy.capitalized
+        case .lightItUp: return Const.txtLightItUp.capitalized
+        case .quizRush: return Const.txtQuizRush.capitalized
         }
     }
     

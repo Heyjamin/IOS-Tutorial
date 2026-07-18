@@ -17,7 +17,7 @@ struct HomeTab: View {
     private var games: [GameInfo]{
         GameMode.allCases.map { mode in
             GameInfo(
-                title: mode.rawValue,
+                title: mode.title.capitalized,
                 subtitle: mode.subtitle,
                 icon: mode.icon,
                 colorName: mode.colorName,

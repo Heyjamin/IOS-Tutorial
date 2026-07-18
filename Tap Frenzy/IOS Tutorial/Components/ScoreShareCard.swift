@@ -19,7 +19,7 @@ struct ScoreShareData{
     
     var shareCaption: String{
         if let stageLevel, let starsEarned {
-            return Const.txtIErned + " \(starsEarned)" + Const.txtStarOn + "\(mode.rawValue)" + Const.txtLevel + " \(stageLevel)" + Const.txtWith + " \(score) " + Const.txtPtsInNeonArc
+            return Const.txtIErned + " \(starsEarned) " + Const.txtStarOn + " \(mode.title) " + Const.txtLevel + " \(stageLevel) " + Const.txtWith + " \(score) " + Const.txtPtsInNeonArc
         }
         return Const.txtIScored + " \(score) " + Const.txtOn + " \(mode.rawValue) " + Const.txtInNeonArc
     }
