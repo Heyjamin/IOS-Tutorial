@@ -80,7 +80,7 @@ struct AnswerButton: View {
                 isCorrect: true,
                 correctAnswer: nil,
                 compact: true
-            ) {}
+            ){}
         }
         .padding()
     }
